@@ -169,3 +169,12 @@ def test_run_without_analysis_fails(tmp_path, config):
 def test_no_comparison_message(multi_day_history, config):
     a = az.analyze([multi_day_history[-1]], config, AT)
     assert "비교 데이터 없음" in bd.render(a, None, config["dashboard"])
+
+
+
+def test_stable_card_shows_reason_when_none(analysis, config):
+    a = dict(analysis, recommend=dict(analysis["recommend"], stable=None, stable_tvl_min=None,
+                                      stable_note="TVL 5천만 달러 이상이 없음"))
+    html = bd.render(a, OK_SUMMARY, config["dashboard"])
+    rec = html[html.index('aria-label="추천"'):html.index("오늘의 결론")]
+    assert "조건에 맞는 풀 없음" in rec and "TVL 5천만 달러 이상이 없음" in rec

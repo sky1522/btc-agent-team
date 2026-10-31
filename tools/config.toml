@@ -70,4 +70,5 @@ top_n = 10          # 상위 N개 (APY 기준)
 base_top_n = 5      # 기본 APY(실제 이자) 기준 상위 N개
 change_top_n = 10   # 전일 대비 변화 상위 N개 (절댓값 기준)
 large_tvl_usd = 100_000_000   # 대형 풀 기준 TVL (USD)
+stable_tvl_steps = [100_000_000, 50_000_000]   # 안정 우선 TVL 기준 (앞에서부터, 없으면 다음)
 reward_dependency_ratio = 0.5   # 보상 APY 비중이 이 값 이상이면 "보상 의존" 표시

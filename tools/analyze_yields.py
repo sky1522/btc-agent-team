@@ -172,13 +172,18 @@ def trend(pool_id: str, charts: dict) -> dict:
     """30일 기본 APY 추이 지표. 추이 데이터가 없으면 빈 값."""
     series = [x["base"] for x in charts.get(pool_id, []) if x.get("base") is not None]
     if len(series) < 2:
-        return {"spark": [], "base_30d_avg": None, "base_7d_change": None,
-                "vol_pp": None, "days": len(series)}
+        return {"spark": [], "base_30d_avg": None, "base_30d_std": None, "vol_cv": None,
+                "base_7d_change": None, "vol_pp": None, "days": len(series)}
+    mean = statistics.fmean(series)
+    std = statistics.pstdev(series)
     return {
         "spark": [round(v, 4) for v in series],
-        "base_30d_avg": round(statistics.fmean(series), 4),
+        "base_30d_avg": round(mean, 4),
+        "base_30d_std": round(std, 4),
+        # 변동계수 = 30일 표준편차 ÷ 30일 평균 (상대 변동성)
+        "vol_cv": round(std / mean, 4) if mean > 0 else None,
         "base_7d_change": round(series[-1] - series[-8], 4) if len(series) >= 8 else None,
-        "vol_pp": round(max(series) - min(series), 4),   # 30일 최고-최저 차
+        "vol_pp": round(max(series) - min(series), 4),   # 참고: 30일 최고-최저 차
         "days": len(series),
     }
 
@@ -187,13 +192,24 @@ def _musd(v: float) -> str:
     return f"${v / 1e6:,.1f}M"
 
 
+def volatility_status(tr: dict, g: dict) -> str:
+    """'high' | 'mid' | 'low' | 'excluded'(평균이 너무 낮아 판정 제외) | 'missing'"""
+    mean, cv = tr.get("base_30d_avg"), tr.get("vol_cv")
+    if mean is None:
+        return "missing"
+    if mean < g["cv_min_mean_pct"] or cv is None:
+        return "excluded"
+    if cv >= g["cv_high"]:
+        return "high"
+    return "low" if cv < g["cv_low"] else "mid"
+
+
 def grade(p: dict, risk: dict, tr: dict, rm: dict, ratio: float,
-          large_tvl: float) -> tuple[str, str, float | None, str]:
-    """위험 등급(낮음/보통/높음)과 이유 한 줄. 가장 나쁜 항목이 등급을 정한다."""
+          large_tvl: float) -> tuple[str, str, str]:
+    """위험 등급(낮음/보통/높음), 이유 한 줄, 변동성 판정. 가장 나쁜 항목이 등급을 정한다."""
     g = rm["grade"]
-    vol, vol_src = tr.get("vol_pp"), "30일 기본 APY 최고-최저"
-    if vol is None and p.get("apy_pct_30d") is not None:
-        vol, vol_src = abs(p["apy_pct_30d"]), "DefiLlama 30일 APY 변화"
+    vs = volatility_status(tr, g)
+    cv_pct = f"{(tr.get('vol_cv') or 0) * 100:.0f}%"
     reward = p.get("apy_reward") or 0
     high = []
     if p.get("apy") and reward / p["apy"] >= ratio:
@@ -204,10 +220,10 @@ def grade(p: dict, risk: dict, tr: dict, rm: dict, ratio: float,
         high.append("락업 기간 동안 못 뺌")
     if p["tvl_usd"] < g["small_tvl_usd"]:
         high.append(f"규모가 작음(TVL {_musd(p['tvl_usd'])})")
-    if vol is not None and vol >= g["vol_high_pp"]:
-        high.append(f"30일 이자 변동이 큼({vol:.2f}%p)")
+    if vs == "high":
+        high.append(f"30일 이자가 크게 출렁임(표준편차가 평균의 {cv_pct})")
     if high:
-        return "높음", high[0], vol, vol_src
+        return "높음", high[0], vs
     mid = []
     if p["tvl_usd"] < large_tvl:
         mid.append(f"규모 중간(TVL {_musd(p['tvl_usd'])})")
@@ -219,13 +235,16 @@ def grade(p: dict, risk: dict, tr: dict, rm: dict, ratio: float,
         mid.append("BTC 보관 방식 확인 필요")
     if risk["chain_status"] == CHECK:
         mid.append("체인 출시 시점 확인 필요")
-    if vol is None:
+    if vs == "missing":
         mid.append("이자 변동 데이터 없음")
-    elif vol >= g["vol_low_pp"]:
-        mid.append(f"30일 이자 변동 {vol:.2f}%p")
+    elif vs == "mid":
+        mid.append(f"30일 이자 변동 중간(표준편차가 평균의 {cv_pct})")
     if mid:
-        return "보통", mid[0], vol, vol_src
-    return "낮음", "대형 풀, 성숙한 체인, 수시 출금, 이자 변동 작음", vol, vol_src
+        return "보통", mid[0], vs
+    if vs == "excluded":
+        return ("낮음", "대형 풀, 성숙한 체인, 수시 출금 (이자가 0.5% 미만이라 변동성은 판정 제외)",
+                vs)
+    return "낮음", "대형 풀, 성숙한 체인, 수시 출금, 이자 변동 작음", vs
 
 
 def ranked(pools: list[dict], n: int, url_prefix: str, ratio: float,
@@ -249,7 +268,7 @@ def ranked(pools: list[dict], n: int, url_prefix: str, ratio: float,
             row["risk"], row["badges"] = classify(p, c.rm, c.as_of)
             tr = trend(p["pool"], c.charts)
             row.update(tr)
-            row["grade"], row["grade_reason"], row["vol_pp"], row["vol_source"] = grade(
+            row["grade"], row["grade_reason"], row["vol_status"] = grade(
                 p, row["risk"], tr, c.rm, ratio, c.large_tvl)
             row["krw_per_year"] = (round(row["btc_per_year"] * c.btc_krw)
                                    if c.btc_krw and row["btc_per_year"] is not None else None)
@@ -293,6 +312,31 @@ def ranked_by_base(pools: list[dict], n: int, url_prefix: str, ratio: float,
     return ranked(with_base, n, url_prefix, ratio, key="apy_base", risk_ctx=risk_ctx)
 
 
+def usd_kr(v: float) -> str:
+    """100_000_000 → '1억 달러', 50_000_000 → '5천만 달러'"""
+    return f"{v / 1e8:g}억 달러" if v >= 1e8 else f"{v / 1e7:g}천만 달러"
+
+
+def recommend(ranking: list[dict], tvl_steps: list[float]) -> dict:
+    """안정 우선: 위험 낮음·보통 중 TVL 기준 이상 기본 APY 1위(기준을 단계적으로 낮춤).
+    이자 우선: 위험 높음을 뺀 기본 APY 1위."""
+    ok = [r for r in ranking if r.get("grade") in ("낮음", "보통") and (r.get("apy_base") or 0) > 0]
+    stable, used = None, None
+    for t in tvl_steps:
+        stable = next((r for r in ok if r["tvl_usd"] >= t), None)
+        if stable:
+            used = t
+            break
+    if stable is None:
+        note = f"위험 낮음·보통인 풀 중 TVL {usd_kr(tvl_steps[-1])} 이상이 없음"
+    elif used != tvl_steps[0]:
+        note = f"TVL {usd_kr(tvl_steps[0])} 이상 중 해당 풀이 없어 기준을 낮춤"
+    else:
+        note = ""
+    return {"stable": stable, "stable_tvl_min": used, "stable_note": note,
+            "yield": ok[0] if ok else None}
+
+
 def analyze(history: list[dict], config: dict[str, Any], at: datetime,
             extras: dict | None = None) -> dict:
     """extras: {"charts": data/charts.json의 pools, "btc_price": yields.json의 btc_price}"""
@@ -331,11 +375,7 @@ def analyze(history: list[dict], config: dict[str, Any], at: datetime,
         # 예치형 전체 순위 (대시보드용): 기본 APY 내림차순, 리스크 분류·위험 등급 포함
         "ranking": ranking,
         # 추천 2종: 안정 우선(TVL 1억 달러 이상 중 기본 APY 1위), 이자 우선(위험 높음 제외 1위)
-        "recommend": {
-            "stable": large_top[0] if large_top else None,
-            "yield": next((r for r in ranking if r["grade"] != "높음"
-                           and (r.get("apy_base") or 0) > 0), None),
-        },
+        "recommend": recommend(ranking, acfg["stable_tvl_steps"]),
         "btc_price": price,
         "charts_days": config["collect"]["chart_days"],
         # 기본 APY(실제 이자) 기준 상위. 보상·포인트 의존 수익과 구분해서 보기 위함

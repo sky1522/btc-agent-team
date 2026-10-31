@@ -62,8 +62,10 @@ Mezo = "2025-05"          # https://mezo.org/docs/users/resources/release-notes/
 # 위험 등급 기준 (가장 나쁜 항목이 등급을 정함, docs/project-brief.md 참고)
 [grade]
 small_tvl_usd = 10_000_000   # 이 미만이면 높음
-vol_high_pp = 1.0            # 30일 이자 변동(%p)이 이 이상이면 높음
-vol_low_pp = 0.5             # 낮음이 되려면 이 미만
+# 30일 변동성 = 변동계수(30일 표준편차 ÷ 30일 평균, 기본 APY 일간 이력)
+cv_high = 0.30               # 이 이상이면 높음 (표준편차가 평균의 30% 이상)
+cv_low = 0.10                # 낮음이 되려면 이 미만
+cv_min_mean_pct = 0.5        # 30일 평균 기본 APY가 이 % 미만이면 변동성은 판정에서 제외
 
 # 공식 문서로 확인한 풀별 값: "프로젝트|체인|심볼" (근거 링크 필수)
 [pool]

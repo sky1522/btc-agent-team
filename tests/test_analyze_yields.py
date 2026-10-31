@@ -232,7 +232,7 @@ def test_grade_rules(rm):
     vol = _p("aave-v3", "Arbitrum", "WBTC", base=0.5, tvl=2e8)
     r = az.ranked([vol], 1, "u/", 0.5,
                   risk_ctx=_ctx(rm, {vol["pool"]: _series([0.5] * 29 + [2.0])}))[0]
-    assert r["grade"] == "높음" and "변동" in r["grade_reason"]
+    assert r["grade"] == "높음" and "출렁임" in r["grade_reason"]
 
 
 def test_krw_per_year(rm):
@@ -249,3 +249,48 @@ def test_recommendations(multi_day_history, config):
     y = r["recommend"]["yield"]
     assert y is None or y["grade"] != "높음"
     assert r["btc_price"]["krw"] == 1e8
+
+
+
+def test_volatility_is_relative_cv(rm):
+    # 평균 3% ± 0.3%p 진동: 절댓값 범위 0.6%p지만 변동계수 0.1 → 높음 아님
+    hi_apy = _p("aave-v3", "Arbitrum", "WBTC", base=3.0, tvl=2e8)
+    r = az.ranked([hi_apy], 1, "u/", 0.5,
+                  risk_ctx=_ctx(rm, {hi_apy["pool"]: _series([2.7, 3.3] * 15)}))[0]
+    assert r["vol_cv"] == pytest.approx(0.1, abs=1e-4)
+    assert r["vol_status"] == "mid" and r["grade"] == "보통"
+    # 평균 0.5% 이상이고 변동계수 0.3 이상 → 높음
+    swing = _p("aave-v3", "Arbitrum", "WBTC", base=1.0, tvl=2e8)
+    r = az.ranked([swing], 1, "u/", 0.5,
+                  risk_ctx=_ctx(rm, {swing["pool"]: _series([0.5, 1.5] * 15)}))[0]
+    assert r["vol_status"] == "high" and r["grade"] == "높음"
+
+
+def test_volatility_excluded_below_half_percent(rm):
+    tiny = _p("aave-v3", "Arbitrum", "WBTC", base=0.2, tvl=2e8)
+    r = az.ranked([tiny], 1, "u/", 0.5,
+                  risk_ctx=_ctx(rm, {tiny["pool"]: _series([0.1, 0.3] * 15)}))[0]
+    assert r["vol_cv"] == pytest.approx(0.5, abs=1e-4)      # 변동계수는 크지만
+    assert r["vol_status"] == "excluded"                       # 평균 0.2% < 0.5% → 판정 제외
+    assert r["grade"] == "낮음" and "판정 제외" in r["grade_reason"]
+
+
+def _row(pool, grade, base, tvl):
+    return {"pool": pool, "grade": grade, "apy_base": base, "tvl_usd": tvl}
+
+
+def test_recommend_stable_excludes_high_and_steps_down():
+    ranking = [_row("hi", "높음", 5.0, 5e8), _row("mid50", "보통", 2.0, 6e7),
+               _row("low200", "낮음", 0.5, 2e8)]
+    r = az.recommend(ranking, [1e8, 5e7])
+    assert r["stable"]["pool"] == "low200" and r["stable_tvl_min"] == 1e8
+    assert r["yield"]["pool"] == "mid50"                      # 높음 제외 1위
+    r = az.recommend(ranking[:2], [1e8, 5e7])                 # 1억 달러 이상 낮음·보통 없음
+    assert r["stable"]["pool"] == "mid50" and r["stable_tvl_min"] == 5e7
+    assert "기준을 낮춤" in r["stable_note"]
+    r = az.recommend([_row("hi", "높음", 5.0, 5e8), _row("s", "보통", 1.0, 1e7)], [1e8, 5e7])
+    assert r["stable"] is None and "없음" in r["stable_note"]
+
+
+def test_usd_kr():
+    assert az.usd_kr(1e8) == "1억 달러" and az.usd_kr(5e7) == "5천만 달러"

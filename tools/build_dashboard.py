@@ -181,10 +181,20 @@ def src_link(r: dict) -> str:
 
 # ---------- 추천 카드 ----------
 
+def stable_cond(rec: dict) -> str:
+    t = rec.get("stable_tvl_min")
+    if not t:
+        return rec.get("stable_note") or "조건에 맞는 풀 없음"
+    base = f"위험 낮음·보통 중 TVL {t / 1e8:g}억 달러 이상 1위" if t >= 1e8 else (
+        f"위험 낮음·보통 중 TVL {t / 1e7:g}천만 달러 이상 1위")
+    return f"{base} ({rec['stable_note']})" if rec.get("stable_note") else base
+
+
 def rec_card(kind: str, title: str, cond: str, r: dict | None) -> str:
     if not r:
         return (f'<article class="rec reveal"><p class="rec-kind">{e(title)}</p>'
-                f'<p class="muted">{e(cond)} 조건에 맞는 풀이 없습니다.</p></article>')
+                f'<p class="big-none">조건에 맞는 풀 없음</p>'
+                f'<p class="small muted">{e(cond)}.</p></article>')
     form_full = (r.get("risk") or {}).get("btc_form") or "-"
     form = form_full.split(" (")[0]
     money = btc(r.get("btc_per_year"))
@@ -438,6 +448,7 @@ padding:14px 16px;display:flex;flex-direction:column;gap:5px;min-width:0}
 .rec-num p,.pool-num p{display:flex;flex-direction:column}
 .big{font-size:42px;line-height:1;font-weight:750;letter-spacing:-.03em}
 .lbl{font-size:12px;margin-top:3px}
+.big-none{font-size:22px;font-weight:700;margin:6px 0}
 .mid-num{font-size:28px;line-height:1.1;font-weight:700;letter-spacing:-.02em}
 .rec-money{font-size:15px;font-weight:600}
 .src{font-size:13px}
@@ -578,7 +589,7 @@ def render(analysis: dict, summary: dict | None, cfg: dict) -> str:
 </div><label for="theme" class="toggle">밝기 전환</label></div></header>
 <main>
 <section class="recs" aria-label="추천">
-{rec_card("stable", "안정 우선", "큰 풀(TVL 1억 달러 이상) 중 1위", rec.get("stable"))}
+{rec_card("stable", "안정 우선", stable_cond(rec), rec.get("stable"))}
 {rec_card("yield", "이자 우선", "위험 높음을 뺀 풀 중 1위", rec.get("yield"))}
 </section>
 {conclusion_block(summary, status, cfg["summary_max_lines"])}

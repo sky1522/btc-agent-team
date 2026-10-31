@@ -1,7 +1,7 @@
 {
   "analysis": {
-    "generated_at": "2026-10-31T16:17:04+09:00",
-    "generated_at_kst": "2026-10-31 16:17 KST",
+    "generated_at": "2026-10-31T16:30:06+09:00",
+    "generated_at_kst": "2026-10-31 16:30 KST",
     "source": "DefiLlama Yields",
     "latest": {
       "collected_at": "2026-10-31T16:16:43+09:00",
@@ -308,12 +308,14 @@
           3.6
         ],
         "base_30d_avg": 3.8833,
+        "base_30d_std": 0.414,
+        "vol_cv": 0.1066,
         "base_7d_change": 0.0,
         "vol_pp": 1.1,
         "days": 30,
         "grade": "높음",
         "grade_reason": "출시 2년이 안 된 체인",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "mid",
         "krw_per_year": 3713298
       },
       {
@@ -393,12 +395,14 @@
           3.2085
         ],
         "base_30d_avg": 2.3159,
+        "base_30d_std": 0.9528,
+        "vol_cv": 0.4114,
         "base_7d_change": 0.3305,
         "vol_pp": 3.6753,
         "days": 30,
         "grade": "높음",
         "grade_reason": "출시 2년이 안 된 체인",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "high",
         "krw_per_year": 3309477
       },
       {
@@ -473,12 +477,14 @@
           2.35
         ],
         "base_30d_avg": 2.6163,
+        "base_30d_std": 0.4113,
+        "vol_cv": 0.1572,
         "base_7d_change": 0.25,
         "vol_pp": 1.03,
         "days": 30,
-        "grade": "높음",
-        "grade_reason": "30일 이자 변동이 큼(1.03%p)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "grade": "보통",
+        "grade_reason": "규모 중간(TVL $20.3M)",
+        "vol_status": "mid",
         "krw_per_year": 2423958
       },
       {
@@ -546,12 +552,14 @@
           1.83
         ],
         "base_30d_avg": 1.9327,
+        "base_30d_std": 0.2691,
+        "vol_cv": 0.1392,
         "base_7d_change": 0.0997,
         "vol_pp": 0.7693,
         "days": 30,
         "grade": "보통",
         "grade_reason": "규모 중간(TVL $48.9M)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "mid",
         "krw_per_year": 1886768
       },
       {
@@ -624,12 +632,14 @@
           0.8165
         ],
         "base_30d_avg": 0.5383,
+        "base_30d_std": 0.4434,
+        "vol_cv": 0.8237,
         "base_7d_change": -0.9765,
         "vol_pp": 1.793,
         "days": 30,
         "grade": "높음",
-        "grade_reason": "30일 이자 변동이 큼(1.79%p)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "grade_reason": "30일 이자가 크게 출렁임(표준편차가 평균의 82%)",
+        "vol_status": "high",
         "krw_per_year": 842197
       },
       {
@@ -702,12 +712,14 @@
           0.1923
         ],
         "base_30d_avg": 0.1943,
+        "base_30d_std": 0.0699,
+        "vol_cv": 0.3596,
         "base_7d_change": 0.0164,
         "vol_pp": 0.2861,
         "days": 30,
         "grade": "보통",
         "grade_reason": "규모 중간(TVL $20.9M)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "excluded",
         "krw_per_year": 198352
       },
       {
@@ -784,12 +796,14 @@
           0.1851
         ],
         "base_30d_avg": 0.1842,
+        "base_30d_std": 0.0227,
+        "vol_cv": 0.1231,
         "base_7d_change": -0.0158,
         "vol_pp": 0.1155,
         "days": 30,
         "grade": "높음",
         "grade_reason": "출시 2년이 안 된 체인",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "excluded",
         "krw_per_year": 190925
       },
       {
@@ -862,12 +876,14 @@
           0.1335
         ],
         "base_30d_avg": 0.1804,
+        "base_30d_std": 0.018,
+        "vol_cv": 0.1,
         "base_7d_change": -0.0408,
         "vol_pp": 0.0687,
         "days": 30,
         "grade": "낮음",
-        "grade_reason": "대형 풀, 성숙한 체인, 수시 출금, 이자 변동 작음",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "grade_reason": "대형 풀, 성숙한 체인, 수시 출금 (이자가 0.5% 미만이라 변동성은 판정 제외)",
+        "vol_status": "excluded",
         "krw_per_year": 137701
       },
       {
@@ -946,12 +962,14 @@
           0.119
         ],
         "base_30d_avg": 0.3141,
+        "base_30d_std": 0.2094,
+        "vol_cv": 0.6666,
         "base_7d_change": -0.2722,
         "vol_pp": 0.7149,
         "days": 30,
         "grade": "높음",
         "grade_reason": "이자 대부분이 보상이라 끝나면 줄어듦",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "excluded",
         "krw_per_year": 122745
       },
       {
@@ -1022,12 +1040,14 @@
           0.09
         ],
         "base_30d_avg": 0.0767,
+        "base_30d_std": 0.0226,
+        "vol_cv": 0.2942,
         "base_7d_change": 0.03,
         "vol_pp": 0.08,
         "days": 30,
         "grade": "보통",
         "grade_reason": "규모 중간(TVL $24.8M)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "excluded",
         "krw_per_year": 92832
       },
       {
@@ -1098,12 +1118,14 @@
           0.09
         ],
         "base_30d_avg": 0.0767,
+        "base_30d_std": 0.0226,
+        "vol_cv": 0.2942,
         "base_7d_change": 0.03,
         "vol_pp": 0.08,
         "days": 30,
         "grade": "보통",
         "grade_reason": "규모 중간(TVL $15.2M)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "excluded",
         "krw_per_year": 92832
       },
       {
@@ -1180,12 +1202,14 @@
           0.0728
         ],
         "base_30d_avg": 0.0271,
+        "base_30d_std": 0.0144,
+        "vol_cv": 0.5326,
         "base_7d_change": 0.0521,
         "vol_pp": 0.0703,
         "days": 30,
         "grade": "높음",
         "grade_reason": "규모가 작음(TVL $5.4M)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "excluded",
         "krw_per_year": 75091
       },
       {
@@ -1268,12 +1292,14 @@
           0.0486
         ],
         "base_30d_avg": 0.0544,
+        "base_30d_std": 0.0277,
+        "vol_cv": 0.5089,
         "base_7d_change": -0.052,
         "vol_pp": 0.0712,
         "days": 30,
         "grade": "높음",
         "grade_reason": "이자 대부분이 보상이라 끝나면 줄어듦",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "excluded",
         "krw_per_year": 50130
       },
       {
@@ -1344,12 +1370,14 @@
           0.04
         ],
         "base_30d_avg": 0.0513,
+        "base_30d_std": 0.0524,
+        "vol_cv": 1.0206,
         "base_7d_change": -0.04,
         "vol_pp": 0.16,
         "days": 30,
         "grade": "높음",
         "grade_reason": "규모가 작음(TVL $5.7M)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "excluded",
         "krw_per_year": 41259
       },
       {
@@ -1420,12 +1448,14 @@
           0.0224
         ],
         "base_30d_avg": 0.0218,
+        "base_30d_std": 0.0006,
+        "vol_cv": 0.0276,
         "base_7d_change": 0.0008,
         "vol_pp": 0.0018,
         "days": 30,
         "grade": "보통",
         "grade_reason": "규모 중간(TVL $13.4M)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "excluded",
         "krw_per_year": 23105
       },
       {
@@ -1496,12 +1526,14 @@
           0.0174
         ],
         "base_30d_avg": 0.0177,
+        "base_30d_std": 0.0008,
+        "vol_cv": 0.0453,
         "base_7d_change": 0.0004,
         "vol_pp": 0.003,
         "days": 30,
         "grade": "낮음",
-        "grade_reason": "대형 풀, 성숙한 체인, 수시 출금, 이자 변동 작음",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "grade_reason": "대형 풀, 성숙한 체인, 수시 출금 (이자가 0.5% 미만이라 변동성은 판정 제외)",
+        "vol_status": "excluded",
         "krw_per_year": 17948
       },
       {
@@ -1541,12 +1573,14 @@
         ],
         "spark": [],
         "base_30d_avg": null,
+        "base_30d_std": null,
+        "vol_cv": null,
         "base_7d_change": null,
-        "vol_pp": 0.00215,
+        "vol_pp": null,
         "days": 0,
         "grade": "보통",
         "grade_reason": "규모 중간(TVL $65.6M)",
-        "vol_source": "DefiLlama 30일 APY 변화",
+        "vol_status": "missing",
         "krw_per_year": 10315
       },
       {
@@ -1590,12 +1624,14 @@
         ],
         "spark": [],
         "base_30d_avg": null,
+        "base_30d_std": null,
+        "vol_cv": null,
         "base_7d_change": null,
         "vol_pp": null,
         "days": 0,
         "grade": "높음",
         "grade_reason": "이자 대부분이 보상이라 끝나면 줄어듦",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "missing",
         "krw_per_year": 0
       },
       {
@@ -1640,12 +1676,14 @@
         ],
         "spark": [],
         "base_30d_avg": null,
+        "base_30d_std": null,
+        "vol_cv": null,
         "base_7d_change": null,
-        "vol_pp": 1.6473,
+        "vol_pp": null,
         "days": 0,
         "grade": "높음",
         "grade_reason": "이자 대부분이 보상이라 끝나면 줄어듦",
-        "vol_source": "DefiLlama 30일 APY 변화",
+        "vol_status": "missing",
         "krw_per_year": 0
       },
       {
@@ -1693,45 +1731,47 @@
         ],
         "spark": [],
         "base_30d_avg": null,
+        "base_30d_std": null,
+        "vol_cv": null,
         "base_7d_change": null,
-        "vol_pp": 0.43475,
+        "vol_pp": null,
         "days": 0,
         "grade": "높음",
         "grade_reason": "이자 대부분이 보상이라 끝나면 줄어듦",
-        "vol_source": "DefiLlama 30일 APY 변화",
+        "vol_status": "missing",
         "krw_per_year": 0
       }
     ],
     "recommend": {
       "stable": {
-        "rank": 1,
-        "pool": "c9762afb-7746-4b5a-a484-a8881a348999",
+        "rank": 8,
+        "pool": "87c8ee0d-b812-47c1-803f-f91a3907079e",
         "type": "예치형",
-        "project": "lombard-lbtc",
-        "chain": "Ethereum",
-        "symbol": "LBTC",
+        "project": "venus-core-pool",
+        "chain": "BSC",
+        "symbol": "BTCB",
         "note": "",
-        "apy": 0.81648,
-        "apy_base": 0.81648,
-        "apy_reward": null,
-        "tvl_usd": 546176346,
-        "url": "https://defillama.com/yields/pool/c9762afb-7746-4b5a-a484-a8881a348999",
+        "apy": 0.13351,
+        "apy_base": 0.13351,
+        "apy_reward": 0,
+        "tvl_usd": 332086757,
+        "url": "https://defillama.com/yields/pool/87c8ee0d-b812-47c1-803f-f91a3907079e",
         "flags": [],
-        "btc_per_year": 0.008165,
-        "apy_mean_30d": 0.53038,
-        "apy_pct_1d": -0.11287,
-        "apy_pct_7d": -0.97655,
-        "apy_pct_30d": 0.73326,
+        "btc_per_year": 0.001335,
+        "apy_mean_30d": 0.18146,
+        "apy_pct_1d": -0.01118,
+        "apy_pct_7d": -0.04079,
+        "apy_pct_30d": -0.05838,
         "risk": {
-          "lockup": "출금 대기 최대 10일",
+          "lockup": "수시 출금",
           "reward_type": "없음",
-          "btc_form": "수탁형 (Lombard 컨소시엄·Anchorage·Kraken)",
+          "btc_form": "수탁형 (바이낸스)",
           "custodial": true,
           "chain_status": "성숙",
-          "chain_launched": "2015-07",
+          "chain_launched": "2020-09",
           "unknown": [],
           "sources": [
-            "https://docs.lombard.finance/use/faq/lbtc"
+            "https://docs-v4.venus.io/getting-started/faq"
           ]
         },
         "badges": [
@@ -1741,118 +1781,131 @@
           }
         ],
         "spark": [
-          0.0881,
-          0,
-          0.0026,
-          0,
-          0.5027,
-          0.5027,
-          0.5027,
-          0.3136,
-          0.41,
-          0.4457,
-          0.3216,
-          0.1335,
-          0.1624,
-          0.1114,
-          0.2695,
-          0.4003,
-          0.3087,
-          0.2862,
-          0.2642,
-          0.7534,
-          0.7279,
-          0.5137,
-          1.793,
-          1.6275,
-          1.0909,
-          1.0905,
-          0.909,
-          0.8716,
-          0.9294,
-          0.8165
+          0.1925,
+          0.1959,
+          0.1962,
+          0.2011,
+          0.2008,
+          0.2001,
+          0.2022,
+          0.1976,
+          0.1978,
+          0.1954,
+          0.1955,
+          0.199,
+          0.1986,
+          0.1759,
+          0.1745,
+          0.1752,
+          0.1747,
+          0.1754,
+          0.1716,
+          0.1684,
+          0.1693,
+          0.1746,
+          0.1743,
+          0.1742,
+          0.174,
+          0.1738,
+          0.1528,
+          0.1529,
+          0.1445,
+          0.1335
         ],
-        "base_30d_avg": 0.5383,
-        "base_7d_change": -0.9765,
-        "vol_pp": 1.793,
+        "base_30d_avg": 0.1804,
+        "base_30d_std": 0.018,
+        "vol_cv": 0.1,
+        "base_7d_change": -0.0408,
+        "vol_pp": 0.0687,
         "days": 30,
-        "grade": "높음",
-        "grade_reason": "30일 이자 변동이 큼(1.79%p)",
-        "vol_source": "30일 기본 APY 최고-최저",
-        "krw_per_year": 842197
+        "grade": "낮음",
+        "grade_reason": "대형 풀, 성숙한 체인, 수시 출금 (이자가 0.5% 미만이라 변동성은 판정 제외)",
+        "vol_status": "excluded",
+        "krw_per_year": 137701
       },
+      "stable_tvl_min": 100000000,
+      "stable_note": "",
       "yield": {
-        "rank": 4,
-        "pool": "ce85a606-365c-5829-8fd4-1bfdf6cbaf00",
+        "rank": 3,
+        "pool": "d2b2bdd9-6535-4acc-8e84-2b0838bd63bb",
         "type": "예치형",
-        "project": "stackingdao",
-        "chain": "Stacks",
-        "symbol": "STBTC",
-        "note": "",
-        "apy": 1.82924,
-        "apy_base": 1.82924,
+        "project": "midas-rwa",
+        "chain": "Ethereum",
+        "symbol": "BTC",
+        "note": "mHyperBTC",
+        "apy": 2.35,
+        "apy_base": 2.35,
         "apy_reward": null,
-        "tvl_usd": 48920457,
-        "url": "https://defillama.com/yields/pool/ce85a606-365c-5829-8fd4-1bfdf6cbaf00",
+        "tvl_usd": 20291851,
+        "url": "https://defillama.com/yields/pool/d2b2bdd9-6535-4acc-8e84-2b0838bd63bb",
         "flags": [],
-        "btc_per_year": 0.018292,
-        "apy_mean_30d": 1.93732,
-        "apy_pct_1d": 0.01478,
-        "apy_pct_7d": 0.09389,
-        "apy_pct_30d": -0.64206,
+        "btc_per_year": 0.0235,
+        "apy_mean_30d": 2.62184,
+        "apy_pct_1d": 0,
+        "apy_pct_7d": 0.25,
+        "apy_pct_30d": -0.76,
         "risk": {
-          "lockup": "출금 대기 약 28일",
+          "lockup": "확인 필요",
           "reward_type": "없음",
-          "btc_form": "리퀴드 스테이킹 (sBTC 기반)",
-          "custodial": false,
+          "btc_form": "토큰화 상품 (Midas mHyperBTC)",
+          "custodial": null,
           "chain_status": "성숙",
-          "chain_launched": "2021-01",
-          "unknown": [],
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업"
+          ],
           "sources": [
-            "https://docs.stackingdao.com/stackingdao/the-stacking-dao-app/stbtc-liquid-btc-staking-with-btc-rewards/withdrawing-from-stbtc.md"
+            "https://docs.midas.app/liquidity-and-composability/open-liquidity-architecture"
           ]
         },
-        "badges": [],
-        "spark": [
-          2.4596,
-          2.4408,
-          2.4083,
-          2.3895,
-          2.3811,
-          2.3282,
-          2.239,
-          2.1443,
-          2.0595,
-          1.9825,
-          1.9126,
-          1.8478,
-          1.7886,
-          1.7336,
-          1.6903,
-          1.6932,
-          1.6916,
-          1.6986,
-          1.7021,
-          1.7123,
-          1.7169,
-          1.7092,
-          1.7303,
-          1.7418,
-          1.7591,
-          1.7779,
-          1.7949,
-          1.803,
-          1.814,
-          1.83
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
         ],
-        "base_30d_avg": 1.9327,
-        "base_7d_change": 0.0997,
-        "vol_pp": 0.7693,
+        "spark": [
+          3.11,
+          3.11,
+          3.11,
+          3.11,
+          3.11,
+          3.13,
+          3.13,
+          3.13,
+          3.13,
+          3.13,
+          3.13,
+          2.53,
+          2.53,
+          2.53,
+          2.53,
+          2.53,
+          2.53,
+          2.53,
+          2.1,
+          2.1,
+          2.1,
+          2.1,
+          2.1,
+          2.1,
+          2.1,
+          2.35,
+          2.35,
+          2.35,
+          2.35,
+          2.35
+        ],
+        "base_30d_avg": 2.6163,
+        "base_30d_std": 0.4113,
+        "vol_cv": 0.1572,
+        "base_7d_change": 0.25,
+        "vol_pp": 1.03,
         "days": 30,
         "grade": "보통",
-        "grade_reason": "규모 중간(TVL $48.9M)",
-        "vol_source": "30일 기본 APY 최고-최저",
-        "krw_per_year": 1886768
+        "grade_reason": "규모 중간(TVL $20.3M)",
+        "vol_status": "mid",
+        "krw_per_year": 2423958
       }
     },
     "btc_price": {
@@ -1947,12 +2000,14 @@
           3.6
         ],
         "base_30d_avg": 3.8833,
+        "base_30d_std": 0.414,
+        "vol_cv": 0.1066,
         "base_7d_change": 0.0,
         "vol_pp": 1.1,
         "days": 30,
         "grade": "높음",
         "grade_reason": "출시 2년이 안 된 체인",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "mid",
         "krw_per_year": 3713298
       },
       {
@@ -2032,12 +2087,14 @@
           3.2085
         ],
         "base_30d_avg": 2.3159,
+        "base_30d_std": 0.9528,
+        "vol_cv": 0.4114,
         "base_7d_change": 0.3305,
         "vol_pp": 3.6753,
         "days": 30,
         "grade": "높음",
         "grade_reason": "출시 2년이 안 된 체인",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "high",
         "krw_per_year": 3309477
       },
       {
@@ -2112,12 +2169,14 @@
           2.35
         ],
         "base_30d_avg": 2.6163,
+        "base_30d_std": 0.4113,
+        "vol_cv": 0.1572,
         "base_7d_change": 0.25,
         "vol_pp": 1.03,
         "days": 30,
-        "grade": "높음",
-        "grade_reason": "30일 이자 변동이 큼(1.03%p)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "grade": "보통",
+        "grade_reason": "규모 중간(TVL $20.3M)",
+        "vol_status": "mid",
         "krw_per_year": 2423958
       },
       {
@@ -2185,12 +2244,14 @@
           1.83
         ],
         "base_30d_avg": 1.9327,
+        "base_30d_std": 0.2691,
+        "vol_cv": 0.1392,
         "base_7d_change": 0.0997,
         "vol_pp": 0.7693,
         "days": 30,
         "grade": "보통",
         "grade_reason": "규모 중간(TVL $48.9M)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "mid",
         "krw_per_year": 1886768
       },
       {
@@ -2263,12 +2324,14 @@
           0.8165
         ],
         "base_30d_avg": 0.5383,
+        "base_30d_std": 0.4434,
+        "vol_cv": 0.8237,
         "base_7d_change": -0.9765,
         "vol_pp": 1.793,
         "days": 30,
         "grade": "높음",
-        "grade_reason": "30일 이자 변동이 큼(1.79%p)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "grade_reason": "30일 이자가 크게 출렁임(표준편차가 평균의 82%)",
+        "vol_status": "high",
         "krw_per_year": 842197
       }
     ],
@@ -2344,12 +2407,14 @@
           0.8165
         ],
         "base_30d_avg": 0.5383,
+        "base_30d_std": 0.4434,
+        "vol_cv": 0.8237,
         "base_7d_change": -0.9765,
         "vol_pp": 1.793,
         "days": 30,
         "grade": "높음",
-        "grade_reason": "30일 이자 변동이 큼(1.79%p)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "grade_reason": "30일 이자가 크게 출렁임(표준편차가 평균의 82%)",
+        "vol_status": "high",
         "krw_per_year": 842197
       },
       {
@@ -2422,12 +2487,14 @@
           0.1335
         ],
         "base_30d_avg": 0.1804,
+        "base_30d_std": 0.018,
+        "vol_cv": 0.1,
         "base_7d_change": -0.0408,
         "vol_pp": 0.0687,
         "days": 30,
         "grade": "낮음",
-        "grade_reason": "대형 풀, 성숙한 체인, 수시 출금, 이자 변동 작음",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "grade_reason": "대형 풀, 성숙한 체인, 수시 출금 (이자가 0.5% 미만이라 변동성은 판정 제외)",
+        "vol_status": "excluded",
         "krw_per_year": 137701
       },
       {
@@ -2498,12 +2565,14 @@
           0.0174
         ],
         "base_30d_avg": 0.0177,
+        "base_30d_std": 0.0008,
+        "vol_cv": 0.0453,
         "base_7d_change": 0.0004,
         "vol_pp": 0.003,
         "days": 30,
         "grade": "낮음",
-        "grade_reason": "대형 풀, 성숙한 체인, 수시 출금, 이자 변동 작음",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "grade_reason": "대형 풀, 성숙한 체인, 수시 출금 (이자가 0.5% 미만이라 변동성은 판정 제외)",
+        "vol_status": "excluded",
         "krw_per_year": 17948
       }
     ],
@@ -2592,12 +2661,14 @@
           3.6
         ],
         "base_30d_avg": 3.8833,
+        "base_30d_std": 0.414,
+        "vol_cv": 0.1066,
         "base_7d_change": 0.0,
         "vol_pp": 1.1,
         "days": 30,
         "grade": "높음",
         "grade_reason": "출시 2년이 안 된 체인",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "vol_status": "mid",
         "krw_per_year": 3713298
       },
       "large_top": {
@@ -2670,12 +2741,14 @@
           0.8165
         ],
         "base_30d_avg": 0.5383,
+        "base_30d_std": 0.4434,
+        "vol_cv": 0.8237,
         "base_7d_change": -0.9765,
         "vol_pp": 1.793,
         "days": 30,
         "grade": "높음",
-        "grade_reason": "30일 이자 변동이 큼(1.79%p)",
-        "vol_source": "30일 기본 APY 최고-최저",
+        "grade_reason": "30일 이자가 크게 출렁임(표준편차가 평균의 82%)",
+        "vol_status": "high",
         "krw_per_year": 842197
       },
       "large_tvl_usd": 100000000,
@@ -2750,12 +2823,14 @@
           ],
           "spark": [],
           "base_30d_avg": null,
+          "base_30d_std": null,
+          "vol_cv": null,
           "base_7d_change": null,
-          "vol_pp": 2.12165,
+          "vol_pp": null,
           "days": 0,
           "grade": "높음",
           "grade_reason": "규모가 작음(TVL $9.6M)",
-          "vol_source": "DefiLlama 30일 APY 변화",
+          "vol_status": "missing",
           "krw_per_year": 4338576
         },
         {
@@ -2801,12 +2876,14 @@
           ],
           "spark": [],
           "base_30d_avg": null,
+          "base_30d_std": null,
+          "vol_cv": null,
           "base_7d_change": null,
-          "vol_pp": 0.07786,
+          "vol_pp": null,
           "days": 0,
           "grade": "높음",
           "grade_reason": "규모가 작음(TVL $8.7M)",
-          "vol_source": "DefiLlama 30일 APY 변화",
+          "vol_status": "missing",
           "krw_per_year": 1398985
         },
         {
@@ -2852,12 +2929,14 @@
           ],
           "spark": [],
           "base_30d_avg": null,
+          "base_30d_std": null,
+          "vol_cv": null,
           "base_7d_change": null,
-          "vol_pp": 0.81972,
+          "vol_pp": null,
           "days": 0,
           "grade": "보통",
           "grade_reason": "규모 중간(TVL $10.6M)",
-          "vol_source": "DefiLlama 30일 APY 변화",
+          "vol_status": "missing",
           "krw_per_year": 845497
         },
         {
@@ -2906,12 +2985,14 @@
           ],
           "spark": [],
           "base_30d_avg": null,
+          "base_30d_std": null,
+          "vol_cv": null,
           "base_7d_change": null,
-          "vol_pp": 1.01998,
+          "vol_pp": null,
           "days": 0,
           "grade": "높음",
           "grade_reason": "이자 대부분이 보상이라 끝나면 줄어듦",
-          "vol_source": "DefiLlama 30일 APY 변화",
+          "vol_status": "missing",
           "krw_per_year": 381851
         },
         {
@@ -2957,12 +3038,14 @@
           ],
           "spark": [],
           "base_30d_avg": null,
+          "base_30d_std": null,
+          "vol_cv": null,
           "base_7d_change": null,
-          "vol_pp": 0.27474,
+          "vol_pp": null,
           "days": 0,
           "grade": "보통",
           "grade_reason": "규모 중간(TVL $11.1M)",
-          "vol_source": "DefiLlama 30일 APY 변화",
+          "vol_status": "missing",
           "krw_per_year": 299127
         },
         {
@@ -3009,12 +3092,14 @@
           ],
           "spark": [],
           "base_30d_avg": null,
+          "base_30d_std": null,
+          "vol_cv": null,
           "base_7d_change": null,
-          "vol_pp": 0.15983,
+          "vol_pp": null,
           "days": 0,
           "grade": "보통",
           "grade_reason": "규모 중간(TVL $24.9M)",
-          "vol_source": "DefiLlama 30일 APY 변화",
+          "vol_status": "missing",
           "krw_per_year": 194948
         },
         {
@@ -3060,12 +3145,14 @@
           ],
           "spark": [],
           "base_30d_avg": null,
+          "base_30d_std": null,
+          "vol_cv": null,
           "base_7d_change": null,
-          "vol_pp": 0.17876,
+          "vol_pp": null,
           "days": 0,
           "grade": "보통",
           "grade_reason": "규모 중간(TVL $17.2M)",
-          "vol_source": "DefiLlama 30일 APY 변화",
+          "vol_status": "missing",
           "krw_per_year": 36308
         },
         {
@@ -3112,12 +3199,14 @@
           ],
           "spark": [],
           "base_30d_avg": null,
+          "base_30d_std": null,
+          "vol_cv": null,
           "base_7d_change": null,
-          "vol_pp": 0.02989,
+          "vol_pp": null,
           "days": 0,
           "grade": "높음",
           "grade_reason": "규모가 작음(TVL $7.7M)",
-          "vol_source": "DefiLlama 30일 APY 변화",
+          "vol_status": "missing",
           "krw_per_year": 30841
         }
       ]
@@ -3138,10 +3227,10 @@
   "summary": {
     "data_as_of_kst": "2026-10-31 16:16 KST",
     "lines": [
-      "실제 이자는 최고 3.60% 수준입니다.",
-      "큰 풀은 0.82%로 1% 미만입니다.",
-      "7%대 숫자는 전부 보상이라 끝나면 사라집니다."
+      "실제 이자는 3.60%가 최고지만 신생 체인이라 위험이 높습니다.",
+      "큰 풀은 1% 미만이고, 위험 낮은 곳은 0.13%, 보통은 2%대입니다.",
+      "7%대 숫자는 이자 없이 보상뿐이라 끝나면 사라집니다."
     ],
-    "generated_at_kst": "2026-10-31 16:22 KST"
+    "generated_at_kst": "2026-10-31 16:31 KST"
   }
 }
