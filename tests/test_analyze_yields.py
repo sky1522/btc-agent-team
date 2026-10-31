@@ -118,3 +118,76 @@ def test_run_writes_analysis_json(tmp_path, multi_day_history, config):
     assert out["generated_at_kst"] == "2026-10-30 15:05 KST"
     assert out["source"] == "DefiLlama Yields"
     assert out["top"][0]["url"].startswith("https://defillama.com/yields/pool/")
+
+
+# ---------- 리스크 분류 · 기본 APY 정렬 · KPI ----------
+
+AS_OF = datetime(2026, 10, 31, tzinfo=KST).date()
+
+
+def _p(project, chain, symbol, meta=None, base=1.0, reward=None, tvl=1e7):
+    return {"pool": f"{project}-{chain}-{symbol}", "project": project, "chain": chain,
+            "symbol": symbol, "pool_meta": meta, "note": meta or "", "apy_base": base,
+            "apy_reward": reward, "apy": (base or 0) + (reward or 0), "tvl_usd": tvl}
+
+
+@pytest.fixture
+def rm(config):
+    return az.load_risk_map(config)
+
+
+def labels(badges):
+    return [b["label"] for b in badges]
+
+
+def test_classify_locked_native_unknown_chain(rm):
+    risk, badges = az.classify(_p("mezo-earn", "Mezo", "BTC", "Locked veBTC", 0.05, 2.96), rm,
+                               AS_OF)
+    assert risk["lockup"] == "락업"
+    assert risk["reward_type"] == "토큰"
+    assert risk["btc_form"] == "확인 필요"        # Bitcoin 체인이 아닌 BTC 표기
+    assert risk["chain_status"] == "확인 필요"    # 매핑에 없는 체인
+    assert labels(badges) == ["락업", "확인 필요: BTC 형태·체인"]
+
+
+def test_classify_points_custodial_new_chain(rm):
+    risk, badges = az.classify(_p("accountable", "Monad", "CBBTC", "Earn ACC Points", 3.6, 0.2),
+                               rm, AS_OF)
+    assert risk["reward_type"] == "포인트"
+    assert risk["btc_form"] == "수탁형 (코인베이스)" and risk["custodial"] is True
+    assert risk["chain_status"] == "신생"         # 2025-11 출시 → 24개월 미만
+    assert "포인트 보상" in labels(badges) and "수탁형" in labels(badges)
+    assert "신생 체인" in labels(badges)
+
+
+def test_classify_lending_and_native_bitcoin(rm):
+    risk, badges = az.classify(_p("aave-v3", "Arbitrum", "WBTC"), rm, AS_OF)
+    assert (risk["lockup"], risk["chain_status"]) == ("수시 출금", "성숙")
+    assert labels(badges) == ["수탁형"]
+    risk, _ = az.classify(_p("chainflip-amm", "Bitcoin", "BTC"), rm, AS_OF)
+    assert risk["btc_form"] == "네이티브 BTC" and risk["custodial"] is False
+
+
+def test_unknown_symbol_is_check_not_guess(rm):
+    risk, badges = az.classify(_p("x", "Ethereum", "KBTC"), rm, AS_OF)
+    assert risk["btc_form"] == "확인 필요"
+    assert risk["custodial"] is None
+    assert "수탁형" not in labels(badges)
+
+
+def test_ranking_sorted_by_base_with_risk_and_btc_per_year(multi_day_history, config):
+    r = az.analyze(multi_day_history, config, AT)
+    assert [x["pool"] for x in r["ranking"]] == ["p-a", "p-d", "p-b"]   # 기본 6.5 > 3.0 > 0
+    first = r["ranking"][0]
+    assert first["btc_per_year"] == pytest.approx(0.065)
+    assert "risk" in first and "badges" in first
+
+
+def test_kpi_and_large_top(multi_day_history, config):
+    r = az.analyze(multi_day_history, config, AT)
+    k = r["kpi"]
+    assert k["base_top"]["pool"] == "p-a"
+    assert k["large_top"]["pool"] == "p-a"          # TVL 1억 달러 이상은 p-a(102M)뿐
+    assert [x["pool"] for x in r["large_top"]] == ["p-a"]
+    assert k["primary_count"] == 3
+    assert k["reward_share_pct"] == pytest.approx(25.20, abs=0.01)

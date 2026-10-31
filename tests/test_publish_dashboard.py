@@ -35,6 +35,7 @@ def repo(tmp_path, base_analysis, config):
     sh(work, "remote", "add", "origin", str(remote))
     (work / "dashboard").mkdir()
     (work / "README.md").write_text("x", encoding="utf-8")
+    (work / ".gitattributes").write_text("data/history.jsonl merge=union\n", encoding="utf-8")
     write_analysis(work, base_analysis, "2026-10-31 15:00 KST")
     pd.build_dashboard.run(config, root=work)
     sh(work, "add", "-A")
@@ -105,6 +106,41 @@ def test_aborts_on_other_branch(repo, config):
     sh(work, "checkout", "-q", "-b", "feature")
     with pytest.raises(pd.PublishError, match="브랜치"):
         pd.run(config, root=work)
+
+
+def append_history(repo_dir, snapshot):
+    with open(repo_dir / "data/history.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(snapshot, ensure_ascii=False) + "\n")
+
+
+def test_syncs_when_remote_ahead_only_with_auto_update(repo, config, tmp_path,
+                                                        multi_day_history):
+    """매일 자동 갱신(원격)과 에이전트 게시(로컬)가 각각 이력을 추가해도 양쪽 줄이 모두 남는다."""
+    work, remote = repo
+    append_history(work, multi_day_history[0])
+    sh(work, "add", "data/history.jsonl")
+    sh(work, "commit", "-q", "-m", "history seed")
+    sh(work, "push", "-q", "origin", "main")
+
+    ci = tmp_path / "ci"
+    sh(tmp_path, "clone", "-q", str(remote), str(ci))
+    sh(ci, "config", "user.name", "bot")
+    sh(ci, "config", "user.email", "bot@example.com")
+    append_history(ci, multi_day_history[1])
+    (ci / "dashboard/index.html").write_text("<p>ci build</p>", encoding="utf-8")
+    sh(ci, "commit", "-q", "-am", "auto: 매일 수집")
+    sh(ci, "push", "-q", "origin", "main")
+
+    append_history(work, multi_day_history[2])          # 로컬 에이전트 수집 (미커밋)
+    r = pd.run(config, root=work)
+    assert r["pushed"]
+    lines = sh(remote, "show", "main:data/history.jsonl").splitlines()
+    stamps = sorted(json.loads(x)["collected_at"] for x in lines)
+    assert stamps == ["2026-10-29T09:00:00+09:00", "2026-10-30T09:00:00+09:00",
+                      "2026-10-30T15:00:00+09:00"]
+    html = sh(remote, "show", "main:dashboard/index.html")
+    assert "ci build" not in html                         # 합친 이력으로 다시 생성
+    assert "기준 2026-10-30 15:00 KST" in html
 
 
 def test_aborts_when_remote_is_ahead(repo, config, tmp_path, base_analysis):

@@ -1,0 +1,59 @@
+# 대시보드 자동 갱신 + GitHub Pages 배포 (Claude 호출 없음, 스크립트만)
+# - 매일 08:00 KST(23:00 UTC 전날) 예약 실행 / 수동 실행: 수집 → 분석 → 생성 → 커밋 → 배포
+# - main에 dashboard/ 변경이 push되면(에이전트 게시): 배포만
+# - AI 요약(data/summary.json)은 건드리지 않음 → 마지막 수동 생성본 유지, 생성 시각 따로 표시
+name: Dashboard
+
+on:
+  schedule:
+    - cron: "0 23 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["dashboard/**", ".github/workflows/dashboard.yml"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: dashboard
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect, analyze, build
+        if: github.event_name != 'push'
+        run: |
+          python3 tools/defillama_btc.py
+          python3 tools/analyze_yields.py
+          python3 tools/build_dashboard.py
+
+      - name: Commit history and dashboard
+        if: github.event_name != 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history.jsonl dashboard/index.html dashboard/data.json
+          if git diff --cached --quiet; then
+            echo "변경 없음"
+          else
+            git commit -m "auto: 매일 수집 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M') KST"
+            git pull --rebase --autostash
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dashboard
+      - id: deployment
+        uses: actions/deploy-pages@v4

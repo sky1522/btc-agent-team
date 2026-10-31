@@ -1,29 +1,31 @@
 # 진행 결과 (최신 마일스톤으로 덮어쓰기)
 
-## M3·M4 + 공개 배포 준비 — 2026-10-31 15:28 KST
+## 대시보드 고객 관점 개편 — 2026-10-31 16:05 KST
 
-### M3 텔레그램
-- 플러그인 `telegram@claude-plugins-official` 프로젝트 범위 설치, 허용 도구 reply/react/edit_message
-- `scripts/start-agent.ps1`: Bun·토큰 확인 후 `claude --channels plugin:telegram@claude-plugins-official`
-- 승인 버튼: 플러그인이 권한 중계(Allow/Deny 인라인 버튼) 내장 확인(server.ts)
-- 차단 실험: PowerShell curl·Invoke-WebRequest·irm, Bash curl 4건 모두 거부
-- 샌드박스: Windows 네이티브 미지원(공식 문서) → deny + 정확한 명령 허용으로 확정
-- **실기기 테스트 미확인**: 이 PC에 토큰 폴더(`~/.claude/channels/telegram/`)와 텔레그램 수신 세션 기록이 없음 → 응답 시간 측정 불가
+### 공개 주소
+https://sky1522.github.io/btc-agent-team/
 
-### M4 대시보드
-- `tools/build_dashboard.py` → `dashboard/index.html`(+ `data.json`): 예치형 순위(기본/보상 구분), 기본 APY 상위 5, 유형별 통계, AI 요약(`data/summary.json`, 오래되면 경고), 전일 대비, LP형 접힘
-- 상단 고정 기준 시각·출처, 모바일 우선, 외부 라이브러리·스크립트 없음, CSP로 스크립트 차단, 같은 입력 → 같은 출력
-- `tools/publish_dashboard.py`: 재생성 → 대시보드 파일만 커밋·push. main 외 브랜치, 다른 미push 커밋, 원격 앞섬이면 중단
-- `.github/workflows/pages.yml`: dashboard/만 Pages 배포. Pages 소스는 이미 GitHub Actions
-- 허용 목록: build/publish 명령 정확한 문자열. `Write/Edit(/dashboard/**)` 제거(보안 리뷰 반영), `PowerShell(git push*)` deny 추가
-- 테스트 44개 통과
+### 바뀐 것
+- 상단 KPI 카드 4개: 실제 이자 1위(기본 APY), 대형 풀 1위(TVL 1억 달러 이상), 예치형 풀 수·TVL 합계, 보상 의존 비중
+- "오늘의 결론" 3줄 (reporter가 `data/summary.json`에 작성, 생성 시각은 도구가 파일 수정 시각으로 기록)
+- 순위: 기본 APY 내림차순, 기본·보상 2구간 막대, 1 BTC 연 이자(BTC), TVL $M, 리스크 배지, DefiLlama 원본 링크. 데스크톱은 표, 760px 이하는 카드
+- 리스크 분류(`tools/risk_map.toml`): 락업 / 보상 형태 / BTC 형태 / 체인 성숙도(출시 24개월 미만=신생). 근거 없으면 "확인 필요"
+- 중복 "기본 APY 상위 5" 표 삭제, poolMeta 중복 정리, pool ID는 화면에서 숨김(동일 이름 풀은 "동일 이름 i/n")
+- 면책 문구 삭제 및 재발 방지 규칙(CLAUDE.md, reporter)
+- LP형 접힘 섹션에 실제 8행 표시 확인, 유형별 통계 맨 아래
+- 라이트·다크, tabular-nums, CSP 유지, 스크립트·외부 폰트 없음
 
-### 공개 저장소 검사
-- 이력 전체: 운영 가이드(고객 이름·비용·강사 정보) 1건이 첫 커밋에 포함 → filter-branch로 전 이력에서 제거, reflog·gc 정리. 원본은 로컬 유지 + .gitignore
-- 재검사(모든 커밋 파일·모든 blob·커밋 메시지): 고객 이름·연락처·비용·개인 경로 0건
-- data/logs(커밋 제외): 개인 경로 36곳 `~`로 치환
-- 커밋 작성자 이메일은 기존 공개 저장소에서도 이미 사용 중
+### 자동 갱신
+- `.github/workflows/dashboard.yml`: 매일 08:00 KST 수집→분석→생성→커밋→Pages 배포(Claude 호출 없음). dashboard/ push 시 배포만
+- AI 요약은 마지막 수동본 유지, 생성 시각 별도 표시
+- `data/history.jsonl` merge=union: 로컬 게시와 자동 갱신 이력이 충돌 없이 합쳐짐. publish는 원격 자동 갱신 커밋을 받아 합친 뒤 다시 생성
+- data/yields.json, data/analysis.json은 추적 해제(매번 재생성)
+
+### 검증
+- 테스트 52개 통과
+- 실제 Pages 캡처: 데스크톱 1280 / 모바일 390 / 다크 390 — 가로 스크롤 없음, 넘침 요소 0, LP 8행
+- 공개 파일 검사: 개인 정보·파일 경로·내부 설정 0건 (하단 문구의 저장소 경로 1건 발견 → 제거 후 재게시)
+- CLI "대시보드 갱신해줘": 49초, 거부 0
 
 ### 다음에 내가 할 일
-- 최초 push 1회 (`git push`는 에이전트 deny 규칙으로 막혀 있음)
-- 텔레그램 토큰 등록·페어링 (M3 안내 단계)
+- 이 커밋 push 1회 (`! git push`) → 그 뒤 자동 갱신 워크플로 수동 실행으로 이력 누적 확인

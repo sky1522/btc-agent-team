@@ -10,6 +10,7 @@ analysis = "data/analysis.json"
 summary = "data/summary.json"         # reporter가 쓰는 AI 요약 (대시보드 표시용)
 dashboard_html = "dashboard/index.html"
 dashboard_data = "dashboard/data.json"
+risk_map = "tools/risk_map.toml"     # 리스크 분류 매핑 (락업·보상·BTC 형태·체인)
 
 [dashboard]
 title = "BTC 예치 이자율"
@@ -19,7 +20,8 @@ summary_max_lines = 6
 [publish]
 remote = "origin"
 branch = "main"
-files = ["dashboard/index.html", "dashboard/data.json"]
+# 게시 대상: 대시보드 산출물 + 수집 이력(자동 갱신이 이어 쓰도록) + 마지막 AI 요약
+files = ["dashboard/index.html", "dashboard/data.json", "data/history.jsonl", "data/summary.json"]
 pages_url = "https://sky1522.github.io/btc-agent-team/"
 
 [collect]
@@ -61,4 +63,5 @@ secondary_type = "LP형"     # 별도 섹션으로만 표시
 top_n = 10          # 상위 N개 (APY 기준)
 base_top_n = 5      # 기본 APY(실제 이자) 기준 상위 N개
 change_top_n = 10   # 전일 대비 변화 상위 N개 (절댓값 기준)
+large_tvl_usd = 100_000_000   # 대형 풀 기준 TVL (USD)
 reward_dependency_ratio = 0.5   # 보상 APY 비중이 이 값 이상이면 "보상 의존" 표시

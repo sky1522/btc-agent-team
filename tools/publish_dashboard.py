@@ -5,8 +5,9 @@
 
 안전장치
 - main 브랜치에서만 동작
-- 아직 push 안 된 커밋 중 대시보드 파일 외 다른 파일을 바꾼 커밋이 있으면 중단(사람이 직접 push)
-- 원격에 로컬에 없는 커밋이 있으면 중단(덮어쓰지 않음)
+- 아직 push 안 된 커밋 중 게시 파일 외 다른 파일을 바꾼 커밋이 있으면 중단(사람이 직접 push)
+- 원격이 앞서 있으면: 게시 파일만 바꾼 커밋(매일 자동 갱신)이면 합친 뒤 다시 분석·생성,
+  다른 파일을 바꾼 커밋이면 중단(덮어쓰지 않음)
 - 커밋은 [publish] files 경로만 (`git commit -- <files>`), 다른 스테이징 변경은 건드리지 않음
 - 게시 직전에 build_dashboard로 다시 생성 → 누가 index.html을 직접 고쳤어도 렌더 결과만 게시
 """
@@ -18,6 +19,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import analyze_yields
 import build_dashboard
 from common import ROOT, load_config, resolve, utf8_stdout
 
@@ -45,6 +47,32 @@ def unpushed_foreign_commits(remote_ref: str, allowed: set[str], root: Path) -> 
     return bad
 
 
+def sync_with_remote(behind: list[str], remote: str, branch: str, allowed: set[str],
+                     root: Path) -> None:
+    """원격이 앞서 있을 때: 앞선 커밋이 게시 파일만 바꿨으면(매일 자동 갱신) 받아서 합친다.
+
+    - 로컬 대시보드 산출물 변경은 버린다(합친 뒤 다시 생성)
+    - data/history.jsonl은 .gitattributes의 merge=union으로 양쪽 줄을 모두 남긴다
+    - 그 밖의 파일을 바꾼 원격 커밋이 있으면 중단(사람이 확인)
+    """
+    for sha in behind:
+        changed = set(git("diff-tree", "--no-commit-id", "--name-only", "-r", sha,
+                          root=root).splitlines())
+        if changed - allowed:
+            raise PublishError(f"원격에 게시 파일 외 변경 커밋({sha[:7]})이 있어 중단. "
+                               "사람이 먼저 pull 후 확인")
+    tracked = set(git("ls-files", root=root).splitlines())
+    rebuilt = [f for f in allowed if f.startswith("dashboard/") and f in tracked]
+    if rebuilt:
+        git("checkout", "--", *rebuilt, root=root)
+    r = subprocess.run(["git", "-c", "rebase.autoStash=true", "pull", "--rebase", "--quiet",
+                        remote, branch], cwd=root, capture_output=True, text=True,
+                       encoding="utf-8", errors="replace")
+    if r.returncode != 0:
+        git("rebase", "--abort", root=root, check=False)
+        raise PublishError(f"원격과 합치기 실패: {(r.stderr or r.stdout).strip()[:300]}")
+
+
 def run(config: dict | None = None, root: Path = ROOT) -> dict:
     config = config or load_config()
     pub = config["publish"]
@@ -54,20 +82,23 @@ def run(config: dict | None = None, root: Path = ROOT) -> dict:
     current = git("rev-parse", "--abbrev-ref", "HEAD", root=root)
     if current != branch:
         raise PublishError(f"현재 브랜치 {current}. {branch}에서만 게시한다")
+    git("fetch", "--quiet", remote, branch, root=root)
+    remote_ref = f"{remote}/{branch}"
+    foreign = unpushed_foreign_commits(remote_ref, allowed, root)
+    if foreign:
+        raise PublishError(f"push 안 된 다른 커밋이 있어 중단(사람이 직접 push): {foreign}")
+    behind = git("rev-list", f"HEAD..{remote_ref}", root=root).split()
+    if behind:
+        sync_with_remote(behind, remote, branch, allowed, root)
+
     try:
+        if behind:  # 합쳐진 이력으로 다시 분석
+            analyze_yields.run(config, root=root)
         build_dashboard.run(config, root=root)  # 직접 수정된 산출물이 있어도 렌더 결과로 덮어씀
     except RuntimeError as ex:
         raise PublishError(str(ex)) from ex
 
-    git("fetch", "--quiet", remote, branch, root=root)
-    remote_ref = f"{remote}/{branch}"
-    behind = git("rev-list", "--count", f"HEAD..{remote_ref}", root=root)
-    if behind != "0":
-        raise PublishError(f"원격에 로컬에 없는 커밋 {behind}개. 사람이 먼저 pull 후 확인")
-    foreign = unpushed_foreign_commits(remote_ref, allowed, root)
-    if foreign:
-        raise PublishError(f"push 안 된 다른 커밋이 있어 중단(사람이 직접 push): {foreign}")
-
+    files = [f for f in files if (root / f).exists()]
     git("add", "--", *files, root=root)
     changed = git("diff", "--cached", "--name-only", "--", *files, root=root)
     data_path = resolve(config["paths"]["dashboard_data"], root)

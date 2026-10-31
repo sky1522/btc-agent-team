@@ -35,40 +35,38 @@ def test_stx_based_token_excluded(config):
     assert not dl.is_btc_pool({"symbol": "STSTXBTC"}, tokens)
 
 
-def _pool(pid, meta=None, project="aave-v3", symbol="WBTC"):
+def _pool(pid, note="", project="aave-v3", symbol="WBTC", tvl=1.0):
     return {"pool": pid, "project": project, "chain": "Ethereum", "symbol": symbol,
-            "pool_meta": meta, "note": meta or ""}
+            "pool_meta": note or None, "note": note, "tvl_usd": tvl}
 
 
-def test_duplicate_rows_get_distinct_notes():
+def test_duplicate_rows_get_distinct_notes_without_pool_id():
     pools = [
-        _pool("aaaaaaaa-1111"), _pool("bbbbbbbb-2222"),                 # meta 없음 → id 8자리
+        _pool("aaaaaaaa-1111", tvl=10), _pool("bbbbbbbb-2222", tvl=20),   # meta 없음
         _pool("cccccccc-3333", "Core", "morpho"), _pool("dddddddd-4444", "Prime", "morpho"),
-        _pool("eeeeeeee-5555", "Same", "euler"), _pool("ffffffff-6666", "Same", "euler"),
-        _pool("99999999-7777", "Solo", "spark"),                         # 단독 → meta 그대로
+        _pool("eeeeeeee-5555", "Same", "euler", tvl=5), _pool("ffffffff-6666", "Same", "euler"),
+        _pool("99999999-7777", "Solo", "spark"),                          # 단독 → 그대로
     ]
     dl.disambiguate_notes(pools)
-    notes = [p["note"] for p in pools]
-    assert notes == ["aaaaaaaa", "bbbbbbbb", "Core", "Prime",
-                     "Same · eeeeeeee", "Same · ffffffff", "Solo"]
+    notes = {p["pool"][:2]: p["note"] for p in pools}
+    assert notes == {"aa": "동일 이름 2/2", "bb": "동일 이름 1/2",       # TVL 큰 순
+                     "cc": "Core", "dd": "Prime",
+                     "ee": "Same · 동일 이름 1/2", "ff": "Same · 동일 이름 2/2", "99": "Solo"}
+    assert not any("aaaaaaaa" in n for n in notes.values())
 
 
 @pytest.mark.parametrize(
-    ("symbol", "expected"),
+    ("meta", "symbol", "expected"),
     [
-        ("WBTC", True),
-        ("cbBTC", True),
-        ("WBTC-CBBTC", True),
-        ("WBTC-USDC", False),
-        ("STSTXBTC", False),
-        ("BTCBULL", False),
-        ("STETH", False),
-        ("", False),
+        ("Solv Protocol-Solv Protocol-SolvBTC", "SOLVBTC", "Solv Protocol"),
+        ("Lombard-Flow Traders-LBTC", "LBTC", "Lombard · Flow Traders"),
+        ("Locked veBTC", "BTC", "Locked veBTC"),
+        ("SolvBTC", "SOLVBTC", "SolvBTC"),   # 남는 게 없으면 원래 조각 유지
+        (None, "WBTC", ""),
     ],
 )
-def test_is_btc_pool(symbol, expected, config):
-    tokens = {t.upper() for t in config["collect"]["btc_tokens"]}
-    assert dl.is_btc_pool({"symbol": symbol}, tokens) is expected
+def test_clean_meta(meta, symbol, expected):
+    assert dl.clean_meta(meta, symbol) == expected
 
 
 def test_sorted_by_apy_desc_and_fields_split(raw_response, config):

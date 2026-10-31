@@ -70,7 +70,7 @@ def normalize(raw: dict[str, Any], cfg: dict[str, Any]) -> dict[str, Any]:
         "chain": raw["chain"],
         "symbol": raw["symbol"],
         "pool_meta": raw.get("poolMeta"),
-        "note": raw.get("poolMeta") or "",
+        "note": clean_meta(raw.get("poolMeta"), raw["symbol"]),
         "apy": raw["apy"],
         "apy_base": raw.get("apyBase"),
         "apy_reward": raw.get("apyReward"),
@@ -82,10 +82,26 @@ def normalize(raw: dict[str, Any], cfg: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def clean_meta(meta: str | None, symbol: str) -> str:
+    """'Solv Protocol-Solv Protocol-SolvBTC' → 'Solv Protocol'
+
+    '-'로 나눈 조각 중 중복과 심볼과 같은 조각을 빼고 ' · '로 잇는다.
+    """
+    if not meta:
+        return ""
+    parts: list[str] = []
+    for seg in (s.strip() for s in meta.split("-")):
+        if seg and seg.lower() not in (p.lower() for p in parts):
+            parts.append(seg)
+    trimmed = [p for p in parts if p.upper() != symbol.upper()]
+    return " · ".join(trimmed or parts)
+
+
 def disambiguate_notes(pools: list[dict[str, Any]]) -> None:
     """같은 프로토콜·체인·심볼이 여러 줄이면 비고(note)로 구분되게 한다.
 
-    poolMeta가 그룹 안에서 서로 다르면 poolMeta만, 아니면 pool id 앞 8자리를 덧붙인다.
+    정리된 poolMeta가 그룹 안에서 서로 다르면 그대로, 아니면 TVL 큰 순으로
+    "동일 이름 i/n"을 덧붙인다. pool id는 화면에 쓰지 않는다(링크로만).
     """
     groups: dict[tuple[str, str, str], list[dict[str, Any]]] = defaultdict(list)
     for p in pools:
@@ -93,12 +109,14 @@ def disambiguate_notes(pools: list[dict[str, Any]]) -> None:
     for members in groups.values():
         if len(members) < 2:
             continue
-        metas = [m["pool_meta"] or "" for m in members]
-        if all(metas) and len(set(metas)) == len(metas):
+        notes = [m["note"] for m in members]
+        if all(notes) and len(set(notes)) == len(notes):
             continue
-        for m in members:
-            short_id = m["pool"][:8]
-            m["note"] = f"{m['pool_meta']} · {short_id}" if m["pool_meta"] else short_id
+        members.sort(key=lambda m: m["tvl_usd"], reverse=True)
+        n = len(members)
+        for i, m in enumerate(members, 1):
+            tag = f"동일 이름 {i}/{n}"
+            m["note"] = f"{m['note']} · {tag}" if m["note"] else tag
 
 
 def select_btc_pools(raw_pools: list[dict[str, Any]], cfg: dict[str, Any]) -> list[dict[str, Any]]:
@@ -132,7 +150,7 @@ def build_snapshot(pools: list[dict[str, Any]], cfg: dict[str, Any], at: datetim
     }
 
 
-HISTORY_FIELDS = ("pool", "type", "project", "chain", "symbol", "note",
+HISTORY_FIELDS = ("pool", "type", "project", "chain", "symbol", "pool_meta", "note",
                   "apy", "apy_base", "apy_reward", "tvl_usd")
 
 

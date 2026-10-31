@@ -42,16 +42,20 @@
    - "게시 중단"이 나오면 이유를 그대로 보고하고 사람에게 넘긴다(우회 금지)
 7. 총괄: reply로 완료 회신 (데이터 기준 시각, 예치형 APY 합계 순위표 1위·기본 APY 순위표 1위, Pages 주소 https://sky1522.github.io/btc-agent-team/ , "반영까지 1~2분")
 
-`data/summary.json` 형식 (reporter만 씀):
+`data/summary.json` 형식 (reporter만 씀, 대시보드 "오늘의 결론"):
 ```json
 {
-  "written_at_kst": "YYYY-MM-DD HH:MM KST",
   "data_as_of_kst": "<analysis.json latest.collected_at_kst 값 그대로>",
-  "lines": ["한 줄 요약", "... 최대 6줄, 수치는 analysis.json 값 인용, 순위는 순위표 이름과 함께"],
-  "report_file": "data/reports/... (있으면)"
+  "lines": ["1줄", "2줄", "3줄"]
 }
 ```
-- `data_as_of_kst`가 최신 데이터와 다르면 대시보드에 "요약이 오래됨" 경고가 뜬다.
+- 정확히 3줄, 사람 말투(예: "~입니다"), 숫자는 소수 2자리, TVL은 $M
+  1. 실제 이자(기본 APY) 1위: `kpi.base_top` — 프로토콜·체인·심볼, 기본 APY, 1 BTC 연 이자(`btc_per_year`), 리스크 배지 요약
+  2. TVL 1억 달러 이상 대형 풀 중 1위: `kpi.large_top` — 같은 형식
+  3. 보상 의존 비중 해석: `kpi.reward_share_pct`, `kpi.reward_dependent_count`로 "보상이 끝나면 이자가 크게 줄 수 있는 풀이 N개" 식의 한 줄
+- 시각 필드는 쓰지 않는다. 생성 시각은 대시보드 도구가 파일 수정 시각으로 기록한다(에이전트는 현재 시각을 모름)
+- 면책 문구 금지
+- `data_as_of_kst`가 최신 데이터와 다르면 대시보드에 "요약은 이전 데이터 기준" 안내가 뜬다(매일 08:00 자동 갱신은 요약을 바꾸지 않음).
 - 대시보드: 공개 주소 https://sky1522.github.io/btc-agent-team/ (공개 저장소 → 누구나 볼 수 있음, 공개 데이터만 담는다). 로컬은 `dashboard/index.html` 더블클릭.
 
 ## 데이터 필드 (data/yields.json `pools[]`)
@@ -108,3 +112,22 @@
 - 표: 순위, 프로토콜, 체인, 심볼, APY(기본/보상), TVL, 비고 — **예치형만**. LP형은 요청 시에만 별도 표
 - 보고서에는 **기본 APY 기준 상위 5** 표를 별도로 넣는다(보상·포인트 의존 수익과 실제 이자 구분)
 - 마지막: 특이사항 3줄 이내
+
+## 리스크 분류 (설정: `tools/risk_map.toml`, 계산: `tools/analyze_yields.py`)
+`analysis.json`의 `ranking[].risk`, `ranking[].badges`. **모르는 항목은 추측하지 않고 "확인 필요"**.
+| 항목 | 값 | 판정 근거 |
+| --- | --- | --- |
+| 락업 | 락업 / 수시 출금 / 확인 필요 | poolMeta에 lock·vesting·cooldown·unbond → 락업. 대출 시장(aave 등 매핑 목록) → 수시 출금(유동성 범위 내) |
+| 보상 형태 | 포인트 / 토큰 / 없음 | poolMeta에 point → 포인트. 보상 APY > 0 → 토큰 |
+| BTC 형태 | 수탁형·리퀴드 스테이킹·래핑·탈중앙 브리지·네이티브 BTC / 확인 필요 | 심볼 매핑. 심볼 BTC는 Bitcoin 체인일 때만 네이티브 |
+| 체인 성숙도 | 신생 / 성숙 / 확인 필요 | **신생 체인 = 메인넷 출시 후 24개월 미만(데이터 수집일 기준)**. 출시 연월은 risk_map.toml에 수기 기록, 없는 체인은 확인 필요 |
+
+배지: 락업 / 포인트 보상 / 수탁형 / 신생 체인 / 확인 필요(어느 항목인지 글자로 표시)
+
+## 대형 풀 기준
+- TVL 1억 달러(`large_tvl_usd = 100,000,000`) 이상. `analysis.json`의 `large_top`, `kpi.large_top`
+
+## 자동 갱신 (GitHub Actions `.github/workflows/dashboard.yml`)
+- 매일 08:00 KST: 수집 → 분석 → 대시보드 생성 → `data/history.jsonl`·`dashboard/` 커밋 → Pages 배포. Claude 호출 없음
+- AI 요약(오늘의 결론)은 마지막 수동 생성본 유지
+- 이력은 로컬 게시와 자동 갱신 양쪽에서 쌓이며 `merge=union`으로 합쳐진다

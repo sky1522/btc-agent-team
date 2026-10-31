@@ -13,7 +13,8 @@ from __future__ import annotations
 
 import statistics
 import sys
-from datetime import datetime
+import tomllib
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -73,19 +74,100 @@ def of_type(pools: list[dict], type_name: str) -> list[dict]:
     return [p for p in pools if p.get("type") == type_name]
 
 
+CHECK = "확인 필요"
+
+
+def load_risk_map(config: dict[str, Any]) -> dict:
+    with open(ROOT / config["paths"]["risk_map"], "rb") as f:
+        return tomllib.load(f)
+
+
+def _months_since(ym: str, d: date) -> int:
+    y, m = (int(x) for x in ym.split("-"))
+    return (d.year - y) * 12 + (d.month - m)
+
+
+def _btc_form(symbol: str, chain: str, forms: dict) -> tuple[str, bool | None]:
+    """심볼 → (BTC 형태, 수탁형 여부). 모르면 ("확인 필요", None)."""
+    if symbol == "BTC":
+        return ("네이티브 BTC", False) if chain == forms.get("native_chain") else (CHECK, None)
+    v = forms.get(symbol)
+    if isinstance(v, list):
+        return v[0], bool(v[1])
+    return CHECK, None
+
+
+def classify(p: dict, rm: dict, as_of: date) -> tuple[dict, list[dict]]:
+    """풀 1개의 리스크 항목과 배지. 매핑에 없는 항목은 추측하지 않고 '확인 필요'."""
+    meta = (p.get("pool_meta") or p.get("note") or "").lower()
+    lk = rm["lockup"]
+    if any(k in meta for k in lk["keywords"]):
+        lockup = "락업"
+    elif p["project"] in lk["free_withdraw_projects"]:
+        lockup = "수시 출금"
+    else:
+        lockup = CHECK
+
+    if any(k in meta for k in rm["reward"]["points_keywords"]):
+        reward = "포인트"
+    elif (p.get("apy_reward") or 0) > 0:
+        reward = "토큰"
+    else:
+        reward = "없음"
+
+    tokens = [t for t in p["symbol"].upper().split("-") if t]
+    forms = [_btc_form(t, p["chain"], rm["btc_form"]) for t in tokens]
+    if any(f == CHECK for f, _ in forms):
+        btc_form, custodial = CHECK, (True if any(c for _, c in forms) else None)
+    else:
+        btc_form = " + ".join(dict.fromkeys(f for f, _ in forms))
+        custodial = any(c for _, c in forms)
+
+    launched = rm["chain"]["launched"].get(p["chain"])
+    if launched is None:
+        chain_status = CHECK
+    elif _months_since(launched, as_of) < rm["chain"]["new_months"]:
+        chain_status = "신생"
+    else:
+        chain_status = "성숙"
+
+    unknown = [name for name, v in (("락업", lockup), ("BTC 형태", btc_form),
+                                    ("체인", chain_status)) if v == CHECK]
+    badges = []
+    if lockup == "락업":
+        badges.append({"key": "lockup", "label": "락업"})
+    if reward == "포인트":
+        badges.append({"key": "points", "label": "포인트 보상"})
+    if custodial:
+        badges.append({"key": "custodial", "label": "수탁형"})
+    if chain_status == "신생":
+        badges.append({"key": "newchain", "label": "신생 체인"})
+    if unknown:
+        badges.append({"key": "check", "label": "확인 필요: " + "·".join(unknown)})
+    risk = {"lockup": lockup, "reward_type": reward, "btc_form": btc_form,
+            "custodial": custodial, "chain_status": chain_status,
+            "chain_launched": launched, "unknown": unknown}
+    return risk, badges
+
+
 def ranked(pools: list[dict], n: int, url_prefix: str, ratio: float,
-           key: str = "apy") -> list[dict]:
-    ordered = sorted(pools, key=lambda p: p.get(key) or 0, reverse=True)
-    return [
-        {
+           key: str = "apy", risk_ctx: tuple[dict, date] | None = None) -> list[dict]:
+    ordered = sorted(pools, key=lambda p: (p.get(key) or 0, p.get("apy") or 0), reverse=True)
+    rows = []
+    for i, p in enumerate(ordered[:n], 1):
+        row = {
             "rank": i,
             **{k: p.get(k) for k in ("pool", "type", "project", "chain", "symbol", "note",
                                      "apy", "apy_base", "apy_reward", "tvl_usd")},
             "url": url_prefix + p["pool"],
             "flags": flags_for(p, ratio),
+            # 1 BTC를 1년 맡겼을 때 기본 APY 기준 이자 (BTC). APY는 복리 포함 연 수익률
+            "btc_per_year": None if p.get("apy_base") is None else round(p["apy_base"] / 100, 6),
         }
-        for i, p in enumerate(ordered[:n], 1)
-    ]
+        if risk_ctx:
+            row["risk"], row["badges"] = classify(p, *risk_ctx)
+        rows.append(row)
+    return rows
 
 
 def _r(x: float | None, nd: int = 4) -> float | None:
@@ -118,9 +200,10 @@ def type_stats(pools: list[dict], ratio: float) -> dict:
     }
 
 
-def ranked_by_base(pools: list[dict], n: int, url_prefix: str, ratio: float) -> list[dict]:
+def ranked_by_base(pools: list[dict], n: int, url_prefix: str, ratio: float,
+                   risk_ctx: tuple[dict, date] | None = None) -> list[dict]:
     with_base = [p for p in pools if (p.get("apy_base") or 0) > 0]
-    return ranked(with_base, n, url_prefix, ratio, key="apy_base")
+    return ranked(with_base, n, url_prefix, ratio, key="apy_base", risk_ctx=risk_ctx)
 
 
 def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
@@ -134,6 +217,13 @@ def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
 
     now_primary = of_type(latest["pools"], primary)
     now_secondary = of_type(latest["pools"], secondary)
+    as_of = parse_iso(latest["collected_at"]).astimezone(KST).date()
+    ctx = (load_risk_map(config), as_of)
+    large = acfg["large_tvl_usd"]
+    top_by_base = ranked_by_base(now_primary, acfg["base_top_n"], url_prefix, ratio, ctx)
+    large_top = ranked_by_base([p for p in now_primary if p["tvl_usd"] >= large], 3,
+                               url_prefix, ratio, ctx)
+    primary_stats = type_stats(now_primary, ratio)
 
     result: dict[str, Any] = {
         "generated_at": at.isoformat(timespec="seconds"),
@@ -144,18 +234,32 @@ def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
         "primary_type": primary,
         "top_n": acfg["top_n"],
         "top": ranked(now_primary, acfg["top_n"], url_prefix, ratio),
-        # 예치형 전체 순위 (대시보드용)
-        "ranking": ranked(now_primary, len(now_primary), url_prefix, ratio),
+        # 예치형 전체 순위 (대시보드용): 기본 APY 내림차순, 리스크 분류 포함
+        "ranking": ranked(now_primary, len(now_primary), url_prefix, ratio,
+                          key="apy_base", risk_ctx=ctx),
         # 기본 APY(실제 이자) 기준 상위. 보상·포인트 의존 수익과 구분해서 보기 위함
-        "top_by_base": ranked_by_base(now_primary, acfg["base_top_n"], url_prefix, ratio),
+        "top_by_base": top_by_base,
+        # TVL large_tvl_usd 이상 대형 풀 중 기본 APY 상위
+        "large_tvl_usd": large,
+        "large_top": large_top,
+        "kpi": {
+            "base_top": top_by_base[0] if top_by_base else None,
+            "large_top": large_top[0] if large_top else None,
+            "large_tvl_usd": large,
+            "primary_count": primary_stats["count"],
+            "primary_tvl_usd_sum": primary_stats["tvl_usd_sum"],
+            "reward_share_pct": primary_stats["reward_share_pct"],
+            "reward_dependent_count": primary_stats["reward_dependent_count"],
+        },
         "stats": {
-            primary: type_stats(now_primary, ratio),
+            primary: primary_stats,
             secondary: type_stats(now_secondary, ratio),
         },
         "secondary": {
             "type": secondary,
             "count": len(now_secondary),
-            "top": ranked(now_secondary, acfg["top_n"], url_prefix, ratio),
+            "top": ranked(now_secondary, len(now_secondary), url_prefix, ratio,
+                          key="apy_base", risk_ctx=ctx),
         },
     }
 

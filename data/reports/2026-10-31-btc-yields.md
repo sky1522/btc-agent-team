@@ -66,4 +66,3 @@ DefiLlama 제공 1일 APY 변화 참고치 상위 5 (자체 비교 아님, apy_p
 - APY 합계 상위 10 중 보상 의존 5건. 기본 APY 순위표 1위는 accountable Monad CBBTC(기본 3.60).
 - LP형 참고: uniswap-v3 WBTC-CBBTC의 DefiLlama 1일 변화 -9.21%p(참고치, 자체 비교 아님).
 
-본 보고는 참고 자료이며 투자 판단이 아니다.
