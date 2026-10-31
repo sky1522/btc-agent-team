@@ -11,6 +11,8 @@
       "Write(/dashboard/**)",
       "Bash(uv run python tools/defillama_btc.py)",
       "Bash(uv run python tools/analyze_yields.py)",
+      "PowerShell(uv run python tools/defillama_btc.py)",
+      "PowerShell(uv run python tools/analyze_yields.py)",
       "Bash(uv run pytest -q)",
       "Bash(uv run ruff check .)",
       "Bash(git status*)",
@@ -37,6 +39,50 @@
       "PowerShell(iwr*)",
       "PowerShell(Invoke-RestMethod*)",
       "PowerShell(irm*)"
+    ]
+  },
+  "enabledPlugins": {
+    "context7@claude-plugins-official": false,
+    "superpowers@claude-plugins-official": false,
+    "frontend-design@claude-plugins-official": false,
+    "playwright@claude-plugins-official": false,
+    "github@claude-plugins-official": false,
+    "security-guidance@claude-plugins-official": false,
+    "code-review@claude-plugins-official": false,
+    "vercel@claude-plugins-official": false,
+    "typescript-lsp@claude-plugins-official": false
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-project --quiet python \"$CLAUDE_PROJECT_DIR/.claude/hooks/log_agent.py\""
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-project --quiet python \"$CLAUDE_PROJECT_DIR/.claude/hooks/log_agent.py\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-project --quiet python \"$CLAUDE_PROJECT_DIR/.claude/hooks/log_agent.py\""
+          }
+        ]
+      }
     ]
   }
 }
