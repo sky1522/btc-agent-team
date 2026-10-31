@@ -1,11 +1,11 @@
 {
   "analysis": {
-    "generated_at": "2026-10-31T15:34:17+09:00",
-    "generated_at_kst": "2026-10-31 15:34 KST",
+    "generated_at": "2026-10-31T15:48:23+09:00",
+    "generated_at_kst": "2026-10-31 15:48 KST",
     "source": "DefiLlama Yields",
     "latest": {
-      "collected_at": "2026-10-31T15:34:14+09:00",
-      "collected_at_kst": "2026-10-31 15:34 KST",
+      "collected_at": "2026-10-31T15:48:21+09:00",
+      "collected_at_kst": "2026-10-31 15:48 KST",
       "count": 28
     },
     "previous": null,
@@ -726,15 +726,16 @@
     }
   },
   "summary": {
-    "written_at_kst": "2026-10-31 15:40 KST",
-    "data_as_of_kst": "2026-10-31 15:34 KST",
+    "written_at_kst": "2026-10-31 15:50 KST",
+    "data_as_of_kst": "2026-10-31 15:48 KST",
     "lines": [
-      "기준 2026-10-31 15:34 KST, 출처 DefiLlama Yields. 예치형 20건, TVL 합계 1,504,888,128 USD.",
-      "예치형 APY 합계 순위표 1위: symbiotic Ethereum SOLVBTC 7.78767% (기본 0, 보상 7.78767, 보상 의존).",
-      "기본 APY 순위표 1위(보상 제외 실제 이자): accountable Monad CBBTC 기본 3.6% (APY 합계 3.85%).",
-      "예치형 APY 평균 1.4397%, 중앙값 0.5044%, TVL 가중 평균 0.7712%.",
-      "예치형 APY 합계 중 기본 44.54%, 보상 55.46%. 보상 의존 5건.",
-      "전일 대비 변화·신규·이탈: 비교 데이터 없음 (전일 스냅샷 없음)."
-    ]
+      "기준 2026-10-31 15:48 KST · DefiLlama Yields · 예치형 20건, TVL 합계 1,504,888,128 USD",
+      "예치형 APY 합계 순위표 1위: symbiotic Ethereum SOLVBTC 7.78767% (기본 0 / 보상 7.78767, 보상 의존)",
+      "기본 APY 순위표 1위(보상 제외 실제 이자): accountable Monad CBBTC 기본 3.6% (APY 합계 3.85%)",
+      "예치형 APY 평균 1.4397%, 중앙값 0.5044%, TVL 가중 평균 0.7712%",
+      "예치형 APY 합계 중 기본 44.54% / 보상 55.46%, 보상 의존 5건",
+      "전일 비교 데이터 없음"
+    ],
+    "report_file": null
   }
 }
