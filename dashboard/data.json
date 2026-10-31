@@ -1,11 +1,11 @@
 {
   "analysis": {
-    "generated_at": "2026-10-31T15:48:23+09:00",
-    "generated_at_kst": "2026-10-31 15:48 KST",
+    "generated_at": "2026-10-31T16:01:16+09:00",
+    "generated_at_kst": "2026-10-31 16:01 KST",
     "source": "DefiLlama Yields",
     "latest": {
-      "collected_at": "2026-10-31T15:48:21+09:00",
-      "collected_at_kst": "2026-10-31 15:48 KST",
+      "collected_at": "2026-10-31T16:01:15+09:00",
+      "collected_at_kst": "2026-10-31 16:01 KST",
       "count": 28
     },
     "previous": null,
@@ -19,7 +19,7 @@
         "project": "symbiotic",
         "chain": "Ethereum",
         "symbol": "SOLVBTC",
-        "note": "Solv Protocol-Solv Protocol-SolvBTC",
+        "note": "Solv Protocol",
         "apy": 7.78767,
         "apy_base": 0,
         "apy_reward": 7.78767,
@@ -27,7 +27,8 @@
         "url": "https://defillama.com/yields/pool/0d916a4a-a880-52a4-98df-d3cd96eaeef4",
         "flags": [
           "보상 의존"
-        ]
+        ],
+        "btc_per_year": 0.0
       },
       {
         "rank": 2,
@@ -42,7 +43,8 @@
         "apy_reward": 0.25,
         "tvl_usd": 40741000,
         "url": "https://defillama.com/yields/pool/5528e3be-2b9b-4062-a2c0-80d3345c7c0f",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.036
       },
       {
         "rank": 3,
@@ -57,7 +59,8 @@
         "apy_reward": null,
         "tvl_usd": 6315062,
         "url": "https://defillama.com/yields/pool/7264f113-0517-4da4-989b-34974579ef87",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.032085
       },
       {
         "rank": 4,
@@ -74,7 +77,8 @@
         "url": "https://defillama.com/yields/pool/0d03f7c5-938c-4038-8483-aa3cf58c088c",
         "flags": [
           "보상 의존"
-        ]
+        ],
+        "btc_per_year": 0.000486
       },
       {
         "rank": 5,
@@ -89,7 +93,8 @@
         "apy_reward": null,
         "tvl_usd": 20291851,
         "url": "https://defillama.com/yields/pool/d2b2bdd9-6535-4acc-8e84-2b0838bd63bb",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.0235
       },
       {
         "rank": 6,
@@ -106,7 +111,8 @@
         "url": "https://defillama.com/yields/pool/696fb4d7-b328-555b-b0dc-774075d740bd",
         "flags": [
           "보상 의존"
-        ]
+        ],
+        "btc_per_year": 0.0
       },
       {
         "rank": 7,
@@ -115,7 +121,7 @@
         "project": "symbiotic",
         "chain": "Ethereum",
         "symbol": "LBTC",
-        "note": "Lombard-Flow Traders-LBTC",
+        "note": "Lombard · Flow Traders",
         "apy": 1.95812,
         "apy_base": 0,
         "apy_reward": 1.95812,
@@ -123,7 +129,8 @@
         "url": "https://defillama.com/yields/pool/e96d1b6a-78d9-5e86-af04-2e8467e96f48",
         "flags": [
           "보상 의존"
-        ]
+        ],
+        "btc_per_year": 0.0
       },
       {
         "rank": 8,
@@ -138,7 +145,8 @@
         "apy_reward": null,
         "tvl_usd": 48920457,
         "url": "https://defillama.com/yields/pool/ce85a606-365c-5829-8fd4-1bfdf6cbaf00",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.018292
       },
       {
         "rank": 9,
@@ -155,7 +163,8 @@
         "url": "https://defillama.com/yields/pool/07d1a9bf-eafe-4a25-8dcc-c687a1d2478a",
         "flags": [
           "보상 의존"
-        ]
+        ],
+        "btc_per_year": 0.00119
       },
       {
         "rank": 10,
@@ -170,29 +179,13 @@
         "apy_reward": null,
         "tvl_usd": 546176346,
         "url": "https://defillama.com/yields/pool/c9762afb-7746-4b5a-a484-a8881a348999",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.008165
       }
     ],
     "ranking": [
       {
         "rank": 1,
-        "pool": "0d916a4a-a880-52a4-98df-d3cd96eaeef4",
-        "type": "예치형",
-        "project": "symbiotic",
-        "chain": "Ethereum",
-        "symbol": "SOLVBTC",
-        "note": "Solv Protocol-Solv Protocol-SolvBTC",
-        "apy": 7.78767,
-        "apy_base": 0,
-        "apy_reward": 7.78767,
-        "tvl_usd": 5850593,
-        "url": "https://defillama.com/yields/pool/0d916a4a-a880-52a4-98df-d3cd96eaeef4",
-        "flags": [
-          "보상 의존"
-        ]
-      },
-      {
-        "rank": 2,
         "pool": "5528e3be-2b9b-4062-a2c0-80d3345c7c0f",
         "type": "예치형",
         "project": "accountable",
@@ -204,10 +197,40 @@
         "apy_reward": 0.25,
         "tvl_usd": 40741000,
         "url": "https://defillama.com/yields/pool/5528e3be-2b9b-4062-a2c0-80d3345c7c0f",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.036,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "포인트",
+          "btc_form": "수탁형 (코인베이스)",
+          "custodial": true,
+          "chain_status": "신생",
+          "chain_launched": "2025-11",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "points",
+            "label": "포인트 보상"
+          },
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          },
+          {
+            "key": "newchain",
+            "label": "신생 체인"
+          },
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
       },
       {
-        "rank": 3,
+        "rank": 2,
         "pool": "7264f113-0517-4da4-989b-34974579ef87",
         "type": "예치형",
         "project": "accountable",
@@ -219,27 +242,30 @@
         "apy_reward": null,
         "tvl_usd": 6315062,
         "url": "https://defillama.com/yields/pool/7264f113-0517-4da4-989b-34974579ef87",
-        "flags": []
-      },
-      {
-        "rank": 4,
-        "pool": "0d03f7c5-938c-4038-8483-aa3cf58c088c",
-        "type": "예치형",
-        "project": "mezo-earn",
-        "chain": "Mezo",
-        "symbol": "BTC",
-        "note": "Locked veBTC",
-        "apy": 3.00862,
-        "apy_base": 0.04862,
-        "apy_reward": 2.96,
-        "tvl_usd": 62196678,
-        "url": "https://defillama.com/yields/pool/0d03f7c5-938c-4038-8483-aa3cf58c088c",
-        "flags": [
-          "보상 의존"
+        "flags": [],
+        "btc_per_year": 0.032085,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "확인 필요",
+          "custodial": null,
+          "chain_status": "확인 필요",
+          "chain_launched": null,
+          "unknown": [
+            "락업",
+            "BTC 형태",
+            "체인"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업·BTC 형태·체인"
+          }
         ]
       },
       {
-        "rank": 5,
+        "rank": 3,
         "pool": "d2b2bdd9-6535-4acc-8e84-2b0838bd63bb",
         "type": "예치형",
         "project": "midas-rwa",
@@ -251,44 +277,29 @@
         "apy_reward": null,
         "tvl_usd": 20291851,
         "url": "https://defillama.com/yields/pool/d2b2bdd9-6535-4acc-8e84-2b0838bd63bb",
-        "flags": []
-      },
-      {
-        "rank": 6,
-        "pool": "696fb4d7-b328-555b-b0dc-774075d740bd",
-        "type": "예치형",
-        "project": "symbiotic",
-        "chain": "Ethereum",
-        "symbol": "UNIBTC",
-        "note": "",
-        "apy": 2.04347,
-        "apy_base": 0,
-        "apy_reward": 2.04347,
-        "tvl_usd": 5598291,
-        "url": "https://defillama.com/yields/pool/696fb4d7-b328-555b-b0dc-774075d740bd",
-        "flags": [
-          "보상 의존"
+        "flags": [],
+        "btc_per_year": 0.0235,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "확인 필요",
+          "custodial": null,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업",
+            "BTC 형태"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업·BTC 형태"
+          }
         ]
       },
       {
-        "rank": 7,
-        "pool": "e96d1b6a-78d9-5e86-af04-2e8467e96f48",
-        "type": "예치형",
-        "project": "symbiotic",
-        "chain": "Ethereum",
-        "symbol": "LBTC",
-        "note": "Lombard-Flow Traders-LBTC",
-        "apy": 1.95812,
-        "apy_base": 0,
-        "apy_reward": 1.95812,
-        "tvl_usd": 44977088,
-        "url": "https://defillama.com/yields/pool/e96d1b6a-78d9-5e86-af04-2e8467e96f48",
-        "flags": [
-          "보상 의존"
-        ]
-      },
-      {
-        "rank": 8,
+        "rank": 4,
         "pool": "ce85a606-365c-5829-8fd4-1bfdf6cbaf00",
         "type": "예치형",
         "project": "stackingdao",
@@ -300,27 +311,29 @@
         "apy_reward": null,
         "tvl_usd": 48920457,
         "url": "https://defillama.com/yields/pool/ce85a606-365c-5829-8fd4-1bfdf6cbaf00",
-        "flags": []
-      },
-      {
-        "rank": 9,
-        "pool": "07d1a9bf-eafe-4a25-8dcc-c687a1d2478a",
-        "type": "예치형",
-        "project": "across",
-        "chain": "Ethereum",
-        "symbol": "WBTC",
-        "note": "",
-        "apy": 1.0889,
-        "apy_base": 0.11897,
-        "apy_reward": 0.96993,
-        "tvl_usd": 8341389,
-        "url": "https://defillama.com/yields/pool/07d1a9bf-eafe-4a25-8dcc-c687a1d2478a",
-        "flags": [
-          "보상 의존"
+        "flags": [],
+        "btc_per_year": 0.018292,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "확인 필요",
+          "custodial": null,
+          "chain_status": "성숙",
+          "chain_launched": "2021-01",
+          "unknown": [
+            "락업",
+            "BTC 형태"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업·BTC 형태"
+          }
         ]
       },
       {
-        "rank": 10,
+        "rank": 5,
         "pool": "c9762afb-7746-4b5a-a484-a8881a348999",
         "type": "예치형",
         "project": "lombard-lbtc",
@@ -332,10 +345,28 @@
         "apy_reward": null,
         "tvl_usd": 546176346,
         "url": "https://defillama.com/yields/pool/c9762afb-7746-4b5a-a484-a8881a348999",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.008165,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "리퀴드 스테이킹 (Lombard)",
+          "custodial": false,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
       },
       {
-        "rank": 11,
+        "rank": 6,
         "pool": "f6568026-ff92-463d-8712-b9e8f8ea1408",
         "type": "예치형",
         "project": "ether.fi-stake",
@@ -347,10 +378,29 @@
         "apy_reward": null,
         "tvl_usd": 20903003,
         "url": "https://defillama.com/yields/pool/f6568026-ff92-463d-8712-b9e8f8ea1408",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.001923,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "확인 필요",
+          "custodial": null,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업",
+            "BTC 형태"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업·BTC 형태"
+          }
+        ]
       },
       {
-        "rank": 12,
+        "rank": 7,
         "pool": "96e6c755-2821-407b-83fb-9f8816bdac54",
         "type": "예치형",
         "project": "hyperlend-pooled",
@@ -362,10 +412,29 @@
         "apy_reward": null,
         "tvl_usd": 9040451,
         "url": "https://defillama.com/yields/pool/96e6c755-2821-407b-83fb-9f8816bdac54",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.001851,
+        "risk": {
+          "lockup": "수시 출금",
+          "reward_type": "없음",
+          "btc_form": "확인 필요",
+          "custodial": null,
+          "chain_status": "확인 필요",
+          "chain_launched": null,
+          "unknown": [
+            "BTC 형태",
+            "체인"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: BTC 형태·체인"
+          }
+        ]
       },
       {
-        "rank": 13,
+        "rank": 8,
         "pool": "87c8ee0d-b812-47c1-803f-f91a3907079e",
         "type": "예치형",
         "project": "venus-core-pool",
@@ -377,40 +446,127 @@
         "apy_reward": 0,
         "tvl_usd": 332086757,
         "url": "https://defillama.com/yields/pool/87c8ee0d-b812-47c1-803f-f91a3907079e",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.001335,
+        "risk": {
+          "lockup": "수시 출금",
+          "reward_type": "없음",
+          "btc_form": "수탁형 (바이낸스)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2020-09",
+          "unknown": []
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          }
+        ]
       },
       {
-        "rank": 14,
+        "rank": 9,
+        "pool": "07d1a9bf-eafe-4a25-8dcc-c687a1d2478a",
+        "type": "예치형",
+        "project": "across",
+        "chain": "Ethereum",
+        "symbol": "WBTC",
+        "note": "",
+        "apy": 1.0889,
+        "apy_base": 0.11897,
+        "apy_reward": 0.96993,
+        "tvl_usd": 8341389,
+        "url": "https://defillama.com/yields/pool/07d1a9bf-eafe-4a25-8dcc-c687a1d2478a",
+        "flags": [
+          "보상 의존"
+        ],
+        "btc_per_year": 0.00119,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "토큰",
+          "btc_form": "수탁형 래핑 (BitGo)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          },
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
+      },
+      {
+        "rank": 10,
         "pool": "946c7197-7b0b-438b-a3a0-6de4288c534a",
         "type": "예치형",
         "project": "fluid-lending",
         "chain": "Ethereum",
         "symbol": "WBTC",
-        "note": "946c7197",
+        "note": "동일 이름 1/2",
         "apy": 0.09,
         "apy_base": 0.09,
         "apy_reward": null,
         "tvl_usd": 24773863,
         "url": "https://defillama.com/yields/pool/946c7197-7b0b-438b-a3a0-6de4288c534a",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.0009,
+        "risk": {
+          "lockup": "수시 출금",
+          "reward_type": "없음",
+          "btc_form": "수탁형 래핑 (BitGo)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": []
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          }
+        ]
       },
       {
-        "rank": 15,
+        "rank": 11,
         "pool": "7c4da504-8972-466c-8b74-57132d939dc9",
         "type": "예치형",
         "project": "fluid-lending",
         "chain": "Ethereum",
         "symbol": "WBTC",
-        "note": "7c4da504",
+        "note": "동일 이름 2/2",
         "apy": 0.09,
         "apy_base": 0.09,
         "apy_reward": null,
         "tvl_usd": 15239434,
         "url": "https://defillama.com/yields/pool/7c4da504-8972-466c-8b74-57132d939dc9",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.0009,
+        "risk": {
+          "lockup": "수시 출금",
+          "reward_type": "없음",
+          "btc_form": "수탁형 래핑 (BitGo)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": []
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          }
+        ]
       },
       {
-        "rank": 16,
+        "rank": 12,
         "pool": "a4bbf4e6-9b70-4774-817b-410f3f7c0b9b",
         "type": "예치형",
         "project": "bancor-v3",
@@ -422,10 +578,72 @@
         "apy_reward": null,
         "tvl_usd": 5395538,
         "url": "https://defillama.com/yields/pool/a4bbf4e6-9b70-4774-817b-410f3f7c0b9b",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.000728,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "수탁형 래핑 (BitGo)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          },
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
       },
       {
-        "rank": 17,
+        "rank": 13,
+        "pool": "0d03f7c5-938c-4038-8483-aa3cf58c088c",
+        "type": "예치형",
+        "project": "mezo-earn",
+        "chain": "Mezo",
+        "symbol": "BTC",
+        "note": "Locked veBTC",
+        "apy": 3.00862,
+        "apy_base": 0.04862,
+        "apy_reward": 2.96,
+        "tvl_usd": 62196678,
+        "url": "https://defillama.com/yields/pool/0d03f7c5-938c-4038-8483-aa3cf58c088c",
+        "flags": [
+          "보상 의존"
+        ],
+        "btc_per_year": 0.000486,
+        "risk": {
+          "lockup": "락업",
+          "reward_type": "토큰",
+          "btc_form": "확인 필요",
+          "custodial": null,
+          "chain_status": "확인 필요",
+          "chain_launched": null,
+          "unknown": [
+            "BTC 형태",
+            "체인"
+          ]
+        },
+        "badges": [
+          {
+            "key": "lockup",
+            "label": "락업"
+          },
+          {
+            "key": "check",
+            "label": "확인 필요: BTC 형태·체인"
+          }
+        ]
+      },
+      {
+        "rank": 14,
         "pool": "349a0544-13a1-42bd-84dc-8b54a2b5b7ea",
         "type": "예치형",
         "project": "fluid-lending",
@@ -437,10 +655,26 @@
         "apy_reward": null,
         "tvl_usd": 5660632,
         "url": "https://defillama.com/yields/pool/349a0544-13a1-42bd-84dc-8b54a2b5b7ea",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.0004,
+        "risk": {
+          "lockup": "수시 출금",
+          "reward_type": "없음",
+          "btc_form": "수탁형 (코인베이스)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": []
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          }
+        ]
       },
       {
-        "rank": 18,
+        "rank": 15,
         "pool": "e053590b-54f1-40aa-ae0d-14e701ca734c",
         "type": "예치형",
         "project": "aave-v3",
@@ -452,10 +686,26 @@
         "apy_reward": null,
         "tvl_usd": 13383218,
         "url": "https://defillama.com/yields/pool/e053590b-54f1-40aa-ae0d-14e701ca734c",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.000224,
+        "risk": {
+          "lockup": "수시 출금",
+          "reward_type": "없음",
+          "btc_form": "수탁형 래핑 (BitGo)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2021-12",
+          "unknown": []
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          }
+        ]
       },
       {
-        "rank": 19,
+        "rank": 16,
         "pool": "7c5e69a4-2430-4fa2-b7cb-857f79d7d1bf",
         "type": "예치형",
         "project": "aave-v3",
@@ -467,10 +717,26 @@
         "apy_reward": null,
         "tvl_usd": 223397669,
         "url": "https://defillama.com/yields/pool/7c5e69a4-2430-4fa2-b7cb-857f79d7d1bf",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.000174,
+        "risk": {
+          "lockup": "수시 출금",
+          "reward_type": "없음",
+          "btc_form": "수탁형 래핑 (BitGo)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2021-08",
+          "unknown": []
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          }
+        ]
       },
       {
-        "rank": 20,
+        "rank": 17,
         "pool": "58d18059-f1d1-45ed-acd3-f386e98cc506",
         "type": "예치형",
         "project": "aave-v3",
@@ -482,7 +748,129 @@
         "apy_reward": null,
         "tvl_usd": 65598808,
         "url": "https://defillama.com/yields/pool/58d18059-f1d1-45ed-acd3-f386e98cc506",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.0001,
+        "risk": {
+          "lockup": "수시 출금",
+          "reward_type": "없음",
+          "btc_form": "수탁형 래핑 (BitGo)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2020-05",
+          "unknown": []
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          }
+        ]
+      },
+      {
+        "rank": 18,
+        "pool": "0d916a4a-a880-52a4-98df-d3cd96eaeef4",
+        "type": "예치형",
+        "project": "symbiotic",
+        "chain": "Ethereum",
+        "symbol": "SOLVBTC",
+        "note": "Solv Protocol",
+        "apy": 7.78767,
+        "apy_base": 0,
+        "apy_reward": 7.78767,
+        "tvl_usd": 5850593,
+        "url": "https://defillama.com/yields/pool/0d916a4a-a880-52a4-98df-d3cd96eaeef4",
+        "flags": [
+          "보상 의존"
+        ],
+        "btc_per_year": 0.0,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "토큰",
+          "btc_form": "래핑 (Solv)",
+          "custodial": false,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
+      },
+      {
+        "rank": 19,
+        "pool": "696fb4d7-b328-555b-b0dc-774075d740bd",
+        "type": "예치형",
+        "project": "symbiotic",
+        "chain": "Ethereum",
+        "symbol": "UNIBTC",
+        "note": "",
+        "apy": 2.04347,
+        "apy_base": 0,
+        "apy_reward": 2.04347,
+        "tvl_usd": 5598291,
+        "url": "https://defillama.com/yields/pool/696fb4d7-b328-555b-b0dc-774075d740bd",
+        "flags": [
+          "보상 의존"
+        ],
+        "btc_per_year": 0.0,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "토큰",
+          "btc_form": "확인 필요",
+          "custodial": null,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업",
+            "BTC 형태"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업·BTC 형태"
+          }
+        ]
+      },
+      {
+        "rank": 20,
+        "pool": "e96d1b6a-78d9-5e86-af04-2e8467e96f48",
+        "type": "예치형",
+        "project": "symbiotic",
+        "chain": "Ethereum",
+        "symbol": "LBTC",
+        "note": "Lombard · Flow Traders",
+        "apy": 1.95812,
+        "apy_base": 0,
+        "apy_reward": 1.95812,
+        "tvl_usd": 44977088,
+        "url": "https://defillama.com/yields/pool/e96d1b6a-78d9-5e86-af04-2e8467e96f48",
+        "flags": [
+          "보상 의존"
+        ],
+        "btc_per_year": 0.0,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "토큰",
+          "btc_form": "리퀴드 스테이킹 (Lombard)",
+          "custodial": false,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
       }
     ],
     "top_by_base": [
@@ -499,7 +887,37 @@
         "apy_reward": 0.25,
         "tvl_usd": 40741000,
         "url": "https://defillama.com/yields/pool/5528e3be-2b9b-4062-a2c0-80d3345c7c0f",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.036,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "포인트",
+          "btc_form": "수탁형 (코인베이스)",
+          "custodial": true,
+          "chain_status": "신생",
+          "chain_launched": "2025-11",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "points",
+            "label": "포인트 보상"
+          },
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          },
+          {
+            "key": "newchain",
+            "label": "신생 체인"
+          },
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
       },
       {
         "rank": 2,
@@ -514,7 +932,27 @@
         "apy_reward": null,
         "tvl_usd": 6315062,
         "url": "https://defillama.com/yields/pool/7264f113-0517-4da4-989b-34974579ef87",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.032085,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "확인 필요",
+          "custodial": null,
+          "chain_status": "확인 필요",
+          "chain_launched": null,
+          "unknown": [
+            "락업",
+            "BTC 형태",
+            "체인"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업·BTC 형태·체인"
+          }
+        ]
       },
       {
         "rank": 3,
@@ -529,7 +967,26 @@
         "apy_reward": null,
         "tvl_usd": 20291851,
         "url": "https://defillama.com/yields/pool/d2b2bdd9-6535-4acc-8e84-2b0838bd63bb",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.0235,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "확인 필요",
+          "custodial": null,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업",
+            "BTC 형태"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업·BTC 형태"
+          }
+        ]
       },
       {
         "rank": 4,
@@ -544,7 +1001,26 @@
         "apy_reward": null,
         "tvl_usd": 48920457,
         "url": "https://defillama.com/yields/pool/ce85a606-365c-5829-8fd4-1bfdf6cbaf00",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.018292,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "확인 필요",
+          "custodial": null,
+          "chain_status": "성숙",
+          "chain_launched": "2021-01",
+          "unknown": [
+            "락업",
+            "BTC 형태"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업·BTC 형태"
+          }
+        ]
       },
       {
         "rank": 5,
@@ -559,9 +1035,210 @@
         "apy_reward": null,
         "tvl_usd": 546176346,
         "url": "https://defillama.com/yields/pool/c9762afb-7746-4b5a-a484-a8881a348999",
-        "flags": []
+        "flags": [],
+        "btc_per_year": 0.008165,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "리퀴드 스테이킹 (Lombard)",
+          "custodial": false,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
       }
     ],
+    "large_tvl_usd": 100000000,
+    "large_top": [
+      {
+        "rank": 1,
+        "pool": "c9762afb-7746-4b5a-a484-a8881a348999",
+        "type": "예치형",
+        "project": "lombard-lbtc",
+        "chain": "Ethereum",
+        "symbol": "LBTC",
+        "note": "",
+        "apy": 0.81648,
+        "apy_base": 0.81648,
+        "apy_reward": null,
+        "tvl_usd": 546176346,
+        "url": "https://defillama.com/yields/pool/c9762afb-7746-4b5a-a484-a8881a348999",
+        "flags": [],
+        "btc_per_year": 0.008165,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "리퀴드 스테이킹 (Lombard)",
+          "custodial": false,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
+      },
+      {
+        "rank": 2,
+        "pool": "87c8ee0d-b812-47c1-803f-f91a3907079e",
+        "type": "예치형",
+        "project": "venus-core-pool",
+        "chain": "BSC",
+        "symbol": "BTCB",
+        "note": "",
+        "apy": 0.13351,
+        "apy_base": 0.13351,
+        "apy_reward": 0,
+        "tvl_usd": 332086757,
+        "url": "https://defillama.com/yields/pool/87c8ee0d-b812-47c1-803f-f91a3907079e",
+        "flags": [],
+        "btc_per_year": 0.001335,
+        "risk": {
+          "lockup": "수시 출금",
+          "reward_type": "없음",
+          "btc_form": "수탁형 (바이낸스)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2020-09",
+          "unknown": []
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          }
+        ]
+      },
+      {
+        "rank": 3,
+        "pool": "7c5e69a4-2430-4fa2-b7cb-857f79d7d1bf",
+        "type": "예치형",
+        "project": "aave-v3",
+        "chain": "Arbitrum",
+        "symbol": "WBTC",
+        "note": "",
+        "apy": 0.01744,
+        "apy_base": 0.01744,
+        "apy_reward": null,
+        "tvl_usd": 223397669,
+        "url": "https://defillama.com/yields/pool/7c5e69a4-2430-4fa2-b7cb-857f79d7d1bf",
+        "flags": [],
+        "btc_per_year": 0.000174,
+        "risk": {
+          "lockup": "수시 출금",
+          "reward_type": "없음",
+          "btc_form": "수탁형 래핑 (BitGo)",
+          "custodial": true,
+          "chain_status": "성숙",
+          "chain_launched": "2021-08",
+          "unknown": []
+        },
+        "badges": [
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          }
+        ]
+      }
+    ],
+    "kpi": {
+      "base_top": {
+        "rank": 1,
+        "pool": "5528e3be-2b9b-4062-a2c0-80d3345c7c0f",
+        "type": "예치형",
+        "project": "accountable",
+        "chain": "Monad",
+        "symbol": "CBBTC",
+        "note": "Earn ACC Points",
+        "apy": 3.85,
+        "apy_base": 3.6,
+        "apy_reward": 0.25,
+        "tvl_usd": 40741000,
+        "url": "https://defillama.com/yields/pool/5528e3be-2b9b-4062-a2c0-80d3345c7c0f",
+        "flags": [],
+        "btc_per_year": 0.036,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "포인트",
+          "btc_form": "수탁형 (코인베이스)",
+          "custodial": true,
+          "chain_status": "신생",
+          "chain_launched": "2025-11",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "points",
+            "label": "포인트 보상"
+          },
+          {
+            "key": "custodial",
+            "label": "수탁형"
+          },
+          {
+            "key": "newchain",
+            "label": "신생 체인"
+          },
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
+      },
+      "large_top": {
+        "rank": 1,
+        "pool": "c9762afb-7746-4b5a-a484-a8881a348999",
+        "type": "예치형",
+        "project": "lombard-lbtc",
+        "chain": "Ethereum",
+        "symbol": "LBTC",
+        "note": "",
+        "apy": 0.81648,
+        "apy_base": 0.81648,
+        "apy_reward": null,
+        "tvl_usd": 546176346,
+        "url": "https://defillama.com/yields/pool/c9762afb-7746-4b5a-a484-a8881a348999",
+        "flags": [],
+        "btc_per_year": 0.008165,
+        "risk": {
+          "lockup": "확인 필요",
+          "reward_type": "없음",
+          "btc_form": "리퀴드 스테이킹 (Lombard)",
+          "custodial": false,
+          "chain_status": "성숙",
+          "chain_launched": "2015-07",
+          "unknown": [
+            "락업"
+          ]
+        },
+        "badges": [
+          {
+            "key": "check",
+            "label": "확인 필요: 락업"
+          }
+        ]
+      },
+      "large_tvl_usd": 100000000,
+      "primary_count": 20,
+      "primary_tvl_usd_sum": 1504888128,
+      "reward_share_pct": 55.46,
+      "reward_dependent_count": 5
+    },
     "stats": {
       "예치형": {
         "count": 20,
@@ -590,6 +1267,114 @@
       "top": [
         {
           "rank": 1,
+          "pool": "ffb4e407-6507-4615-b776-a0d99cfc1bbb",
+          "type": "LP형",
+          "project": "gmx-evm",
+          "chain": "Arbitrum",
+          "symbol": "WBTC.B-WBTC.B",
+          "note": "",
+          "apy": 4.20625,
+          "apy_base": 4.20625,
+          "apy_reward": null,
+          "tvl_usd": 9582340,
+          "url": "https://defillama.com/yields/pool/ffb4e407-6507-4615-b776-a0d99cfc1bbb",
+          "flags": [],
+          "btc_per_year": 0.042062,
+          "risk": {
+            "lockup": "확인 필요",
+            "reward_type": "없음",
+            "btc_form": "확인 필요",
+            "custodial": null,
+            "chain_status": "성숙",
+            "chain_launched": "2021-08",
+            "unknown": [
+              "락업",
+              "BTC 형태"
+            ]
+          },
+          "badges": [
+            {
+              "key": "check",
+              "label": "확인 필요: 락업·BTC 형태"
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "pool": "c0bbcf6c-9454-4773-a19f-c6486484c287",
+          "type": "LP형",
+          "project": "uniswap-v3",
+          "chain": "Ethereum",
+          "symbol": "WBTC-CBBTC",
+          "note": "0.01%",
+          "apy": 1.35627,
+          "apy_base": 1.35627,
+          "apy_reward": null,
+          "tvl_usd": 8748560,
+          "url": "https://defillama.com/yields/pool/c0bbcf6c-9454-4773-a19f-c6486484c287",
+          "flags": [],
+          "btc_per_year": 0.013563,
+          "risk": {
+            "lockup": "확인 필요",
+            "reward_type": "없음",
+            "btc_form": "수탁형 래핑 (BitGo) + 수탁형 (코인베이스)",
+            "custodial": true,
+            "chain_status": "성숙",
+            "chain_launched": "2015-07",
+            "unknown": [
+              "락업"
+            ]
+          },
+          "badges": [
+            {
+              "key": "custodial",
+              "label": "수탁형"
+            },
+            {
+              "key": "check",
+              "label": "확인 필요: 락업"
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "pool": "bcbf0f11-17c5-5182-ab62-534b045d367a",
+          "type": "LP형",
+          "project": "uniswap-v4",
+          "chain": "Ethereum",
+          "symbol": "LBTC-CBBTC",
+          "note": "0.02%",
+          "apy": 0.81972,
+          "apy_base": 0.81972,
+          "apy_reward": null,
+          "tvl_usd": 10601770,
+          "url": "https://defillama.com/yields/pool/bcbf0f11-17c5-5182-ab62-534b045d367a",
+          "flags": [],
+          "btc_per_year": 0.008197,
+          "risk": {
+            "lockup": "확인 필요",
+            "reward_type": "없음",
+            "btc_form": "리퀴드 스테이킹 (Lombard) + 수탁형 (코인베이스)",
+            "custodial": true,
+            "chain_status": "성숙",
+            "chain_launched": "2015-07",
+            "unknown": [
+              "락업"
+            ]
+          },
+          "badges": [
+            {
+              "key": "custodial",
+              "label": "수탁형"
+            },
+            {
+              "key": "check",
+              "label": "확인 필요: 락업"
+            }
+          ]
+        },
+        {
+          "rank": 4,
           "pool": "42284cfd-a59f-4128-8677-bbaeb0519148",
           "type": "LP형",
           "project": "ekubo",
@@ -603,52 +1388,30 @@
           "url": "https://defillama.com/yields/pool/42284cfd-a59f-4128-8677-bbaeb0519148",
           "flags": [
             "보상 의존"
+          ],
+          "btc_per_year": 0.003702,
+          "risk": {
+            "lockup": "확인 필요",
+            "reward_type": "토큰",
+            "btc_form": "확인 필요",
+            "custodial": true,
+            "chain_status": "성숙",
+            "chain_launched": "2021-11",
+            "unknown": [
+              "락업",
+              "BTC 형태"
+            ]
+          },
+          "badges": [
+            {
+              "key": "custodial",
+              "label": "수탁형"
+            },
+            {
+              "key": "check",
+              "label": "확인 필요: 락업·BTC 형태"
+            }
           ]
-        },
-        {
-          "rank": 2,
-          "pool": "ffb4e407-6507-4615-b776-a0d99cfc1bbb",
-          "type": "LP형",
-          "project": "gmx-evm",
-          "chain": "Arbitrum",
-          "symbol": "WBTC.B-WBTC.B",
-          "note": "",
-          "apy": 4.20625,
-          "apy_base": 4.20625,
-          "apy_reward": null,
-          "tvl_usd": 9582340,
-          "url": "https://defillama.com/yields/pool/ffb4e407-6507-4615-b776-a0d99cfc1bbb",
-          "flags": []
-        },
-        {
-          "rank": 3,
-          "pool": "c0bbcf6c-9454-4773-a19f-c6486484c287",
-          "type": "LP형",
-          "project": "uniswap-v3",
-          "chain": "Ethereum",
-          "symbol": "WBTC-CBBTC",
-          "note": "0.01%",
-          "apy": 1.35627,
-          "apy_base": 1.35627,
-          "apy_reward": null,
-          "tvl_usd": 8748560,
-          "url": "https://defillama.com/yields/pool/c0bbcf6c-9454-4773-a19f-c6486484c287",
-          "flags": []
-        },
-        {
-          "rank": 4,
-          "pool": "bcbf0f11-17c5-5182-ab62-534b045d367a",
-          "type": "LP형",
-          "project": "uniswap-v4",
-          "chain": "Ethereum",
-          "symbol": "LBTC-CBBTC",
-          "note": "0.02%",
-          "apy": 0.81972,
-          "apy_base": 0.81972,
-          "apy_reward": null,
-          "tvl_usd": 10601770,
-          "url": "https://defillama.com/yields/pool/bcbf0f11-17c5-5182-ab62-534b045d367a",
-          "flags": []
         },
         {
           "rank": 5,
@@ -663,7 +1426,29 @@
           "apy_reward": 0.05125,
           "tvl_usd": 11080102,
           "url": "https://defillama.com/yields/pool/3dadbe45-e87f-43a5-820a-20c908bef612",
-          "flags": []
+          "flags": [],
+          "btc_per_year": 0.0029,
+          "risk": {
+            "lockup": "확인 필요",
+            "reward_type": "토큰",
+            "btc_form": "수탁형 래핑 (BitGo) + 탈중앙 브리지 (Threshold)",
+            "custodial": true,
+            "chain_status": "성숙",
+            "chain_launched": "2015-07",
+            "unknown": [
+              "락업"
+            ]
+          },
+          "badges": [
+            {
+              "key": "custodial",
+              "label": "수탁형"
+            },
+            {
+              "key": "check",
+              "label": "확인 필요: 락업"
+            }
+          ]
         },
         {
           "rank": 6,
@@ -678,7 +1463,30 @@
           "apy_reward": null,
           "tvl_usd": 24857730,
           "url": "https://defillama.com/yields/pool/7b78fe2f-6f67-46ef-8a42-1e36de8d0dfc",
-          "flags": []
+          "flags": [],
+          "btc_per_year": 0.00189,
+          "risk": {
+            "lockup": "확인 필요",
+            "reward_type": "없음",
+            "btc_form": "확인 필요",
+            "custodial": true,
+            "chain_status": "성숙",
+            "chain_launched": "2015-07",
+            "unknown": [
+              "락업",
+              "BTC 형태"
+            ]
+          },
+          "badges": [
+            {
+              "key": "custodial",
+              "label": "수탁형"
+            },
+            {
+              "key": "check",
+              "label": "확인 필요: 락업·BTC 형태"
+            }
+          ]
         },
         {
           "rank": 7,
@@ -693,7 +1501,29 @@
           "apy_reward": null,
           "tvl_usd": 17244734,
           "url": "https://defillama.com/yields/pool/8e47b0df-d495-4224-bd98-6cf693e88745",
-          "flags": []
+          "flags": [],
+          "btc_per_year": 0.000352,
+          "risk": {
+            "lockup": "확인 필요",
+            "reward_type": "없음",
+            "btc_form": "수탁형 래핑 (BitGo) + 수탁형 (코인베이스)",
+            "custodial": true,
+            "chain_status": "성숙",
+            "chain_launched": "2015-07",
+            "unknown": [
+              "락업"
+            ]
+          },
+          "badges": [
+            {
+              "key": "custodial",
+              "label": "수탁형"
+            },
+            {
+              "key": "check",
+              "label": "확인 필요: 락업"
+            }
+          ]
         },
         {
           "rank": 8,
@@ -708,7 +1538,30 @@
           "apy_reward": null,
           "tvl_usd": 7719691,
           "url": "https://defillama.com/yields/pool/bbc7744d-97f8-538a-a61f-3c82ba6c0c6d",
-          "flags": []
+          "flags": [],
+          "btc_per_year": 0.000299,
+          "risk": {
+            "lockup": "확인 필요",
+            "reward_type": "없음",
+            "btc_form": "확인 필요",
+            "custodial": true,
+            "chain_status": "성숙",
+            "chain_launched": "2015-07",
+            "unknown": [
+              "락업",
+              "BTC 형태"
+            ]
+          },
+          "badges": [
+            {
+              "key": "custodial",
+              "label": "수탁형"
+            },
+            {
+              "key": "check",
+              "label": "확인 필요: 락업·BTC 형태"
+            }
+          ]
         }
       ]
     },
@@ -726,16 +1579,12 @@
     }
   },
   "summary": {
-    "written_at_kst": "2026-10-31 15:50 KST",
-    "data_as_of_kst": "2026-10-31 15:48 KST",
+    "data_as_of_kst": "2026-10-31 16:01 KST",
     "lines": [
-      "기준 2026-10-31 15:48 KST · DefiLlama Yields · 예치형 20건, TVL 합계 1,504,888,128 USD",
-      "예치형 APY 합계 순위표 1위: symbiotic Ethereum SOLVBTC 7.78767% (기본 0 / 보상 7.78767, 보상 의존)",
-      "기본 APY 순위표 1위(보상 제외 실제 이자): accountable Monad CBBTC 기본 3.6% (APY 합계 3.85%)",
-      "예치형 APY 평균 1.4397%, 중앙값 0.5044%, TVL 가중 평균 0.7712%",
-      "예치형 APY 합계 중 기본 44.54% / 보상 55.46%, 보상 의존 5건",
-      "전일 비교 데이터 없음"
+      "실제 이자(기본 APY) 1위는 accountable·Monad·CBBTC로, 기본 APY 3.60%, 1 BTC 연 이자 0.0360 BTC, TVL $40.7M이며 포인트 보상·수탁형·신생 체인·확인 필요(락업) 배지가 붙어 있습니다.",
+      "TVL 1억 달러 이상 대형 풀 1위는 lombard-lbtc·Ethereum·LBTC로, 기본 APY 0.82%, 1 BTC 연 이자 0.0082 BTC, TVL $546.2M이며 확인 필요(락업) 배지만 붙어 있습니다.",
+      "예치형 APY 합계 중 보상 비중이 55.46%이고, 보상이 끝나면 이자가 크게 줄 수 있는 풀이 5개입니다."
     ],
-    "report_file": null
+    "generated_at_kst": "2026-10-31 16:01 KST"
   }
 }
