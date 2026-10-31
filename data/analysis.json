@@ -1,0 +1,164 @@
+{
+  "generated_at": "2026-10-31T14:45:20+09:00",
+  "generated_at_kst": "2026-10-31 14:45 KST",
+  "source": "DefiLlama Yields",
+  "latest": {
+    "collected_at": "2026-10-31T14:45:20+09:00",
+    "collected_at_kst": "2026-10-31 14:45 KST",
+    "count": 77
+  },
+  "previous": null,
+  "top_n": 10,
+  "top": [
+    {
+      "rank": 1,
+      "pool": "42dc3364-dd6b-47e7-a2e3-f4907bb3b5d2",
+      "project": "orca-dex",
+      "chain": "Solana",
+      "symbol": "CBBTC-WBTC",
+      "apy": 10.94678,
+      "apy_base": 10.94678,
+      "apy_reward": 0,
+      "tvl_usd": 1219565,
+      "url": "https://defillama.com/yields/pool/42dc3364-dd6b-47e7-a2e3-f4907bb3b5d2",
+      "flags": []
+    },
+    {
+      "rank": 2,
+      "pool": "20014711-5ee5-58ea-ade1-9d47310bc356",
+      "project": "liminal-basis",
+      "chain": "Hyperliquid L1",
+      "symbol": "XBTC",
+      "apy": 10.22272,
+      "apy_base": 10.22272,
+      "apy_reward": null,
+      "tvl_usd": 1228061,
+      "url": "https://defillama.com/yields/pool/20014711-5ee5-58ea-ade1-9d47310bc356",
+      "flags": []
+    },
+    {
+      "rank": 3,
+      "pool": "55b7d4ba-fe9a-4a26-ac49-965b6344a490",
+      "project": "chainflip-amm",
+      "chain": "Bitcoin",
+      "symbol": "BTC",
+      "apy": 9.7451,
+      "apy_base": 9.7451,
+      "apy_reward": null,
+      "tvl_usd": 4931208,
+      "url": "https://defillama.com/yields/pool/55b7d4ba-fe9a-4a26-ac49-965b6344a490",
+      "flags": []
+    },
+    {
+      "rank": 4,
+      "pool": "fd90352e-6772-472c-a0d4-cdef49027da5",
+      "project": "ekubo",
+      "chain": "Starknet",
+      "symbol": "SOLVBTC-STRKBTC",
+      "apy": 8.32029,
+      "apy_base": 2e-05,
+      "apy_reward": 8.32027,
+      "tvl_usd": 1364851,
+      "url": "https://defillama.com/yields/pool/fd90352e-6772-472c-a0d4-cdef49027da5",
+      "flags": [
+        "보상 의존"
+      ]
+    },
+    {
+      "rank": 5,
+      "pool": "a6d74d81-d4fc-50e5-8a44-58121d37551b",
+      "project": "stackingdao",
+      "chain": "Stacks",
+      "symbol": "STSTXBTC",
+      "apy": 7.90035,
+      "apy_base": 7.90035,
+      "apy_reward": null,
+      "tvl_usd": 8717661,
+      "url": "https://defillama.com/yields/pool/a6d74d81-d4fc-50e5-8a44-58121d37551b",
+      "flags": []
+    },
+    {
+      "rank": 6,
+      "pool": "0d916a4a-a880-52a4-98df-d3cd96eaeef4",
+      "project": "symbiotic",
+      "chain": "Ethereum",
+      "symbol": "SOLVBTC",
+      "apy": 7.79211,
+      "apy_base": 0,
+      "apy_reward": 7.79211,
+      "tvl_usd": 5847418,
+      "url": "https://defillama.com/yields/pool/0d916a4a-a880-52a4-98df-d3cd96eaeef4",
+      "flags": [
+        "보상 의존"
+      ]
+    },
+    {
+      "rank": 7,
+      "pool": "42284cfd-a59f-4128-8677-bbaeb0519148",
+      "project": "ekubo",
+      "chain": "Starknet",
+      "symbol": "WBTC-STRKBTC",
+      "apy": 7.09415,
+      "apy_base": 0.36996,
+      "apy_reward": 6.72419,
+      "tvl_usd": 5263357,
+      "url": "https://defillama.com/yields/pool/42284cfd-a59f-4128-8677-bbaeb0519148",
+      "flags": [
+        "보상 의존"
+      ]
+    },
+    {
+      "rank": 8,
+      "pool": "ea24c06e-aac9-4ee8-9bf0-04f16535c632",
+      "project": "uniswap-v3",
+      "chain": "Arbitrum",
+      "symbol": "WBTC-CBBTC",
+      "apy": 7.0605,
+      "apy_base": 7.0605,
+      "apy_reward": null,
+      "tvl_usd": 1240575,
+      "url": "https://defillama.com/yields/pool/ea24c06e-aac9-4ee8-9bf0-04f16535c632",
+      "flags": []
+    },
+    {
+      "rank": 9,
+      "pool": "634d5a69-2160-456c-82f6-55ff7781de57",
+      "project": "uniswap-v4",
+      "chain": "Ethereum",
+      "symbol": "WBTC-CBBTC",
+      "apy": 5.35585,
+      "apy_base": 5.35585,
+      "apy_reward": null,
+      "tvl_usd": 3835796,
+      "url": "https://defillama.com/yields/pool/634d5a69-2160-456c-82f6-55ff7781de57",
+      "flags": []
+    },
+    {
+      "rank": 10,
+      "pool": "90452e29-7bd0-54aa-9b65-130fda962a08",
+      "project": "symbiotic",
+      "chain": "Ethereum",
+      "symbol": "SOLVBTC",
+      "apy": 5.16593,
+      "apy_base": 0,
+      "apy_reward": 5.16593,
+      "tvl_usd": 2926873,
+      "url": "https://defillama.com/yields/pool/90452e29-7bd0-54aa-9b65-130fda962a08",
+      "flags": [
+        "보상 의존"
+      ]
+    }
+  ],
+  "change": {
+    "status": "비교 데이터 없음",
+    "items": []
+  },
+  "new_pools": {
+    "status": "비교 데이터 없음",
+    "items": []
+  },
+  "dropped_pools": {
+    "status": "비교 데이터 없음",
+    "items": []
+  }
+}

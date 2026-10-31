@@ -1,0 +1,41 @@
+# 데이터 도구 설정. 명령 인자 대신 이 파일을 고친다.
+# 수집: uv run python tools/defillama_btc.py
+# 분석: uv run python tools/analyze_yields.py
+
+[paths]
+# 프로젝트 루트 기준 상대 경로
+yields = "data/yields.json"
+history = "data/history.jsonl"
+analysis = "data/analysis.json"
+
+[collect]
+url = "https://yields.llama.fi/pools"
+timeout_sec = 60
+source_name = "DefiLlama Yields"
+pool_url_prefix = "https://defillama.com/yields/pool/"
+
+# 노이즈 제거 기준
+min_tvl_usd = 1_000_000   # TVL 하한 (USD)
+min_apy = 0.01            # APY 하한 (%). 이자가 거의 없는 빈 대출 풀 제외
+exclude_outliers = true   # DefiLlama가 이상치로 표시한 풀 제외
+
+# BTC 계열 토큰 (대문자). 심볼을 '-'로 나눈 구성 토큰이 모두 이 목록에 있어야 포함.
+# 예) WBTC -> 포함, WBTC-CBBTC -> 포함, WBTC-USDC -> 제외
+btc_tokens = [
+  "BTC",                                   # 네이티브·체인별 BTC 표기
+  "WBTC", "WBTC.E", "WBTC.B", "BTC.B",     # 래핑 (Ethereum, Avalanche 등)
+  "CBBTC", "WCBTC",                        # Coinbase
+  "TBTC",                                  # Threshold
+  "BTCB",                                  # BNB Chain
+  "LBTC",                                  # Lombard (스테이킹)
+  "SOLVBTC", "XSOLVBTC",                   # Solv
+  "UBTC", "XBTC", "KBTC", "FBTC", "EBTC",  # 기타 래핑
+  "UNIBTC", "ENZOBTC", "PUMPBTC",          # 스테이킹·리스테이킹
+  "STBTC", "STSTXBTC", "STRKBTC",          # Stacks, Starknet 계열
+  "HEMIBTC",
+]
+
+[analyze]
+top_n = 10          # 상위 N개 (APY 기준)
+change_top_n = 10   # 전일 대비 변화 상위 N개 (절댓값 기준)
+reward_dependency_ratio = 0.5   # 보상 APY 비중이 이 값 이상이면 "보상 의존" 표시

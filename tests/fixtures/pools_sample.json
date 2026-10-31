@@ -1,0 +1,379 @@
+{
+ "status": "success",
+ "data": [
+  {
+   "chain": "Ethereum",
+   "project": "across",
+   "symbol": "WBTC",
+   "tvlUsd": 50000000,
+   "apyBase": 2.0,
+   "apyReward": 0.5,
+   "apy": 2.5,
+   "rewardTokens": [
+    "0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f"
+   ],
+   "pool": "fx-wbtc-single",
+   "apyPct1D": 0.08012,
+   "apyPct7D": -0.22471,
+   "apyPct30D": -0.70549,
+   "stablecoin": false,
+   "ilRisk": "no",
+   "exposure": "single",
+   "predictions": {
+    "predictedClass": "Stable/Up",
+    "predictedProbability": 72,
+    "binnedConfidence": 2
+   },
+   "poolMeta": null,
+   "mu": 3.28873,
+   "sigma": 0.09272,
+   "count": 1556,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 1.18802,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Ethereum",
+   "project": "across",
+   "symbol": "cbBTC",
+   "tvlUsd": 10000000,
+   "apyBase": 0.5,
+   "apyReward": 3.5,
+   "apy": 4.0,
+   "rewardTokens": [
+    "0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f"
+   ],
+   "pool": "fx-cbbtc-mixedcase",
+   "apyPct1D": 0.08012,
+   "apyPct7D": -0.22471,
+   "apyPct30D": -0.70549,
+   "stablecoin": false,
+   "ilRisk": "no",
+   "exposure": "single",
+   "predictions": {
+    "predictedClass": "Stable/Up",
+    "predictedProbability": 72,
+    "binnedConfidence": 2
+   },
+   "poolMeta": null,
+   "mu": 3.28873,
+   "sigma": 0.09272,
+   "count": 1556,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 1.18802,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Base",
+   "project": "morpho-blue",
+   "symbol": "WBTC-CBBTC",
+   "tvlUsd": 3000000,
+   "apyBase": 1.2,
+   "apyReward": null,
+   "apy": 1.2,
+   "rewardTokens": null,
+   "pool": "fx-wbtc-cbbtc-lp",
+   "apyPct1D": 2.09023,
+   "apyPct7D": 3.73407,
+   "apyPct30D": null,
+   "stablecoin": false,
+   "ilRisk": "yes",
+   "exposure": "multi",
+   "predictions": {
+    "predictedClass": "Down",
+    "predictedProbability": 78,
+    "binnedConfidence": 3
+   },
+   "poolMeta": null,
+   "mu": 5.12581,
+   "sigma": 0.05916,
+   "count": 24,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 4.9635,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Base",
+   "project": "morpho-blue",
+   "symbol": "WBTC-USDC",
+   "tvlUsd": 3000000,
+   "apyBase": 1.2,
+   "apyReward": null,
+   "apy": 14.0,
+   "rewardTokens": null,
+   "pool": "fx-wbtc-usdc-lp",
+   "apyPct1D": 2.09023,
+   "apyPct7D": 3.73407,
+   "apyPct30D": null,
+   "stablecoin": false,
+   "ilRisk": "yes",
+   "exposure": "multi",
+   "predictions": {
+    "predictedClass": "Down",
+    "predictedProbability": 78,
+    "binnedConfidence": 3
+   },
+   "poolMeta": null,
+   "mu": 5.12581,
+   "sigma": 0.05916,
+   "count": 24,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 4.9635,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Ethereum",
+   "project": "across",
+   "symbol": "WBTC",
+   "tvlUsd": 200000,
+   "apyBase": 2.0,
+   "apyReward": 0.5,
+   "apy": 9.0,
+   "rewardTokens": [
+    "0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f"
+   ],
+   "pool": "fx-wbtc-small",
+   "apyPct1D": 0.08012,
+   "apyPct7D": -0.22471,
+   "apyPct30D": -0.70549,
+   "stablecoin": false,
+   "ilRisk": "no",
+   "exposure": "single",
+   "predictions": {
+    "predictedClass": "Stable/Up",
+    "predictedProbability": 72,
+    "binnedConfidence": 2
+   },
+   "poolMeta": null,
+   "mu": 3.28873,
+   "sigma": 0.09272,
+   "count": 1556,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 1.18802,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Ethereum",
+   "project": "across",
+   "symbol": "WBTC",
+   "tvlUsd": 50000000,
+   "apyBase": 2.0,
+   "apyReward": 0.5,
+   "apy": 80.0,
+   "rewardTokens": [
+    "0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f"
+   ],
+   "pool": "fx-wbtc-outlier",
+   "apyPct1D": 0.08012,
+   "apyPct7D": -0.22471,
+   "apyPct30D": -0.70549,
+   "stablecoin": false,
+   "ilRisk": "no",
+   "exposure": "single",
+   "predictions": {
+    "predictedClass": "Stable/Up",
+    "predictedProbability": 72,
+    "binnedConfidence": 2
+   },
+   "poolMeta": null,
+   "mu": 3.28873,
+   "sigma": 0.09272,
+   "count": 1556,
+   "outlier": true,
+   "underlyingTokens": [
+    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 1.18802,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Ethereum",
+   "project": "across",
+   "symbol": "WBTC",
+   "tvlUsd": 50000000,
+   "apyBase": 0,
+   "apyReward": null,
+   "apy": 0,
+   "rewardTokens": [
+    "0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f"
+   ],
+   "pool": "fx-wbtc-zero",
+   "apyPct1D": 0.08012,
+   "apyPct7D": -0.22471,
+   "apyPct30D": -0.70549,
+   "stablecoin": false,
+   "ilRisk": "no",
+   "exposure": "single",
+   "predictions": {
+    "predictedClass": "Stable/Up",
+    "predictedProbability": 72,
+    "binnedConfidence": 2
+   },
+   "poolMeta": null,
+   "mu": 3.28873,
+   "sigma": 0.09272,
+   "count": 1556,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 1.18802,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Ethereum",
+   "project": "across",
+   "symbol": "WBTC",
+   "tvlUsd": 50000000,
+   "apyBase": null,
+   "apyReward": 0.5,
+   "apy": null,
+   "rewardTokens": [
+    "0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f"
+   ],
+   "pool": "fx-wbtc-null",
+   "apyPct1D": 0.08012,
+   "apyPct7D": -0.22471,
+   "apyPct30D": -0.70549,
+   "stablecoin": false,
+   "ilRisk": "no",
+   "exposure": "single",
+   "predictions": {
+    "predictedClass": "Stable/Up",
+    "predictedProbability": 72,
+    "binnedConfidence": 2
+   },
+   "poolMeta": null,
+   "mu": 3.28873,
+   "sigma": 0.09272,
+   "count": 1556,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 1.18802,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Ethereum",
+   "project": "lido",
+   "symbol": "STETH",
+   "tvlUsd": 21671524051,
+   "apyBase": 15.06732,
+   "apyReward": null,
+   "apy": 15.06732,
+   "rewardTokens": null,
+   "pool": "fx-steth",
+   "apyPct1D": 12.82346,
+   "apyPct7D": 12.84532,
+   "apyPct30D": 12.82232,
+   "stablecoin": false,
+   "ilRisk": "no",
+   "exposure": "single",
+   "predictions": {
+    "predictedClass": "Down",
+    "predictedProbability": 77,
+    "binnedConfidence": 3
+   },
+   "poolMeta": null,
+   "mu": 3.40893,
+   "sigma": 0.05748,
+   "count": 1610,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x0000000000000000000000000000000000000000"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 2.47256,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Ethereum",
+   "project": "across",
+   "symbol": "BTCBULL",
+   "tvlUsd": 50000000,
+   "apyBase": 2.0,
+   "apyReward": 0.5,
+   "apy": 30.0,
+   "rewardTokens": [
+    "0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f"
+   ],
+   "pool": "fx-btcbull",
+   "apyPct1D": 0.08012,
+   "apyPct7D": -0.22471,
+   "apyPct30D": -0.70549,
+   "stablecoin": false,
+   "ilRisk": "no",
+   "exposure": "single",
+   "predictions": {
+    "predictedClass": "Stable/Up",
+    "predictedProbability": 72,
+    "binnedConfidence": 2
+   },
+   "poolMeta": null,
+   "mu": 3.28873,
+   "sigma": 0.09272,
+   "count": 1556,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 1.18802,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  }
+ ]
+}

@@ -17,13 +17,36 @@
 - 시각: 수집 시각을 KST로 기록
 
 ## 데이터 갱신
-- 명령: `uv run python tools/defillama_btc.py` (M1에서 확정)
+- 명령: `uv run python tools/defillama_btc.py` (인자 없음. 설정은 `tools/config.toml`)
 - 출력: `data/yields.json`(최신 스냅샷), `data/history.jsonl`(수집 1회당 1줄 누적)
+- 소요: 약 5~10초 (전체 풀 약 1.6만 개 응답을 받아 필터)
 
-## BTC 계열 풀 필터 기준
-M1에서 실제 API 응답을 확인한 뒤 확정한다.
-- 후보 토큰: WBTC, cbBTC, tBTC, BTCB, LBTC, SolvBTC 등 BTC 래핑·스테이킹 토큰
-- 노이즈 제거 기준(TVL 하한 등)은 설정값으로 분리
+## 분석 명령
+- 명령: `uv run python tools/analyze_yields.py` (인자 없음. 설정은 `tools/config.toml [analyze]`)
+- 입력: `data/history.jsonl` / 출력: `data/analysis.json`
+- 내용: APY 상위 N개(보상 의존 표시), 전일 대비 APY 변화 상위 N개, 신규·이탈 풀
+- 전일 = 최신 스냅샷의 KST 날짜보다 이전 날짜 중 가장 최근 스냅샷. 없으면 "비교 데이터 없음"
+- 위 두 명령 외 계산이 필요하면 developer에게 도구 추가를 맡긴다(임의 코드 실행 금지)
+
+## 데이터 필드 (data/yields.json `pools[]`)
+| 필드 | 원본(DefiLlama) | 의미 |
+| --- | --- | --- |
+| project, chain, symbol | project, chain, symbol | 프로토콜, 체인, 심볼 |
+| pool_meta | poolMeta | 풀 부가 설명(마켓 이름 등) |
+| apy / apy_base / apy_reward | apy / apyBase / apyReward | APY 합계 / 기본 / 보상 (%, null = 해당 없음) |
+| tvl_usd | tvlUsd | 예치 총액 USD |
+| apy_pct_1d_source | apyPct1D | DefiLlama 제공 1일 APY 변화(%p), 참고용 |
+| url | pool | `https://defillama.com/yields/pool/<pool>` |
+
+## BTC 계열 풀 필터 기준 (설정: `tools/config.toml [collect]`)
+2026-10-31 실제 응답 확인 후 확정. BTC 문자열 포함 심볼 1,172개 중 아래 기준 통과분만 사용.
+1. **토큰**: 심볼을 `-`로 나눈 구성 토큰이 **모두** BTC 계열 목록(`btc_tokens`)에 있어야 한다(대소문자 무시).
+   - 포함 예: `WBTC`, `cbBTC`, `WBTC-CBBTC`(BTC끼리 LP) / 제외 예: `WBTC-USDC`(가격 변동 노출), `BTCBULL`(목록 밖)
+   - 목록: BTC, WBTC(.E/.B), BTC.B, CBBTC, WCBTC, TBTC, BTCB, LBTC, SOLVBTC, XSOLVBTC, UBTC, XBTC, KBTC, FBTC, EBTC, UNIBTC, ENZOBTC, PUMPBTC, STBTC, STSTXBTC, STRKBTC, HEMIBTC
+2. **TVL 하한**: `min_tvl_usd = 1,000,000` USD
+3. **APY 하한**: `min_apy = 0.01` % (이자 거의 없는 빈 대출 풀 제외)
+4. **이상치**: DefiLlama `outlier = true` 제외
+5. APY 또는 TVL이 null이면 제외
 
 ## 핵심 지표
 | 지표 | 정의 |
