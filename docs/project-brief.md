@@ -24,7 +24,9 @@
 ## 분석 명령
 - 명령: `uv run python tools/analyze_yields.py` (인자 없음. 설정은 `tools/config.toml [analyze]`)
 - 입력: `data/history.jsonl` / 출력: `data/analysis.json`
-- 내용: 예치형 APY 상위 N개(보상 의존 표시), 예치형 전일 대비 APY 변화 상위 N개, 신규·이탈 풀, LP형 상위 N개(별도 섹션 `secondary`)
+- 내용: 예치형 APY 상위 N개(`top`, 보상 의존 표시), 기본 APY 상위 5개(`top_by_base`), 유형별 요약 통계(`stats`), 예치형 전일 대비 APY 변화 상위 N개(`change`), 신규·이탈 풀, LP형 상위 N개(별도 섹션 `secondary`)
+- `stats.<유형>`: count, tvl_usd_sum, apy_mean, apy_median, apy_tvl_weighted(TVL 가중 평균), base_share_pct·reward_share_pct(APY 합계 중 기본/보상 비중 %), reward_dependent_count
+- 에이전트는 이 값만 인용한다. 직접 계산 금지
 - 전일 = 최신 스냅샷의 KST 날짜보다 이전 날짜 중 가장 최근 스냅샷. 없으면 "비교 데이터 없음"
 - 위 두 명령 외 계산이 필요하면 developer에게 도구 추가를 맡긴다(임의 코드 실행 금지)
 
@@ -80,4 +82,5 @@
 ## 보고 형식 (reporter 참고)
 - 첫 줄: 기준 시각(KST) · 출처
 - 표: 순위, 프로토콜, 체인, 심볼, APY(기본/보상), TVL, 비고 — **예치형만**. LP형은 요청 시에만 별도 표
+- 보고서에는 **기본 APY 기준 상위 5** 표를 별도로 넣는다(보상·포인트 의존 수익과 실제 이자 구분)
 - 마지막: 특이사항 3줄 이내

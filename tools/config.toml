@@ -45,5 +45,6 @@ multi = "LP형"      # 유동성 공급 (토큰 2개 이상)
 primary_type = "예치형"     # 기본 순위표·변화 분석 대상
 secondary_type = "LP형"     # 별도 섹션으로만 표시
 top_n = 10          # 상위 N개 (APY 기준)
+base_top_n = 5      # 기본 APY(실제 이자) 기준 상위 N개
 change_top_n = 10   # 전일 대비 변화 상위 N개 (절댓값 기준)
 reward_dependency_ratio = 0.5   # 보상 APY 비중이 이 값 이상이면 "보상 의존" 표시

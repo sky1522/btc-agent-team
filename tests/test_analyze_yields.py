@@ -33,6 +33,43 @@ def test_top_is_primary_type_only_and_lp_is_separate(multi_day_history, config):
     assert "lp-y" not in [p["pool"] for p in r["new_pools"]["items"]]
 
 
+def test_stats_per_type(multi_day_history, config):
+    r = az.analyze(multi_day_history, config, AT)
+    s = r["stats"]["예치형"]
+    # 최신(10-30 15:00) 예치형: p-a 6.5/102M, p-b 2.0(보상 100%)/39M, p-d 4.2(기본 3.0)/8M
+    assert s["count"] == 3
+    assert s["tvl_usd_sum"] == 149_000_000
+    assert s["apy_mean"] == pytest.approx(12.7 / 3, abs=1e-4)
+    assert s["apy_median"] == pytest.approx(4.2)
+    assert s["apy_tvl_weighted"] == pytest.approx(774.6 / 149, abs=1e-4)
+    assert s["base_share_pct"] == pytest.approx(74.80, abs=0.01)
+    assert s["reward_share_pct"] == pytest.approx(25.20, abs=0.01)
+    assert s["reward_dependent_count"] == 1
+    lp = r["stats"]["LP형"]
+    assert (lp["count"], lp["tvl_usd_sum"], lp["apy_median"]) == (2, 13_500_000, 7.5)
+    assert lp["reward_dependent_count"] == 1
+
+
+def test_stats_empty_type():
+    s = az.type_stats([], 0.5)
+    assert s["count"] == 0 and s["apy_mean"] is None and s["tvl_usd_sum"] == 0
+
+
+def test_top_by_base_excludes_reward_only(multi_day_history, config):
+    r = az.analyze(multi_day_history, config, AT)
+    assert [t["pool"] for t in r["top_by_base"]] == ["p-a", "p-d"]  # p-b는 기본 APY 0
+    assert [t["rank"] for t in r["top_by_base"]] == [1, 2]
+
+
+def test_top_by_base_selects_by_base_not_total_apy():
+    pools = [
+        {"pool": "x", "apy": 10.0, "apy_base": 1.0, "apy_reward": 9.0, "tvl_usd": 1},
+        {"pool": "y", "apy": 5.0, "apy_base": 4.0, "apy_reward": 1.0, "tvl_usd": 1},
+    ]
+    rows = az.ranked_by_base(pools, 1, "u/", 0.5)
+    assert [r["pool"] for r in rows] == ["y"]
+
+
 def test_previous_is_latest_snapshot_of_an_earlier_kst_day(multi_day_history, config):
     latest, previous = az.pick_latest_and_previous(multi_day_history)
     assert latest["collected_at"] == "2026-10-30T15:00:00+09:00"

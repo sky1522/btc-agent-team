@@ -1,52 +1,69 @@
-기준: 2026-10-31 14:55 KST · 출처: DefiLlama Yields
+# BTC 디파이 예치 이자율 일일 보고
 
-## 요약
-- 예치형 20개, TVL 합계 약 1,503.4M USD, APY 범위 0.010~7.79%, 중앙값 약 0.50% (LP형 8개는 제외).
-- 전일 스냅샷 없음: 전일 대비 비교 불가. 신규·이탈 판정도 불가.
-- 보상 의존(보상 APY 비중 50% 이상) 5개: symbiotic SOLVBTC·UNIBTC·LBTC(100%), mezo-earn BTC(98.4%), across WBTC(89.1%).
+기준 2026-10-31 15:05 KST · 출처 DefiLlama Yields (풀 링크: https://defillama.com/yields/pool/<pool id>)
 
-## 표 1. 예치형 APY 상위 10
-TVL 단위: 백만 USD
+표기: APY·% 소수 2자리, TVL $M 1자리는 표시 형식 변환만 적용. 원값은 data/analysis.json 참조.
 
-| 순위 | 프로토콜 | 체인 | 심볼 | APY 합계 (기본/보상, %) | TVL | 비고 |
+## 1. 예치형 APY 상위 10
+
+| 순위 | 프로토콜 | 체인 | 심볼 | APY 합계 (기본/보상) | TVL ($M) | 비고 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | symbiotic | Ethereum | SOLVBTC | 7.79 (0/7.79) | 5.85 | 보상 의존 · Solv Protocol-Solv Protocol-SolvBTC |
-| 2 | accountable | Monad | CBBTC | 3.81 (3.60/0.21) | 40.70 | Earn ACC Points |
-| 3 | accountable | Citrea | WCBTC | 3.22 (3.22/-) | 6.31 | - |
-| 4 | mezo-earn | Mezo | BTC | 3.01 (0.05/2.96) | 61.90 | 보상 의존 · Locked veBTC |
-| 5 | midas-rwa | Ethereum | BTC | 2.35 (2.35/-) | 20.27 | mHyperBTC |
-| 6 | symbiotic | Ethereum | UNIBTC | 2.05 (0/2.05) | 5.59 | 보상 의존 |
-| 7 | symbiotic | Ethereum | LBTC | 1.96 (0/1.96) | 44.96 | 보상 의존 · Lombard-Flow Traders-LBTC |
-| 8 | stackingdao | Stacks | STBTC | 1.83 (1.83/-) | 48.85 | - |
-| 9 | across | Ethereum | WBTC | 1.09 (0.12/0.97) | 8.33 | 보상 의존 |
-| 10 | lombard-lbtc | Ethereum | LBTC | 0.82 (0.82/-) | 545.91 | - |
+| 1 | symbiotic | Ethereum | SOLVBTC | 7.79 (0.00/7.79) | 5.8 | Solv Protocol-Solv Protocol-SolvBTC · 보상 의존 |
+| 2 | accountable | Monad | CBBTC | 3.81 (3.60/0.21) | 40.7 | Earn ACC Points |
+| 3 | accountable | Citrea | WCBTC | 3.22 (3.22/없음) | 6.3 | - |
+| 4 | mezo-earn | Mezo | BTC | 3.01 (0.05/2.96) | 61.9 | Locked veBTC · 보상 의존 |
+| 5 | midas-rwa | Ethereum | BTC | 2.35 (2.35/없음) | 20.3 | mHyperBTC |
+| 6 | symbiotic | Ethereum | UNIBTC | 2.05 (0.00/2.05) | 5.6 | 보상 의존 |
+| 7 | symbiotic | Ethereum | LBTC | 1.96 (0.00/1.96) | 45.0 | Lombard-Flow Traders-LBTC · 보상 의존 |
+| 8 | stackingdao | Stacks | STBTC | 1.83 (1.83/없음) | 48.8 | - |
+| 9 | across | Ethereum | WBTC | 1.09 (0.12/0.97) | 8.3 | 보상 의존 |
+| 10 | lombard-lbtc | Ethereum | LBTC | 0.82 (0.82/없음) | 545.9 | - |
 
-## 표 2. 예치형 1일 변화 상위 10 (절댓값 기준)
-전일 스냅샷 없음 → DefiLlama 제공 apy_pct_1d_source 참고값, 자체 스냅샷 비교 아님.
+## 2. 기본 APY 상위 5 (보상 제외 실제 이자)
 
-| 순위 | 프로토콜 | 체인 | 심볼 | 현재 APY (%) | 1일 변화 (%p) | TVL (백만 USD) | 비고 |
+| 순위 | 프로토콜 | 체인 | 심볼 | 기본 APY | (참고) APY 합계 | TVL ($M) | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | symbiotic | Ethereum | SOLVBTC | 7.79 | +0.12 | 5.85 | 보상 의존 |
-| 2 | lombard-lbtc | Ethereum | LBTC | 0.82 | -0.11 | 545.91 | - |
-| 3 | across | Ethereum | WBTC | 1.09 | +0.08 | 8.33 | 보상 의존 |
-| 4 | fluid-lending | Ethereum | CBBTC | 0.04 | -0.06 | 5.66 | - |
-| 5 | accountable | Citrea | WCBTC | 3.22 | -0.05 | 6.31 | - |
-| 6 | mezo-earn | Mezo | BTC | 3.01 | +0.04 | 61.90 | 보상 의존 |
-| 7 | hyperlend-pooled | Hyperliquid L1 | UBTC | 0.19 | -0.04 | 9.03 | - |
-| 8 | fluid-lending | Ethereum | WBTC | 0.09 | +0.03 | 24.76 | 946c7197 |
-| 9 | fluid-lending | Ethereum | WBTC | 0.09 | +0.03 | 15.23 | 7c4da504 |
-| 10 | symbiotic | Ethereum | UNIBTC | 2.05 | +0.03 | 5.59 | 보상 의존 |
+| 1 | accountable | Monad | CBBTC | 3.60 | 3.81 | 40.7 | Earn ACC Points |
+| 2 | accountable | Citrea | WCBTC | 3.22 | 3.22 | 6.3 | - |
+| 3 | midas-rwa | Ethereum | BTC | 2.35 | 2.35 | 20.3 | mHyperBTC |
+| 4 | stackingdao | Stacks | STBTC | 1.83 | 1.83 | 48.8 | - |
+| 5 | lombard-lbtc | Ethereum | LBTC | 0.82 | 0.82 | 545.9 | - |
 
-예치형 변화는 전부 ±0.12%p 이내. aave-v3 3개(OP Mainnet·Arbitrum·Polygon)는 변화값 null.
+## 3. 예치형 통계 요약 (stats.예치형)
 
-## 특이사항
-- 보상 의존 5개 중 symbiotic 3개(SOLVBTC·UNIBTC·LBTC)는 기본 APY 0이라 APY 전부가 보상. 보상 지속 여부에 따라 변동 가능.
-- TVL 10M 미만 4개(상위 10 중): UNIBTC 5.59M, SOLVBTC 5.85M, Citrea WCBTC 6.31M, across WBTC 8.33M. accountable Monad CBBTC는 포인트 보상(ACC Points)이 APY에 미반영됐을 수 있음(analyst 의견).
-- LP형 큰 변동(참고, 순위 대상 아님): uniswap-v3 WBTC-CBBTC 1.59% (-9.21%p), uniswap-v4 LBTC-CBBTC 0.82% (-4.71%p), fluid-dex WBTC-CBBTC 3.32% (-2.21%p), uniswap-v3 WBTC-KBTC 0.21% (-1.14%p).
+- 풀 수 20 · TVL 합계 $1,503.4M
+- APY 평균 1.44% · 중앙값 0.50% · TVL 가중 평균 0.77%
+- 기본 비중 44.61% · 보상 비중 55.39%
+- 보상 의존 5건
 
-## 원본 대조 차이
-- 입력 B의 표 2는 fluid-lending WBTC를 1개(24.8M)만 올렸으나, yields.json에는 +0.03%p 풀이 2개(24.76M, 15.23M)이고 둘 다 UNIBTC(+0.0297)보다 큼. 원본 기준으로 8·9위에 두 풀을 넣고 ether.fi-stake EBTC(-0.02, 11위)는 제외함.
-- 입력 B의 "TVL 10M 미만 5개"는 원본 기준 4개(위 특이사항). 나머지 수치는 원본과 일치.
-- TVL 합계·중앙값은 입력 A 값을 그대로 옮김(원본 풀 값과 대조해 일치 확인).
+## 4. 어제 대비 변화
 
-참고 자료이며 투자 권유가 아님. 전일 대비 비교는 2026-11-01 수집분부터 가능.
+자체 전일 비교 불가(이전 날짜 스냅샷 없음, 2026-11-01 수집부터 가능). 신규·이탈도 "비교 데이터 없음".
+
+DefiLlama 제공 1일 APY 변화 참고치 상위 5 (자체 비교 아님, apy_pct_1d_source, 변화폭 절대값 기준, 값이 없는 예치형 3건 제외):
+
+| 순위 | 프로토콜 | 체인 | 심볼 | APY 합계 | 1일 변화 (%p) | TVL ($M) |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | symbiotic | Ethereum | SOLVBTC | 7.79 | +0.12 | 5.8 |
+| 2 | lombard-lbtc | Ethereum | LBTC | 0.82 | -0.11 | 545.9 |
+| 3 | across | Ethereum | WBTC | 1.09 | +0.08 | 8.3 |
+| 4 | fluid-lending | Ethereum | CBBTC | 0.04 | -0.06 | 5.7 |
+| 5 | accountable | Citrea | WCBTC | 3.22 | -0.05 | 6.3 |
+
+예치형 1일 변화폭은 모두 0.13%p 미만으로 급변 신호 없음.
+
+## 5. 리스크 메모
+
+- 보상 의존 5건: symbiotic SOLVBTC·UNIBTC·LBTC, mezo-earn BTC, across WBTC. 보상 비중 55.39%.
+- 1위 SOLVBTC는 기본 0.00 · 보상 7.79 · TVL $5.8M. 보상이 끝나면 이자가 사라지는 구조.
+- 소형 TVL 풀(약 $5.4M~5.8M): symbiotic UNIBTC, bancor-v3 WBTC, fluid-lending CBBTC, symbiotic SOLVBTC. 이자율·유동성 변동 위험이 상대적으로 큼.
+- 기본 APY 2위 accountable Monad CBBTC는 "Earn ACC Points" 풀로, 포인트 성격의 수익 포함 여부 확인 필요.
+- 평균(1.44)과 중앙값(0.50)의 차이는 소수 고APY 풀의 영향.
+
+## 6. 특이사항
+
+- 전일 비교 데이터 없음: 오늘 스냅샷 4회(14:50, 14:54, 14:55, 15:05 KST)만 존재.
+- 상위 10 중 보상 의존 5건. 보상 제외 시 1위는 accountable Monad CBBTC(기본 3.60).
+- LP형 참고: uniswap-v3 WBTC-CBBTC의 DefiLlama 1일 변화 -9.21%p(참고치, 자체 비교 아님).
+
+본 보고는 참고 자료이며 투자 판단이 아니다.

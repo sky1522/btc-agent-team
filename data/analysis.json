@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-31T14:55:59+09:00",
-  "generated_at_kst": "2026-10-31 14:55 KST",
+  "generated_at": "2026-10-31T15:05:47+09:00",
+  "generated_at_kst": "2026-10-31 15:05 KST",
   "source": "DefiLlama Yields",
   "latest": {
-    "collected_at": "2026-10-31T14:55:43+09:00",
-    "collected_at_kst": "2026-10-31 14:55 KST",
+    "collected_at": "2026-10-31T15:05:44+09:00",
+    "collected_at_kst": "2026-10-31 15:05 KST",
     "count": 28
   },
   "previous": null,
@@ -172,6 +172,105 @@
       "flags": []
     }
   ],
+  "top_by_base": [
+    {
+      "rank": 1,
+      "pool": "5528e3be-2b9b-4062-a2c0-80d3345c7c0f",
+      "type": "예치형",
+      "project": "accountable",
+      "chain": "Monad",
+      "symbol": "CBBTC",
+      "note": "Earn ACC Points",
+      "apy": 3.80801,
+      "apy_base": 3.6,
+      "apy_reward": 0.20801,
+      "tvl_usd": 40700249,
+      "url": "https://defillama.com/yields/pool/5528e3be-2b9b-4062-a2c0-80d3345c7c0f",
+      "flags": []
+    },
+    {
+      "rank": 2,
+      "pool": "7264f113-0517-4da4-989b-34974579ef87",
+      "type": "예치형",
+      "project": "accountable",
+      "chain": "Citrea",
+      "symbol": "WCBTC",
+      "note": "",
+      "apy": 3.21625,
+      "apy_base": 3.21625,
+      "apy_reward": null,
+      "tvl_usd": 6305380,
+      "url": "https://defillama.com/yields/pool/7264f113-0517-4da4-989b-34974579ef87",
+      "flags": []
+    },
+    {
+      "rank": 3,
+      "pool": "d2b2bdd9-6535-4acc-8e84-2b0838bd63bb",
+      "type": "예치형",
+      "project": "midas-rwa",
+      "chain": "Ethereum",
+      "symbol": "BTC",
+      "note": "mHyperBTC",
+      "apy": 2.35,
+      "apy_base": 2.35,
+      "apy_reward": null,
+      "tvl_usd": 20268088,
+      "url": "https://defillama.com/yields/pool/d2b2bdd9-6535-4acc-8e84-2b0838bd63bb",
+      "flags": []
+    },
+    {
+      "rank": 4,
+      "pool": "ce85a606-365c-5829-8fd4-1bfdf6cbaf00",
+      "type": "예치형",
+      "project": "stackingdao",
+      "chain": "Stacks",
+      "symbol": "STBTC",
+      "note": "",
+      "apy": 1.82848,
+      "apy_base": 1.82848,
+      "apy_reward": null,
+      "tvl_usd": 48845720,
+      "url": "https://defillama.com/yields/pool/ce85a606-365c-5829-8fd4-1bfdf6cbaf00",
+      "flags": []
+    },
+    {
+      "rank": 5,
+      "pool": "c9762afb-7746-4b5a-a484-a8881a348999",
+      "type": "예치형",
+      "project": "lombard-lbtc",
+      "chain": "Ethereum",
+      "symbol": "LBTC",
+      "note": "",
+      "apy": 0.81648,
+      "apy_base": 0.81648,
+      "apy_reward": null,
+      "tvl_usd": 545910242,
+      "url": "https://defillama.com/yields/pool/c9762afb-7746-4b5a-a484-a8881a348999",
+      "flags": []
+    }
+  ],
+  "stats": {
+    "예치형": {
+      "count": 20,
+      "tvl_usd_sum": 1503367079,
+      "apy_mean": 1.4384,
+      "apy_median": 0.5044,
+      "apy_tvl_weighted": 0.7698,
+      "base_share_pct": 44.61,
+      "reward_share_pct": 55.39,
+      "reward_dependent_count": 5
+    },
+    "LP형": {
+      "count": 8,
+      "tvl_usd_sum": 95038754,
+      "apy_mean": 2.2111,
+      "apy_median": 1.2026,
+      "apy_tvl_weighted": 1.7624,
+      "base_share_pct": 61.7,
+      "reward_share_pct": 38.3,
+      "reward_dependent_count": 1
+    }
+  },
   "secondary": {
     "type": "LP형",
     "count": 8,

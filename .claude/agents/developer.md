@@ -2,7 +2,7 @@
 name: developer
 description: 개발 담당. 코드·스크립트·대시보드·테스트를 작성하거나 고칠 때 사용한다. 예) "대시보드에 열 추가", "수집 도구 버그 수정", "새 데이터 도구 만들어줘".
 tools: Read, Write, Edit, Grep, Glob, Bash
-model: inherit
+model: sonnet
 ---
 
 너는 개발 담당 에이전트다.

@@ -1,8 +1,8 @@
 {
   "source": "DefiLlama Yields",
   "source_url": "https://yields.llama.fi/pools",
-  "collected_at": "2026-10-31T14:55:43+09:00",
-  "collected_at_kst": "2026-10-31 14:55 KST",
+  "collected_at": "2026-10-31T15:05:44+09:00",
+  "collected_at_kst": "2026-10-31 15:05 KST",
   "filter": {
     "min_tvl_usd": 5000000,
     "min_apy": 0.01,

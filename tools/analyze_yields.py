@@ -11,6 +11,7 @@
 
 from __future__ import annotations
 
+import statistics
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -72,8 +73,9 @@ def of_type(pools: list[dict], type_name: str) -> list[dict]:
     return [p for p in pools if p.get("type") == type_name]
 
 
-def ranked(pools: list[dict], n: int, url_prefix: str, ratio: float) -> list[dict]:
-    ordered = sorted(pools, key=lambda p: p["apy"], reverse=True)
+def ranked(pools: list[dict], n: int, url_prefix: str, ratio: float,
+           key: str = "apy") -> list[dict]:
+    ordered = sorted(pools, key=lambda p: p.get(key) or 0, reverse=True)
     return [
         {
             "rank": i,
@@ -84,6 +86,41 @@ def ranked(pools: list[dict], n: int, url_prefix: str, ratio: float) -> list[dic
         }
         for i, p in enumerate(ordered[:n], 1)
     ]
+
+
+def _r(x: float | None, nd: int = 4) -> float | None:
+    return None if x is None else round(x, nd)
+
+
+def type_stats(pools: list[dict], ratio: float) -> dict:
+    """유형 하나의 요약 통계. 에이전트는 이 값만 인용한다(직접 계산 금지)."""
+    n = len(pools)
+    if n == 0:
+        return {"count": 0, "tvl_usd_sum": 0, "apy_mean": None, "apy_median": None,
+                "apy_tvl_weighted": None, "base_share_pct": None, "reward_share_pct": None,
+                "reward_dependent_count": 0}
+    apys = [p["apy"] for p in pools]
+    tvl_sum = sum(p["tvl_usd"] for p in pools)
+    apy_sum = sum(apys)
+    base_sum = sum(p.get("apy_base") or 0 for p in pools)
+    reward_sum = sum(p.get("apy_reward") or 0 for p in pools)
+    return {
+        "count": n,
+        "tvl_usd_sum": round(tvl_sum, 2),
+        "apy_mean": _r(statistics.fmean(apys)),
+        "apy_median": _r(statistics.median(apys)),
+        "apy_tvl_weighted": _r(sum(p["apy"] * p["tvl_usd"] for p in pools) / tvl_sum)
+        if tvl_sum else None,
+        # APY 합계 중 기본/보상이 차지하는 비중 (%). 둘의 합이 100이 아닐 수 있음(원본 누락)
+        "base_share_pct": _r(base_sum / apy_sum * 100, 2) if apy_sum else None,
+        "reward_share_pct": _r(reward_sum / apy_sum * 100, 2) if apy_sum else None,
+        "reward_dependent_count": sum(1 for p in pools if flags_for(p, ratio)),
+    }
+
+
+def ranked_by_base(pools: list[dict], n: int, url_prefix: str, ratio: float) -> list[dict]:
+    with_base = [p for p in pools if (p.get("apy_base") or 0) > 0]
+    return ranked(with_base, n, url_prefix, ratio, key="apy_base")
 
 
 def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
@@ -107,6 +144,12 @@ def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
         "primary_type": primary,
         "top_n": acfg["top_n"],
         "top": ranked(now_primary, acfg["top_n"], url_prefix, ratio),
+        # 기본 APY(실제 이자) 기준 상위. 보상·포인트 의존 수익과 구분해서 보기 위함
+        "top_by_base": ranked_by_base(now_primary, acfg["base_top_n"], url_prefix, ratio),
+        "stats": {
+            primary: type_stats(now_primary, ratio),
+            secondary: type_stats(now_secondary, ratio),
+        },
         "secondary": {
             "type": secondary,
             "count": len(now_secondary),
@@ -170,6 +213,17 @@ def summary_lines(r: dict) -> list[str]:
         tag = f" [{' | '.join(tags)}]" if tags else ""
         lines.append(f"{t['rank']}. {t['project']}/{t['chain']}/{t['symbol']} "
                      f"{t['apy']:.2f}% TVL ${t['tvl_usd'] / 1e6:.1f}M{tag}")
+    lines.append(f"기본 APY 상위 {len(r['top_by_base'])}개 (보상 제외 실제 이자)")
+    for t in r["top_by_base"]:
+        lines.append(f"{t['rank']}. {t['project']}/{t['chain']}/{t['symbol']} "
+                     f"기본 {t['apy_base']:.2f}% (합계 {t['apy']:.2f}%)")
+    st = r["stats"][r["primary_type"]]
+    if st["count"]:
+        tvl_m = st["tvl_usd_sum"] / 1e6
+        lines.append(f"{r['primary_type']} 통계: {st['count']}개, TVL ${tvl_m:.1f}M, "
+                     f"APY 평균 {st['apy_mean']:.2f}% / 중앙 {st['apy_median']:.2f}%, "
+                     f"기본 {st['base_share_pct']}% · 보상 {st['reward_share_pct']}%, "
+                     f"보상 의존 {st['reward_dependent_count']}개")
     sec = r["secondary"]
     lines.append(f"{sec['type']} {sec['count']}개는 별도 섹션(data/analysis.json secondary)")
     if r["previous"] is None:
