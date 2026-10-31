@@ -146,15 +146,18 @@ def test_classify_locked_native_unknown_chain(rm):
     assert risk["lockup"] == "락업"
     assert risk["reward_type"] == "토큰"
     assert risk["btc_form"] == "확인 필요"        # Bitcoin 체인이 아닌 BTC 표기
+    assert risk["chain_status"] == "신생"         # Mezo 2025-05 출시
+    assert labels(badges) == ["락업", "신생 체인", "확인 필요: BTC 형태"]
+    risk, _ = az.classify(_p("x", "Unknownchain", "WBTC"), rm, AS_OF)
     assert risk["chain_status"] == "확인 필요"    # 매핑에 없는 체인
-    assert labels(badges) == ["락업", "확인 필요: BTC 형태·체인"]
 
 
 def test_classify_points_custodial_new_chain(rm):
     risk, badges = az.classify(_p("accountable", "Monad", "CBBTC", "Earn ACC Points", 3.6, 0.2),
                                rm, AS_OF)
     assert risk["reward_type"] == "포인트"
-    assert risk["btc_form"] == "수탁형 (코인베이스)" and risk["custodial"] is True
+    assert risk["btc_form"].startswith("수탁형 (코인베이스") and risk["custodial"] is True
+    assert risk["sources"]                        # 조사 근거 링크(풀별 매핑)
     assert risk["chain_status"] == "신생"         # 2025-11 출시 → 24개월 미만
     assert "포인트 보상" in labels(badges) and "수탁형" in labels(badges)
     assert "신생 체인" in labels(badges)
@@ -191,3 +194,58 @@ def test_kpi_and_large_top(multi_day_history, config):
     assert [x["pool"] for x in r["large_top"]] == ["p-a"]
     assert k["primary_count"] == 3
     assert k["reward_share_pct"] == pytest.approx(25.20, abs=0.01)
+
+
+
+# ---------- 위험 등급 · 추이 · 추천 · 원화 ----------
+
+def _ctx(rm, charts=None, krw=None):
+    return az.Ctx(rm, AS_OF, charts or {}, krw, 100_000_000)
+
+
+def _series(vals):
+    return [{"d": f"2026-10-{i + 1:02d}", "base": v, "apy": v} for i, v in enumerate(vals)]
+
+
+def test_trend_metrics():
+    t = az.trend("x", {"x": _series([1.0] * 22 + [1.2, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.5])})
+    assert t["days"] == 30
+    assert t["base_30d_avg"] == pytest.approx((1.0 * 28 + 1.2 + 1.5) / 30, abs=1e-4)
+    assert t["base_7d_change"] == pytest.approx(1.5 - 1.2)   # 오늘 - 7일 전
+    assert t["vol_pp"] == pytest.approx(0.5)                 # 최고-최저
+    assert az.trend("none", {})["spark"] == []
+
+
+def test_grade_rules(rm):
+    big = _p("aave-v3", "Arbitrum", "WBTC", base=0.5, tvl=2e8)
+    rows = az.ranked([big], 1, "u/", 0.5, key="apy_base",
+                     risk_ctx=_ctx(rm, {big["pool"]: _series([0.5, 0.52] * 15)}))
+    assert rows[0]["grade"] == "낮음"
+    small = _p("aave-v3", "Arbitrum", "WBTC", base=0.5, tvl=5e6)
+    assert az.ranked([small], 1, "u/", 0.5, risk_ctx=_ctx(rm))[0]["grade"] == "높음"
+    reward = _p("aave-v3", "Arbitrum", "WBTC", base=0.1, reward=2.0, tvl=2e8)
+    r = az.ranked([reward], 1, "u/", 0.5, risk_ctx=_ctx(rm))[0]
+    assert r["grade"] == "높음" and "보상" in r["grade_reason"]
+    mid = _p("aave-v3", "Arbitrum", "WBTC", base=0.5, tvl=5e7)
+    r = az.ranked([mid], 1, "u/", 0.5, risk_ctx=_ctx(rm, {mid["pool"]: _series([0.5] * 30)}))[0]
+    assert r["grade"] == "보통" and "규모 중간" in r["grade_reason"]
+    vol = _p("aave-v3", "Arbitrum", "WBTC", base=0.5, tvl=2e8)
+    r = az.ranked([vol], 1, "u/", 0.5,
+                  risk_ctx=_ctx(rm, {vol["pool"]: _series([0.5] * 29 + [2.0])}))[0]
+    assert r["grade"] == "높음" and "변동" in r["grade_reason"]
+
+
+def test_krw_per_year(rm):
+    p = _p("aave-v3", "Arbitrum", "WBTC", base=2.0, tvl=2e8)
+    r = az.ranked([p], 1, "u/", 0.5, risk_ctx=_ctx(rm, krw=100_000_000))[0]
+    assert r["btc_per_year"] == pytest.approx(0.02)
+    assert r["krw_per_year"] == 2_000_000
+
+
+def test_recommendations(multi_day_history, config):
+    r = az.analyze(multi_day_history, config, AT,
+                   {"btc_price": {"krw": 1e8, "usd": 7e4, "as_of_kst": "x", "source": "t"}})
+    assert r["recommend"]["stable"]["pool"] == "p-a"          # TVL 1억 달러 이상 중 1위
+    y = r["recommend"]["yield"]
+    assert y is None or y["grade"] != "높음"
+    assert r["btc_price"]["krw"] == 1e8

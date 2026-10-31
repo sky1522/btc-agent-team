@@ -11,9 +11,11 @@
 
 from __future__ import annotations
 
+import json
 import statistics
 import sys
 import tomllib
+from dataclasses import dataclass, field
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any
@@ -123,6 +125,12 @@ def classify(p: dict, rm: dict, as_of: date) -> tuple[dict, list[dict]]:
         btc_form = " + ".join(dict.fromkeys(f for f, _ in forms))
         custodial = any(c for _, c in forms)
 
+    # 공식 문서로 확인한 풀별 값이 있으면 우선 (근거 링크는 risk_map.toml에)
+    ov = rm.get("pool", {}).get(f'{p["project"]}|{p["chain"]}|{p["symbol"].upper()}', {})
+    if "lockup" in ov:
+        lockup = ov["lockup"]
+    if "btc_form" in ov:
+        btc_form, custodial = ov["btc_form"], ov.get("custodial")
     launched = rm["chain"]["launched"].get(p["chain"])
     if launched is None:
         chain_status = CHECK
@@ -146,12 +154,82 @@ def classify(p: dict, rm: dict, as_of: date) -> tuple[dict, list[dict]]:
         badges.append({"key": "check", "label": "확인 필요: " + "·".join(unknown)})
     risk = {"lockup": lockup, "reward_type": reward, "btc_form": btc_form,
             "custodial": custodial, "chain_status": chain_status,
-            "chain_launched": launched, "unknown": unknown}
+            "chain_launched": launched, "unknown": unknown, "sources": ov.get("sources", [])}
     return risk, badges
 
 
+@dataclass
+class Ctx:
+    """순위 행에 붙일 부가 정보: 리스크 매핑, 기준일, 30일 추이, BTC 원화 가격."""
+    rm: dict
+    as_of: date
+    charts: dict = field(default_factory=dict)
+    btc_krw: float | None = None
+    large_tvl: float = 100_000_000
+
+
+def trend(pool_id: str, charts: dict) -> dict:
+    """30일 기본 APY 추이 지표. 추이 데이터가 없으면 빈 값."""
+    series = [x["base"] for x in charts.get(pool_id, []) if x.get("base") is not None]
+    if len(series) < 2:
+        return {"spark": [], "base_30d_avg": None, "base_7d_change": None,
+                "vol_pp": None, "days": len(series)}
+    return {
+        "spark": [round(v, 4) for v in series],
+        "base_30d_avg": round(statistics.fmean(series), 4),
+        "base_7d_change": round(series[-1] - series[-8], 4) if len(series) >= 8 else None,
+        "vol_pp": round(max(series) - min(series), 4),   # 30일 최고-최저 차
+        "days": len(series),
+    }
+
+
+def _musd(v: float) -> str:
+    return f"${v / 1e6:,.1f}M"
+
+
+def grade(p: dict, risk: dict, tr: dict, rm: dict, ratio: float,
+          large_tvl: float) -> tuple[str, str, float | None, str]:
+    """위험 등급(낮음/보통/높음)과 이유 한 줄. 가장 나쁜 항목이 등급을 정한다."""
+    g = rm["grade"]
+    vol, vol_src = tr.get("vol_pp"), "30일 기본 APY 최고-최저"
+    if vol is None and p.get("apy_pct_30d") is not None:
+        vol, vol_src = abs(p["apy_pct_30d"]), "DefiLlama 30일 APY 변화"
+    reward = p.get("apy_reward") or 0
+    high = []
+    if p.get("apy") and reward / p["apy"] >= ratio:
+        high.append("이자 대부분이 보상이라 끝나면 줄어듦")
+    if risk["chain_status"] == "신생":
+        high.append("출시 2년이 안 된 체인")
+    if risk["lockup"] == "락업":
+        high.append("락업 기간 동안 못 뺌")
+    if p["tvl_usd"] < g["small_tvl_usd"]:
+        high.append(f"규모가 작음(TVL {_musd(p['tvl_usd'])})")
+    if vol is not None and vol >= g["vol_high_pp"]:
+        high.append(f"30일 이자 변동이 큼({vol:.2f}%p)")
+    if high:
+        return "높음", high[0], vol, vol_src
+    mid = []
+    if p["tvl_usd"] < large_tvl:
+        mid.append(f"규모 중간(TVL {_musd(p['tvl_usd'])})")
+    if risk["lockup"].startswith("출금 대기"):
+        mid.append(risk["lockup"])
+    if risk["lockup"] == CHECK:
+        mid.append("출금 조건 확인 필요")
+    if risk["btc_form"] == CHECK:
+        mid.append("BTC 보관 방식 확인 필요")
+    if risk["chain_status"] == CHECK:
+        mid.append("체인 출시 시점 확인 필요")
+    if vol is None:
+        mid.append("이자 변동 데이터 없음")
+    elif vol >= g["vol_low_pp"]:
+        mid.append(f"30일 이자 변동 {vol:.2f}%p")
+    if mid:
+        return "보통", mid[0], vol, vol_src
+    return "낮음", "대형 풀, 성숙한 체인, 수시 출금, 이자 변동 작음", vol, vol_src
+
+
 def ranked(pools: list[dict], n: int, url_prefix: str, ratio: float,
-           key: str = "apy", risk_ctx: tuple[dict, date] | None = None) -> list[dict]:
+           key: str = "apy", risk_ctx: Ctx | None = None) -> list[dict]:
     ordered = sorted(pools, key=lambda p: (p.get(key) or 0, p.get("apy") or 0), reverse=True)
     rows = []
     for i, p in enumerate(ordered[:n], 1):
@@ -164,8 +242,17 @@ def ranked(pools: list[dict], n: int, url_prefix: str, ratio: float,
             # 1 BTC를 1년 맡겼을 때 기본 APY 기준 이자 (BTC). APY는 복리 포함 연 수익률
             "btc_per_year": None if p.get("apy_base") is None else round(p["apy_base"] / 100, 6),
         }
+        for k in ("apy_mean_30d", "apy_pct_1d", "apy_pct_7d", "apy_pct_30d"):
+            row[k] = p.get(k)
         if risk_ctx:
-            row["risk"], row["badges"] = classify(p, *risk_ctx)
+            c = risk_ctx
+            row["risk"], row["badges"] = classify(p, c.rm, c.as_of)
+            tr = trend(p["pool"], c.charts)
+            row.update(tr)
+            row["grade"], row["grade_reason"], row["vol_pp"], row["vol_source"] = grade(
+                p, row["risk"], tr, c.rm, ratio, c.large_tvl)
+            row["krw_per_year"] = (round(row["btc_per_year"] * c.btc_krw)
+                                   if c.btc_krw and row["btc_per_year"] is not None else None)
         rows.append(row)
     return rows
 
@@ -201,12 +288,15 @@ def type_stats(pools: list[dict], ratio: float) -> dict:
 
 
 def ranked_by_base(pools: list[dict], n: int, url_prefix: str, ratio: float,
-                   risk_ctx: tuple[dict, date] | None = None) -> list[dict]:
+                   risk_ctx: Ctx | None = None) -> list[dict]:
     with_base = [p for p in pools if (p.get("apy_base") or 0) > 0]
     return ranked(with_base, n, url_prefix, ratio, key="apy_base", risk_ctx=risk_ctx)
 
 
-def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
+def analyze(history: list[dict], config: dict[str, Any], at: datetime,
+            extras: dict | None = None) -> dict:
+    """extras: {"charts": data/charts.json의 pools, "btc_price": yields.json의 btc_price}"""
+    extras = extras or {}
     acfg = config["analyze"]
     url_prefix = config["collect"]["pool_url_prefix"]
     primary, secondary = acfg["primary_type"], acfg["secondary_type"]
@@ -218,12 +308,16 @@ def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
     now_primary = of_type(latest["pools"], primary)
     now_secondary = of_type(latest["pools"], secondary)
     as_of = parse_iso(latest["collected_at"]).astimezone(KST).date()
-    ctx = (load_risk_map(config), as_of)
     large = acfg["large_tvl_usd"]
+    price = extras.get("btc_price")
+    ctx = Ctx(load_risk_map(config), as_of, extras.get("charts") or {},
+              (price or {}).get("krw"), large)
     top_by_base = ranked_by_base(now_primary, acfg["base_top_n"], url_prefix, ratio, ctx)
     large_top = ranked_by_base([p for p in now_primary if p["tvl_usd"] >= large], 3,
                                url_prefix, ratio, ctx)
     primary_stats = type_stats(now_primary, ratio)
+    ranking = ranked(now_primary, len(now_primary), url_prefix, ratio, key="apy_base",
+                     risk_ctx=ctx)
 
     result: dict[str, Any] = {
         "generated_at": at.isoformat(timespec="seconds"),
@@ -234,9 +328,16 @@ def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
         "primary_type": primary,
         "top_n": acfg["top_n"],
         "top": ranked(now_primary, acfg["top_n"], url_prefix, ratio),
-        # 예치형 전체 순위 (대시보드용): 기본 APY 내림차순, 리스크 분류 포함
-        "ranking": ranked(now_primary, len(now_primary), url_prefix, ratio,
-                          key="apy_base", risk_ctx=ctx),
+        # 예치형 전체 순위 (대시보드용): 기본 APY 내림차순, 리스크 분류·위험 등급 포함
+        "ranking": ranking,
+        # 추천 2종: 안정 우선(TVL 1억 달러 이상 중 기본 APY 1위), 이자 우선(위험 높음 제외 1위)
+        "recommend": {
+            "stable": large_top[0] if large_top else None,
+            "yield": next((r for r in ranking if r["grade"] != "높음"
+                           and (r.get("apy_base") or 0) > 0), None),
+        },
+        "btc_price": price,
+        "charts_days": config["collect"]["chart_days"],
         # 기본 APY(실제 이자) 기준 상위. 보상·포인트 의존 수익과 구분해서 보기 위함
         "top_by_base": top_by_base,
         # TVL large_tvl_usd 이상 대형 풀 중 기본 APY 상위
@@ -306,7 +407,13 @@ def run(config: dict[str, Any] | None = None, root: Path = ROOT,
     config = config or load_config()
     paths = config["paths"]
     history = read_jsonl(resolve(paths["history"], root))
-    result = analyze(history, config, at or now_kst())
+    extras = {}
+    charts_path, yields_path = resolve(paths["charts"], root), resolve(paths["yields"], root)
+    if charts_path.exists():
+        extras["charts"] = json.loads(charts_path.read_text(encoding="utf-8")).get("pools", {})
+    if yields_path.exists():
+        extras["btc_price"] = json.loads(yields_path.read_text(encoding="utf-8")).get("btc_price")
+    result = analyze(history, config, at or now_kst(), extras)
     write_json_atomic(resolve(paths["analysis"], root), result)
     return result
 

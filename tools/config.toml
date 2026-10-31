@@ -10,6 +10,7 @@ analysis = "data/analysis.json"
 summary = "data/summary.json"         # reporter가 쓰는 AI 요약 (대시보드 표시용)
 dashboard_html = "dashboard/index.html"
 dashboard_data = "dashboard/data.json"
+charts = "data/charts.json"           # 30일 추이 (추천·상위 풀만)
 risk_map = "tools/risk_map.toml"     # 리스크 분류 매핑 (락업·보상·BTC 형태·체인)
 
 [dashboard]
@@ -29,6 +30,11 @@ url = "https://yields.llama.fi/pools"
 timeout_sec = 60
 source_name = "DefiLlama Yields"
 pool_url_prefix = "https://defillama.com/yields/pool/"
+chart_url_prefix = "https://yields.llama.fi/chart/"   # 풀별 일간 이력
+chart_days = 30
+chart_top_n = 15          # 예치형 기본 APY 상위 N개 + 대형 풀 상위 3개만 추이 수집
+price_url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,krw&include_last_updated_at=true"
+price_source_name = "CoinGecko"
 
 # 노이즈 제거 기준
 min_tvl_usd = 5_000_000   # TVL 하한 (USD)

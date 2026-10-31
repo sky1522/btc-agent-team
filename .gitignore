@@ -35,3 +35,5 @@ docs/Claude 텔레그램 멀티 에이전트 수업 운영 가이드.md
 # 매번 다시 만드는 중간 산출물 (로컬 전용, 공개 데이터는 dashboard/data.json)
 data/yields.json
 data/analysis.json
+
+data/charts.json

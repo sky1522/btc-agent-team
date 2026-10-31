@@ -79,7 +79,7 @@ def test_hand_edited_html_is_overwritten_by_render(repo, config, base_analysis):
     pd.run(config, root=work)
     published = sh(remote, "show", "main:dashboard/index.html")
     assert "<script" not in published
-    assert "기준 2026-10-31 16:30 KST" in published
+    assert "10월 31일 16:30 기준" in published
 
 
 def test_no_change_does_not_push(repo, config):
@@ -140,7 +140,7 @@ def test_syncs_when_remote_ahead_only_with_auto_update(repo, config, tmp_path,
                       "2026-10-30T15:00:00+09:00"]
     html = sh(remote, "show", "main:dashboard/index.html")
     assert "ci build" not in html                         # 합친 이력으로 다시 생성
-    assert "기준 2026-10-30 15:00 KST" in html
+    assert "10월 30일 15:00 기준" in html
 
 
 def test_aborts_when_remote_is_ahead(repo, config, tmp_path, base_analysis):

@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from common import (
+    KST,
     ROOT,
     append_jsonl,
     fmt_kst,
@@ -75,7 +76,11 @@ def normalize(raw: dict[str, Any], cfg: dict[str, Any]) -> dict[str, Any]:
         "apy_base": raw.get("apyBase"),
         "apy_reward": raw.get("apyReward"),
         "tvl_usd": raw["tvlUsd"],
-        "apy_pct_1d_source": raw.get("apyPct1D"),  # DefiLlama 제공 1일 변화(%p), 참고용
+        # DefiLlama 제공 값 (모두 합계 APY 기준): 30일 평균, 1·7·30일 변화(%p)
+        "apy_mean_30d": raw.get("apyMean30d"),
+        "apy_pct_1d": raw.get("apyPct1D"),
+        "apy_pct_7d": raw.get("apyPct7D"),
+        "apy_pct_30d": raw.get("apyPct30D"),
         "exposure": raw.get("exposure"),
         "il_risk": raw.get("ilRisk"),
         "url": cfg["pool_url_prefix"] + raw["pool"],
@@ -151,7 +156,8 @@ def build_snapshot(pools: list[dict[str, Any]], cfg: dict[str, Any], at: datetim
 
 
 HISTORY_FIELDS = ("pool", "type", "project", "chain", "symbol", "pool_meta", "note",
-                  "apy", "apy_base", "apy_reward", "tvl_usd")
+                  "apy", "apy_base", "apy_reward", "tvl_usd",
+                  "apy_mean_30d", "apy_pct_1d", "apy_pct_7d", "apy_pct_30d")
 
 
 def history_record(snapshot: dict) -> dict:
@@ -159,8 +165,62 @@ def history_record(snapshot: dict) -> dict:
     return {
         "collected_at": snapshot["collected_at"],
         "source": snapshot["source"],
-        "pools": [{k: p[k] for k in keep} for p in snapshot["pools"]],
+        "pools": [{k: p.get(k) for k in keep} for p in snapshot["pools"]],
     }
+
+
+JsonFetcher = Callable[[str, int], Any]
+
+
+def fetch_json(url: str, timeout: int) -> Any:
+    req = urllib.request.Request(url, headers={"User-Agent": "btc-agent-team/0.1"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.loads(r.read())
+
+
+def chart_targets(pools: list[dict], cfg: dict, primary: str, large_tvl: float) -> list[str]:
+    """30일 추이를 받을 풀: 예치형 기본 APY 상위 N + 대형 풀(TVL 기준 이상) 기본 APY 상위 3."""
+    prim = [p for p in pools if p["type"] == primary]
+    by_base = sorted(prim, key=lambda p: (p.get("apy_base") or 0, p["apy"]), reverse=True)
+    large = [p for p in by_base if p["tvl_usd"] >= large_tvl]
+    ids = [p["pool"] for p in by_base[: cfg["chart_top_n"]]] + [p["pool"] for p in large[:3]]
+    return list(dict.fromkeys(ids))
+
+
+def daily_series(rows: list[dict], days: int) -> list[dict]:
+    """DefiLlama chart 행 → 날짜(KST)별 마지막 값, 최근 days일."""
+    by_day: dict[str, dict] = {}
+    for r in rows:
+        ts = r.get("timestamp")
+        if not ts:
+            continue
+        d = datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone(KST).date().isoformat()
+        by_day[d] = {"d": d, "base": r.get("apyBase"), "apy": r.get("apy")}
+    return [by_day[d] for d in sorted(by_day)][-days:]
+
+
+def fetch_charts(ids: list[str], cfg: dict, fetch: JsonFetcher) -> tuple[dict, list[str]]:
+    charts, failed = {}, []
+    for pid in ids:
+        try:
+            resp = fetch(cfg["chart_url_prefix"] + pid, cfg["timeout_sec"])
+            rows = resp.get("data") if isinstance(resp, dict) else None
+            if not isinstance(rows, list):
+                raise ValueError("data 없음")
+            charts[pid] = daily_series(rows, cfg["chart_days"])
+        except Exception:  # 풀 하나 실패는 건너뛴다 (카드에 추이선만 빠짐)
+            failed.append(pid)
+    return charts, failed
+
+
+def fetch_btc_price(cfg: dict, fetch: JsonFetcher) -> dict | None:
+    try:
+        d = fetch(cfg["price_url"], cfg["timeout_sec"])["bitcoin"]
+        at = datetime.fromtimestamp(int(d["last_updated_at"]), KST)
+        return {"usd": d["usd"], "krw": d["krw"], "as_of_kst": fmt_kst(at),
+                "source": cfg["price_source_name"]}
+    except Exception:  # 가격 실패해도 수집은 진행 (원화 환산만 빠짐)
+        return None
 
 
 def run(
@@ -168,6 +228,7 @@ def run(
     root: Path = ROOT,
     fetcher: Fetcher = fetch_pools,
     at: datetime | None = None,
+    json_fetcher: JsonFetcher = fetch_json,
 ) -> dict:
     config = config or load_config()
     cfg = config["collect"]
@@ -177,8 +238,16 @@ def run(
         raise RuntimeError(f"DefiLlama 응답 이상: status={resp.get('status')!r}")
     pools = select_btc_pools(resp["data"], cfg)
     snapshot = build_snapshot(pools, cfg, at or now_kst())
+    snapshot["btc_price"] = fetch_btc_price(cfg, json_fetcher)
+    ids = chart_targets(pools, cfg, config["analyze"]["primary_type"],
+                        config["analyze"]["large_tvl_usd"])
+    charts, failed = fetch_charts(ids, cfg, json_fetcher)
     write_json_atomic(resolve(paths["yields"], root), snapshot)
+    write_json_atomic(resolve(paths["charts"], root), {
+        "collected_at_kst": snapshot["collected_at_kst"], "days": cfg["chart_days"],
+        "source": cfg["source_name"], "pools": charts, "failed": failed})
     append_jsonl(resolve(paths["history"], root), history_record(snapshot))
+    snapshot["charts_count"], snapshot["charts_failed"] = len(charts), len(failed)
     return snapshot
 
 
