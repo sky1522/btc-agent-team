@@ -144,6 +144,8 @@ def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
         "primary_type": primary,
         "top_n": acfg["top_n"],
         "top": ranked(now_primary, acfg["top_n"], url_prefix, ratio),
+        # 예치형 전체 순위 (대시보드용)
+        "ranking": ranked(now_primary, len(now_primary), url_prefix, ratio),
         # 기본 APY(실제 이자) 기준 상위. 보상·포인트 의존 수익과 구분해서 보기 위함
         "top_by_base": ranked_by_base(now_primary, acfg["base_top_n"], url_prefix, ratio),
         "stats": {

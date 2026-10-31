@@ -25,3 +25,9 @@ __pycache__/
 # OS
 Thumbs.db
 .DS_Store
+
+# Playwright 미리보기 산출물
+.playwright-mcp/
+
+# 고객 정보·비용이 들어간 운영 문서 (공개 저장소 커밋 금지)
+docs/Claude 텔레그램 멀티 에이전트 수업 운영 가이드.md

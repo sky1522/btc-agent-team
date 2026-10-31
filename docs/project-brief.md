@@ -30,6 +30,30 @@
 - 전일 = 최신 스냅샷의 KST 날짜보다 이전 날짜 중 가장 최근 스냅샷. 없으면 "비교 데이터 없음"
 - 위 두 명령 외 계산이 필요하면 developer에게 도구 추가를 맡긴다(임의 코드 실행 금지)
 
+## 대시보드 갱신 ("대시보드 갱신해줘")
+순서대로, 각 명령은 단독 실행:
+1. 총괄: reply로 "접수: 대시보드 갱신, 예상 2분"
+2. 총괄: `uv run python tools/defillama_btc.py`
+3. 총괄: `uv run python tools/analyze_yields.py`
+4. reporter: `data/analysis.json`만 근거로 `data/summary.json` 작성 (아래 형식)
+5. 총괄: `uv run python tools/build_dashboard.py` → `dashboard/index.html`, `dashboard/data.json` 생성
+6. 총괄: `uv run python tools/publish_dashboard.py` → 대시보드 파일만 커밋·push → GitHub Actions가 Pages에 배포(1~2분)
+   - 에이전트의 push는 이 스크립트로만 한다. `git push`를 직접 실행하지 않는다
+   - "게시 중단"이 나오면 이유를 그대로 보고하고 사람에게 넘긴다(우회 금지)
+7. 총괄: reply로 완료 회신 (데이터 기준 시각, 예치형 APY 합계 순위표 1위·기본 APY 순위표 1위, Pages 주소 https://sky1522.github.io/btc-agent-team/ , "반영까지 1~2분")
+
+`data/summary.json` 형식 (reporter만 씀):
+```json
+{
+  "written_at_kst": "YYYY-MM-DD HH:MM KST",
+  "data_as_of_kst": "<analysis.json latest.collected_at_kst 값 그대로>",
+  "lines": ["한 줄 요약", "... 최대 6줄, 수치는 analysis.json 값 인용, 순위는 순위표 이름과 함께"],
+  "report_file": "data/reports/... (있으면)"
+}
+```
+- `data_as_of_kst`가 최신 데이터와 다르면 대시보드에 "요약이 오래됨" 경고가 뜬다.
+- 대시보드: 공개 주소 https://sky1522.github.io/btc-agent-team/ (공개 저장소 → 누구나 볼 수 있음, 공개 데이터만 담는다). 로컬은 `dashboard/index.html` 더블클릭.
+
 ## 데이터 필드 (data/yields.json `pools[]`)
 | 필드 | 원본(DefiLlama) | 의미 |
 | --- | --- | --- |

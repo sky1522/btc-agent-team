@@ -7,6 +7,20 @@
 yields = "data/yields.json"
 history = "data/history.jsonl"
 analysis = "data/analysis.json"
+summary = "data/summary.json"         # reporter가 쓰는 AI 요약 (대시보드 표시용)
+dashboard_html = "dashboard/index.html"
+dashboard_data = "dashboard/data.json"
+
+[dashboard]
+title = "BTC 예치 이자율"
+summary_max_lines = 6
+
+# 대시보드 공개 (tools/publish_dashboard.py). 이 파일들만 커밋·push한다.
+[publish]
+remote = "origin"
+branch = "main"
+files = ["dashboard/index.html", "dashboard/data.json"]
+pages_url = "https://sky1522.github.io/btc-agent-team/"
 
 [collect]
 url = "https://yields.llama.fi/pools"

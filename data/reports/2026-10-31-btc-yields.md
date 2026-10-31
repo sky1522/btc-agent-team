@@ -55,15 +55,15 @@ DefiLlama 제공 1일 APY 변화 참고치 상위 5 (자체 비교 아님, apy_p
 ## 5. 리스크 메모
 
 - 보상 의존 5건: symbiotic SOLVBTC·UNIBTC·LBTC, mezo-earn BTC, across WBTC. 보상 비중 55.39%.
-- 1위 SOLVBTC는 기본 0.00 · 보상 7.79 · TVL $5.8M. 보상이 끝나면 이자가 사라지는 구조.
+- APY 합계 순위표 1위 symbiotic SOLVBTC는 기본 0.00 · 보상 7.79 · TVL $5.8M. 보상이 끝나면 이자가 사라지는 구조.
 - 소형 TVL 풀(약 $5.4M~5.8M): symbiotic UNIBTC, bancor-v3 WBTC, fluid-lending CBBTC, symbiotic SOLVBTC. 이자율·유동성 변동 위험이 상대적으로 큼.
-- 기본 APY 2위 accountable Monad CBBTC는 "Earn ACC Points" 풀로, 포인트 성격의 수익 포함 여부 확인 필요.
+- accountable Monad CBBTC(APY 합계 순위표 2위, 기본 APY 순위표 1위)는 "Earn ACC Points" 풀로, 포인트 성격의 수익 포함 여부 확인 필요.
 - 평균(1.44)과 중앙값(0.50)의 차이는 소수 고APY 풀의 영향.
 
 ## 6. 특이사항
 
 - 전일 비교 데이터 없음: 오늘 스냅샷 4회(14:50, 14:54, 14:55, 15:05 KST)만 존재.
-- 상위 10 중 보상 의존 5건. 보상 제외 시 1위는 accountable Monad CBBTC(기본 3.60).
+- APY 합계 상위 10 중 보상 의존 5건. 기본 APY 순위표 1위는 accountable Monad CBBTC(기본 3.60).
 - LP형 참고: uniswap-v3 WBTC-CBBTC의 DefiLlama 1일 변화 -9.21%p(참고치, 자체 비교 아님).
 
 본 보고는 참고 자료이며 투자 판단이 아니다.
