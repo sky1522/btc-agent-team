@@ -21,7 +21,10 @@
       "WebFetch(domain:yields.llama.fi)",
       "WebFetch(domain:api.llama.fi)",
       "WebFetch(domain:defillama.com)",
-      "WebSearch"
+      "WebSearch",
+      "mcp__plugin_telegram_telegram__reply",
+      "mcp__plugin_telegram_telegram__react",
+      "mcp__plugin_telegram_telegram__edit_message"
     ],
     "deny": [
       "Read(./.env)",
@@ -40,17 +43,6 @@
       "PowerShell(Invoke-RestMethod*)",
       "PowerShell(irm*)"
     ]
-  },
-  "enabledPlugins": {
-    "context7@claude-plugins-official": false,
-    "superpowers@claude-plugins-official": false,
-    "frontend-design@claude-plugins-official": false,
-    "playwright@claude-plugins-official": false,
-    "github@claude-plugins-official": false,
-    "security-guidance@claude-plugins-official": false,
-    "code-review@claude-plugins-official": false,
-    "vercel@claude-plugins-official": false,
-    "typescript-lsp@claude-plugins-official": false
   },
   "hooks": {
     "PreToolUse": [
@@ -84,5 +76,17 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "context7@claude-plugins-official": false,
+    "superpowers@claude-plugins-official": false,
+    "frontend-design@claude-plugins-official": false,
+    "playwright@claude-plugins-official": false,
+    "github@claude-plugins-official": false,
+    "security-guidance@claude-plugins-official": false,
+    "code-review@claude-plugins-official": false,
+    "vercel@claude-plugins-official": false,
+    "typescript-lsp@claude-plugins-official": false,
+    "telegram@claude-plugins-official": true
   }
 }
