@@ -8,6 +8,7 @@
 - 아직 push 안 된 커밋 중 대시보드 파일 외 다른 파일을 바꾼 커밋이 있으면 중단(사람이 직접 push)
 - 원격에 로컬에 없는 커밋이 있으면 중단(덮어쓰지 않음)
 - 커밋은 [publish] files 경로만 (`git commit -- <files>`), 다른 스테이징 변경은 건드리지 않음
+- 게시 직전에 build_dashboard로 다시 생성 → 누가 index.html을 직접 고쳤어도 렌더 결과만 게시
 """
 
 from __future__ import annotations
@@ -17,6 +18,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import build_dashboard
 from common import ROOT, load_config, resolve, utf8_stdout
 
 
@@ -52,9 +54,10 @@ def run(config: dict | None = None, root: Path = ROOT) -> dict:
     current = git("rev-parse", "--abbrev-ref", "HEAD", root=root)
     if current != branch:
         raise PublishError(f"현재 브랜치 {current}. {branch}에서만 게시한다")
-    for f in files:
-        if not (root / f).exists():
-            raise PublishError(f"{f} 없음. 먼저: uv run python tools/build_dashboard.py")
+    try:
+        build_dashboard.run(config, root=root)  # 직접 수정된 산출물이 있어도 렌더 결과로 덮어씀
+    except RuntimeError as ex:
+        raise PublishError(str(ex)) from ex
 
     git("fetch", "--quiet", remote, branch, root=root)
     remote_ref = f"{remote}/{branch}"

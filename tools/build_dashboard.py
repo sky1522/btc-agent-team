@@ -11,12 +11,11 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import datetime
 from html import escape
 from pathlib import Path
 from typing import Any
 
-from common import ROOT, fmt_kst, load_config, now_kst, resolve, utf8_stdout, write_json_atomic
+from common import ROOT, load_config, resolve, utf8_stdout, write_json_atomic
 
 
 def pct(v: float | None) -> str:
@@ -178,7 +177,12 @@ footer{font-size:11px;color:var(--muted);margin-top:20px}
 """
 
 
-def render(analysis: dict, summary: dict | None, cfg: dict, built_at: datetime) -> str:
+# 스크립트·외부 리소스 전부 차단. 인라인 스타일만 허용
+CSP = ("default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; "
+       "base-uri 'none'; form-action 'none'")
+
+
+def render(analysis: dict, summary: dict | None, cfg: dict) -> str:
     a = analysis
     status = summary_status(summary, a)
     primary = a["primary_type"]
@@ -193,6 +197,7 @@ def render(analysis: dict, summary: dict | None, cfg: dict, built_at: datetime) 
     return f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="{CSP}">
 <title>{e(cfg["title"])}</title><style>{CSS}</style></head>
 <body>
 <header><h1>{e(cfg["title"])}</h1>
@@ -211,12 +216,13 @@ rel="noopener">{e(a["source"])}</a></div></header>
 {change_block(a)}
 {lp}
 <footer>참고 자료이며 투자 권유가 아님. 수치는 원본 링크로 확인.<br>
-생성 {e(fmt_kst(built_at))}</footer>
+분석 {e(a.get("generated_at_kst"))}</footer>
 </main></body></html>
 """
 
 
-def run(config: dict | None = None, root: Path = ROOT, at: datetime | None = None) -> dict:
+def run(config: dict | None = None, root: Path = ROOT) -> dict:
+    """입력이 같으면 출력도 같다(생성 시각을 넣지 않음) → 변경 없으면 게시도 없음."""
     config = config or load_config()
     paths = config["paths"]
     analysis_path = resolve(paths["analysis"], root)
@@ -224,15 +230,14 @@ def run(config: dict | None = None, root: Path = ROOT, at: datetime | None = Non
         raise RuntimeError("analysis.json 없음. 먼저: uv run python tools/analyze_yields.py")
     analysis = json.loads(analysis_path.read_text(encoding="utf-8"))
     summary = load_summary(resolve(paths["summary"], root))
-    built_at = at or now_kst()
-    html = render(analysis, summary, config["dashboard"], built_at)
+    html = render(analysis, summary, config["dashboard"])
     out = resolve(paths["dashboard_html"], root)
     out.parent.mkdir(parents=True, exist_ok=True)
     tmp = out.with_suffix(".tmp")
     tmp.write_text(html, encoding="utf-8")
     tmp.replace(out)
-    write_json_atomic(resolve(paths["dashboard_data"], root), {
-        "built_at_kst": fmt_kst(built_at), "analysis": analysis, "summary": summary})
+    write_json_atomic(resolve(paths["dashboard_data"], root),
+                      {"analysis": analysis, "summary": summary})
     return {"latest": analysis["latest"]["collected_at_kst"],
             "summary": summary_status(summary, analysis), "path": str(out)}
 

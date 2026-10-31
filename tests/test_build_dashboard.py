@@ -29,7 +29,7 @@ def test_ranking_contains_all_primary_pools(analysis):
 
 
 def test_html_has_header_sections_and_rows(analysis, config):
-    html = bd.render(analysis, None, config["dashboard"], AT)
+    html = bd.render(analysis, None, config["dashboard"])
     assert "기준 2026-10-30 15:00 KST" in html
     assert "DefiLlama Yields" in html
     for section in ("예치형 순위", "기본 APY 상위 2", "유형별 통계", "전일 대비"):
@@ -48,34 +48,46 @@ def test_summary_states(analysis, config):
     assert bd.summary_status(None, analysis) == "missing"
     assert bd.summary_status(ok, analysis) == "ok"
     assert bd.summary_status(stale, analysis) == "stale"
-    assert "요약이 최신 데이터보다 오래됨" in bd.render(analysis, stale, config["dashboard"], AT)
-    assert "요약 1줄" in bd.render(analysis, ok, config["dashboard"], AT)
-    assert "요약 없음" in bd.render(analysis, None, config["dashboard"], AT)
+    assert "요약이 최신 데이터보다 오래됨" in bd.render(analysis, stale, config["dashboard"])
+    assert "요약 1줄" in bd.render(analysis, ok, config["dashboard"])
+    assert "요약 없음" in bd.render(analysis, None, config["dashboard"])
 
 
 def test_html_escapes_text(analysis, config):
     bad = {"written_at_kst": "x", "data_as_of_kst": "2026-10-30 15:00 KST",
            "lines": ["<img src=x onerror=alert(1)>"]}
-    html = bd.render(analysis, bad, config["dashboard"], AT)
+    html = bd.render(analysis, bad, config["dashboard"])
     assert "<img src=x" not in html
     assert "&lt;img src=x" in html
 
 
 def test_run_writes_html_and_data(tmp_path, analysis, config):
     write_inputs(tmp_path, analysis)
-    r = bd.run(config, root=tmp_path, at=AT)
+    r = bd.run(config, root=tmp_path)
     assert r["summary"] == "missing"
     assert (tmp_path / "dashboard/index.html").read_text(encoding="utf-8").startswith("<!doctype")
     data = json.loads((tmp_path / "dashboard/data.json").read_text(encoding="utf-8"))
-    assert data["built_at_kst"] == "2026-10-30 15:10 KST"
     assert data["analysis"]["latest"]["collected_at_kst"] == "2026-10-30 15:00 KST"
+
+
+def test_output_is_deterministic(tmp_path, analysis, config):
+    write_inputs(tmp_path, analysis)
+    bd.run(config, root=tmp_path)
+    first = (tmp_path / "dashboard/index.html").read_bytes()
+    bd.run(config, root=tmp_path)
+    assert (tmp_path / "dashboard/index.html").read_bytes() == first
+
+
+def test_csp_blocks_scripts(analysis, config):
+    html = bd.render(analysis, None, config["dashboard"])
+    assert "Content-Security-Policy" in html and "default-src 'none'" in html
 
 
 def test_run_without_analysis_fails(tmp_path, config):
     with pytest.raises(RuntimeError):
-        bd.run(config, root=tmp_path, at=AT)
+        bd.run(config, root=tmp_path)
 
 
 def test_no_comparison_message(multi_day_history, config):
     a = az.analyze([multi_day_history[-1]], config, AT)
-    assert "전일 대비: 비교 데이터 없음" in bd.render(a, None, config["dashboard"], AT)
+    assert "전일 대비: 비교 데이터 없음" in bd.render(a, None, config["dashboard"])
