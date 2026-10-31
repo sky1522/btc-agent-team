@@ -81,7 +81,7 @@
    "chain": "Base",
    "project": "morpho-blue",
    "symbol": "WBTC-CBBTC",
-   "tvlUsd": 3000000,
+   "tvlUsd": 6000000,
    "apyBase": 1.2,
    "apyReward": null,
    "apy": 1.2,
@@ -117,7 +117,7 @@
    "chain": "Base",
    "project": "morpho-blue",
    "symbol": "WBTC-USDC",
-   "tvlUsd": 3000000,
+   "tvlUsd": 6000000,
    "apyBase": 1.2,
    "apyReward": null,
    "apy": 14.0,
@@ -349,6 +349,82 @@
     "0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f"
    ],
    "pool": "fx-btcbull",
+   "apyPct1D": 0.08012,
+   "apyPct7D": -0.22471,
+   "apyPct30D": -0.70549,
+   "stablecoin": false,
+   "ilRisk": "no",
+   "exposure": "single",
+   "predictions": {
+    "predictedClass": "Stable/Up",
+    "predictedProbability": 72,
+    "binnedConfidence": 2
+   },
+   "poolMeta": null,
+   "mu": 3.28873,
+   "sigma": 0.09272,
+   "count": 1556,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 1.18802,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Ethereum",
+   "project": "across",
+   "symbol": "STSTXBTC",
+   "tvlUsd": 50000000,
+   "apyBase": 2.0,
+   "apyReward": 0.5,
+   "apy": 7.9,
+   "rewardTokens": [
+    "0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f"
+   ],
+   "pool": "fx-ststxbtc",
+   "apyPct1D": 0.08012,
+   "apyPct7D": -0.22471,
+   "apyPct30D": -0.70549,
+   "stablecoin": false,
+   "ilRisk": "no",
+   "exposure": "single",
+   "predictions": {
+    "predictedClass": "Stable/Up",
+    "predictedProbability": 72,
+    "binnedConfidence": 2
+   },
+   "poolMeta": null,
+   "mu": 3.28873,
+   "sigma": 0.09272,
+   "count": 1556,
+   "outlier": false,
+   "underlyingTokens": [
+    "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+   ],
+   "il7d": null,
+   "apyBase7d": null,
+   "apyMean30d": 1.18802,
+   "volumeUsd1d": null,
+   "volumeUsd7d": null,
+   "apyBaseInception": null
+  },
+  {
+   "chain": "Ethereum",
+   "project": "across",
+   "symbol": "WBTC",
+   "tvlUsd": 50000000,
+   "apyBase": 1.5,
+   "apyReward": null,
+   "apy": 1.5,
+   "rewardTokens": [
+    "0x44108f0223a3c3028f5fe7aec7f9bb2e66bef82f"
+   ],
+   "pool": "fx-wbtc-dup2",
    "apyPct1D": 0.08012,
    "apyPct7D": -0.22471,
    "apyPct30D": -0.70549,

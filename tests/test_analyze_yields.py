@@ -19,6 +19,20 @@ def test_single_day_history_reports_no_comparison(multi_day_history, config):
     assert "전일 대비: 비교 데이터 없음" in az.summary_lines(r)
 
 
+def test_top_is_primary_type_only_and_lp_is_separate(multi_day_history, config):
+    r = az.analyze(multi_day_history, config, AT)
+    assert r["primary_type"] == "예치형"
+    assert all(t["type"] == "예치형" for t in r["top"])
+    assert "lp-x" not in [t["pool"] for t in r["top"]]  # APY 12%로 가장 높아도 기본 표에서 제외
+    assert r["secondary"]["type"] == "LP형"
+    assert r["secondary"]["count"] == 2
+    assert [t["pool"] for t in r["secondary"]["top"]] == ["lp-x", "lp-y"]
+    # 변화·신규·이탈도 예치형만
+    changed = [c["pool"] for c in r["change"]["items"]]
+    assert "lp-x" not in changed
+    assert "lp-y" not in [p["pool"] for p in r["new_pools"]["items"]]
+
+
 def test_previous_is_latest_snapshot_of_an_earlier_kst_day(multi_day_history, config):
     latest, previous = az.pick_latest_and_previous(multi_day_history)
     assert latest["collected_at"] == "2026-10-30T15:00:00+09:00"

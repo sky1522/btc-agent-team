@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import sys
 import urllib.request
+from collections import Counter, defaultdict
 from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
@@ -57,31 +58,58 @@ def passes_noise_filter(raw: dict[str, Any], cfg: dict[str, Any]) -> bool:
     return True
 
 
-def normalize(raw: dict[str, Any], pool_url_prefix: str) -> dict[str, Any]:
+def pool_type(raw: dict[str, Any], type_by_exposure: dict[str, str]) -> str:
+    return type_by_exposure.get(raw.get("exposure") or "", "기타")
+
+
+def normalize(raw: dict[str, Any], cfg: dict[str, Any]) -> dict[str, Any]:
     return {
         "pool": raw["pool"],
+        "type": pool_type(raw, cfg["type_by_exposure"]),
         "project": raw["project"],
         "chain": raw["chain"],
         "symbol": raw["symbol"],
         "pool_meta": raw.get("poolMeta"),
+        "note": raw.get("poolMeta") or "",
         "apy": raw["apy"],
         "apy_base": raw.get("apyBase"),
         "apy_reward": raw.get("apyReward"),
         "tvl_usd": raw["tvlUsd"],
         "apy_pct_1d_source": raw.get("apyPct1D"),  # DefiLlama 제공 1일 변화(%p), 참고용
         "exposure": raw.get("exposure"),
-        "url": pool_url_prefix + raw["pool"],
+        "il_risk": raw.get("ilRisk"),
+        "url": cfg["pool_url_prefix"] + raw["pool"],
     }
+
+
+def disambiguate_notes(pools: list[dict[str, Any]]) -> None:
+    """같은 프로토콜·체인·심볼이 여러 줄이면 비고(note)로 구분되게 한다.
+
+    poolMeta가 그룹 안에서 서로 다르면 poolMeta만, 아니면 pool id 앞 8자리를 덧붙인다.
+    """
+    groups: dict[tuple[str, str, str], list[dict[str, Any]]] = defaultdict(list)
+    for p in pools:
+        groups[(p["project"], p["chain"], p["symbol"].upper())].append(p)
+    for members in groups.values():
+        if len(members) < 2:
+            continue
+        metas = [m["pool_meta"] or "" for m in members]
+        if all(metas) and len(set(metas)) == len(metas):
+            continue
+        for m in members:
+            short_id = m["pool"][:8]
+            m["note"] = f"{m['pool_meta']} · {short_id}" if m["pool_meta"] else short_id
 
 
 def select_btc_pools(raw_pools: list[dict[str, Any]], cfg: dict[str, Any]) -> list[dict[str, Any]]:
     btc_tokens = {t.upper() for t in cfg["btc_tokens"]}
     picked = [
-        normalize(p, cfg["pool_url_prefix"])
+        normalize(p, cfg)
         for p in raw_pools
         if is_btc_pool(p, btc_tokens) and passes_noise_filter(p, cfg)
     ]
     picked.sort(key=lambda p: p["apy"], reverse=True)
+    disambiguate_notes(picked)
     return picked
 
 
@@ -96,14 +124,20 @@ def build_snapshot(pools: list[dict[str, Any]], cfg: dict[str, Any], at: datetim
             "min_apy": cfg["min_apy"],
             "exclude_outliers": cfg.get("exclude_outliers", True),
             "btc_tokens": cfg["btc_tokens"],
+            "type_by_exposure": cfg["type_by_exposure"],
         },
         "count": len(pools),
+        "count_by_type": dict(Counter(p["type"] for p in pools)),
         "pools": pools,
     }
 
 
+HISTORY_FIELDS = ("pool", "type", "project", "chain", "symbol", "note",
+                  "apy", "apy_base", "apy_reward", "tvl_usd")
+
+
 def history_record(snapshot: dict) -> dict:
-    keep = ("pool", "project", "chain", "symbol", "apy", "apy_base", "apy_reward", "tvl_usd")
+    keep = HISTORY_FIELDS
     return {
         "collected_at": snapshot["collected_at"],
         "source": snapshot["source"],
@@ -138,9 +172,8 @@ def main() -> int:
         print(f"수집 실패: {e}", file=sys.stderr)
         return 1
     print(f"기준: {snap['collected_at_kst']} · 출처: {snap['source']}")
-    print(f"BTC 계열 풀 {snap['count']}개 저장 → data/yields.json, data/history.jsonl")
-    for i, p in enumerate(snap["pools"][:5], 1):
-        print(f"{i}. {p['project']} / {p['chain']} / {p['symbol']} APY {p['apy']:.2f}%")
+    by_type = ", ".join(f"{k} {v}개" for k, v in snap["count_by_type"].items())
+    print(f"BTC 계열 풀 {snap['count']}개 ({by_type}) 저장 → data/yields.json, data/history.jsonl")
     return 0
 
 

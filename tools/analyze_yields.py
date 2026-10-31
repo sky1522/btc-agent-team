@@ -64,27 +64,39 @@ def snap_meta(s: dict) -> dict:
 
 
 def brief(p: dict) -> dict:
-    return {k: p[k] for k in ("pool", "project", "chain", "symbol", "apy", "tvl_usd")}
+    keys = ("pool", "type", "project", "chain", "symbol", "note", "apy", "tvl_usd")
+    return {k: p.get(k) for k in keys}
+
+
+def of_type(pools: list[dict], type_name: str) -> list[dict]:
+    return [p for p in pools if p.get("type") == type_name]
+
+
+def ranked(pools: list[dict], n: int, url_prefix: str, ratio: float) -> list[dict]:
+    ordered = sorted(pools, key=lambda p: p["apy"], reverse=True)
+    return [
+        {
+            "rank": i,
+            **{k: p.get(k) for k in ("pool", "type", "project", "chain", "symbol", "note",
+                                     "apy", "apy_base", "apy_reward", "tvl_usd")},
+            "url": url_prefix + p["pool"],
+            "flags": flags_for(p, ratio),
+        }
+        for i, p in enumerate(ordered[:n], 1)
+    ]
 
 
 def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
     acfg = config["analyze"]
     url_prefix = config["collect"]["pool_url_prefix"]
+    primary, secondary = acfg["primary_type"], acfg["secondary_type"]
+    ratio = acfg["reward_dependency_ratio"]
     latest, previous = pick_latest_and_previous(history)
     if latest is None:
         raise RuntimeError("이력이 없습니다. 먼저 수집: uv run python tools/defillama_btc.py")
 
-    now_pools = sorted(latest["pools"], key=lambda p: p["apy"], reverse=True)
-    top = [
-        {
-            "rank": i,
-            **{k: p[k] for k in ("pool", "project", "chain", "symbol", "apy",
-                                 "apy_base", "apy_reward", "tvl_usd")},
-            "url": url_prefix + p["pool"],
-            "flags": flags_for(p, acfg["reward_dependency_ratio"]),
-        }
-        for i, p in enumerate(now_pools[: acfg["top_n"]], 1)
-    ]
+    now_primary = of_type(latest["pools"], primary)
+    now_secondary = of_type(latest["pools"], secondary)
 
     result: dict[str, Any] = {
         "generated_at": at.isoformat(timespec="seconds"),
@@ -92,8 +104,14 @@ def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
         "source": latest.get("source", config["collect"]["source_name"]),
         "latest": snap_meta(latest),
         "previous": snap_meta(previous) if previous else None,
+        "primary_type": primary,
         "top_n": acfg["top_n"],
-        "top": top,
+        "top": ranked(now_primary, acfg["top_n"], url_prefix, ratio),
+        "secondary": {
+            "type": secondary,
+            "count": len(now_secondary),
+            "top": ranked(now_secondary, acfg["top_n"], url_prefix, ratio),
+        },
     }
 
     if previous is None:
@@ -103,8 +121,9 @@ def analyze(history: list[dict], config: dict[str, Any], at: datetime) -> dict:
         result["dropped_pools"] = dict(empty)
         return result
 
-    prev_by_id = {p["pool"]: p for p in previous["pools"]}
-    now_by_id = {p["pool"]: p for p in latest["pools"]}
+    # 변화·신규·이탈은 기본 유형(예치형)만 대상
+    prev_by_id = {p["pool"]: p for p in of_type(previous["pools"], primary)}
+    now_by_id = {p["pool"]: p for p in now_primary}
     changes = []
     for pid, p in now_by_id.items():
         old = prev_by_id.get(pid)
@@ -145,15 +164,18 @@ def run(config: dict[str, Any] | None = None, root: Path = ROOT,
 
 def summary_lines(r: dict) -> list[str]:
     lines = [f"기준: {r['latest']['collected_at_kst']} · 출처: {r['source']}"]
-    lines.append(f"상위 {len(r['top'])}개 (APY)")
+    lines.append(f"{r['primary_type']} 상위 {len(r['top'])}개 (APY)")
     for t in r["top"]:
-        flag = f" [{', '.join(t['flags'])}]" if t["flags"] else ""
+        tags = ([t["note"]] if t.get("note") else []) + t["flags"]
+        tag = f" [{' | '.join(tags)}]" if tags else ""
         lines.append(f"{t['rank']}. {t['project']}/{t['chain']}/{t['symbol']} "
-                     f"{t['apy']:.2f}% TVL ${t['tvl_usd'] / 1e6:.1f}M{flag}")
+                     f"{t['apy']:.2f}% TVL ${t['tvl_usd'] / 1e6:.1f}M{tag}")
+    sec = r["secondary"]
+    lines.append(f"{sec['type']} {sec['count']}개는 별도 섹션(data/analysis.json secondary)")
     if r["previous"] is None:
         lines.append(f"전일 대비: {NO_COMPARE}")
     else:
-        lines.append(f"전일 대비 ({r['previous']['collected_at_kst']} → "
+        lines.append(f"{r['primary_type']} 전일 대비 ({r['previous']['collected_at_kst']} → "
                      f"{r['latest']['collected_at_kst']})")
         for c in r["change"]["items"][:5]:
             lines.append(f"- {c['project']}/{c['symbol']} {c['apy_prev']:.2f}% → "
