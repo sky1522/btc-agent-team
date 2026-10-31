@@ -1,0 +1,27 @@
+# 비밀값
+.env
+.env.*
+*.key
+
+# 통화 녹음·전사·연락처 포함 문서 (커밋 금지)
+docs/*통화*
+*.m4a
+*.mp3
+*.wav
+
+# 작업 로그 (로컬 전용)
+data/logs/
+
+# Python / uv
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Claude Code 개인 설정 (프로젝트 공용은 .claude/settings.json)
+.claude/settings.local.json
+
+# OS
+Thumbs.db
+.DS_Store

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Edit(/data/**)",
+      "Write(/data/**)",
+      "Edit(/dashboard/**)",
+      "Write(/dashboard/**)",
+      "Bash(uv run python tools/*)",
+      "Bash(uv run pytest*)",
+      "Bash(uv run ruff*)",
+      "Bash(uv run python -c *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "WebFetch(domain:yields.llama.fi)",
+      "WebFetch(domain:api.llama.fi)",
+      "WebFetch(domain:defillama.com)",
+      "WebSearch"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Bash(git push*)",
+      "Bash(curl*)",
+      "Bash(Invoke-WebRequest*)"
+    ]
+  }
+}
